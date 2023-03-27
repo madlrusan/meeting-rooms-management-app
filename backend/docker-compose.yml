@@ -1,0 +1,21 @@
+﻿version: '3.4'
+
+services:
+  api:
+    image:  api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+        - database
+  database:
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: mHDyhpoc4336HXuF0GYO
+      ACCEPT_EULA: Y
+      MSSQL_PID: Express
+      MSSQL_TCP_PORT: 1433
+      MSSQL_DATABASE: licenta
+      MSSQL_PASSWORD: mHDyhpoc4336HXuF0GYO
+    ports:
+      - "1433:1433"

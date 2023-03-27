@@ -1,0 +1,210 @@
+.photos img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+    }
+    
+    @media screen and (max-width: 600px) and (min-width: 320px) {
+        .photos img {
+            width: 50px;
+            height: 50px;
+        }
+    }
+    
+    @media screen and (max-width: 800px) and (min-width: 600px) {
+        .photos img {
+            width: 70px;
+            height: 70px;
+        }
+    }
+    
+    .photos,
+    .details {
+        border-color: #e0e0e0;
+        border-style: solid;
+    }
+    
+    .material-dark .photo,
+    .material-dark .details {
+        border-color: #616161;
+    }
+
+    .fabric-dark .photo,
+    .fabric-dark .details {
+        border-color: #414040;
+    }
+
+    .bootstrap-dark .photo,
+    .bootstrap-dark .details {
+        border-color: #484848;
+    }
+
+    .tailwind-dark .photo,
+    .tailwind-dark .details {
+        border-color: #4b5563;
+    }
+
+    .bootstrap5-dark .photo,
+    .bootstrap5-dark .details {
+        border-color: rgb(68, 76, 84);
+    }
+
+    .highcontrast .photo,
+    .highcontrast .details {
+        border-color: #969696;
+    }
+    
+    .photos {
+        border-width: 1px 0px 0px 0px;
+        text-align: center;
+    }
+    
+    .details {
+        border-width: 1px 0px 0px 0px;
+        padding-left: 18px;
+    }
+
+    .e-bigger .details {
+        padding-left: 25px;
+    }
+
+    .e-device .details {
+        padding-left: 8px;
+    }
+    
+    .details > table {
+        width: 100%;
+    }
+    
+    .CardHeader {
+        font-weight: 600;
+    }
+    
+    .templateRow td {
+        padding: 2px 2px 3px 4px;
+    }
+
+ .image img {
+        height: 55px;
+        width: 55px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+}
+ .detailtable td{
+        font-size: 13px;
+        padding: 4px;                      
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .images{
+        text-align: center;
+    }
+    .photo {     
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        box-shadow: inset 0 0 1px #e0e0e0, inset 0 0 14px rgba(0,0,0,0.2);
+    }
+    
+    @media screen and (max-width: 800px) and (min-width: 320px) {
+        .photo {
+            width: 70px;
+            height: 70px;
+        }       
+    }
+
+.e-ghidden {
+    opacity: 0.35;
+}
+
+.e-statustext {
+    font-size: 15px;
+    padding: 1em;
+    font-family: Roboto;
+    opacity: 0.87;
+} 
+
+.e-dsalign {
+    margin-top: 10px;
+    float: right;
+}
+
+.select-wrap {
+    padding: 0 0 10px 0;
+    font-family: Roboto;
+    padding: 1em;
+}
+
+.select-wrap select {
+    height: 28px;
+    width: 100%;
+    border-width: 0 0 2px 0;
+    background: transparent;
+}
+
+.select-wrap select:focus {
+    border-bottom-style: solid;
+    border-color: #1876D1;
+}
+
+.select-wrap select, 
+.select-wrap select option {
+    outline: none;
+    font-size: 14px;
+    padding: .2em;
+    height: 30px;
+}
+
+    
+.e-grid .e-copy::before {
+    content: "\e721";
+    font-family: 'Material_copy';
+}
+
+@media (min-width: 480px) and (max-width:639px) {
+    .select-wrap select {
+        width: 40%
+    }
+}
+
+@media (min-width:640px) {
+    .select-wrap select {
+        width: 25%
+    }
+}
+
+    
+       .e-grid .e-small-icon::before {
+            content: '\e707';
+            font-family: 'e-grid-rowheight';
+        }
+    
+       .e-grid .e-medium-icon::before {
+            font-family: 'e-grid-rowheight';
+            content: '\e701';
+        }
+    
+        .e-grid .e-big-icon::before {
+            content: '\e702';
+            font-family: 'e-grid-rowheight';
+        }
+
+            .sf-icon-BT_Calendar:before { content: "\e960"; }
+            .sf-icon-employee:before { content: "\e702"; }
+
+.e-pager .e-currentitem, .e-pager .e-currentitem:hover{
+    background-color: #175491;
+} 
+.e-pager .e-currentitem.e-numericitem.e-focused{
+    background-color: #1876D1;
+}
+.e-field e-input e-defaultcell e-control e-textbox e-lib e-valid {
+    height: 1vh;
+}
+.e-grid .e-editedrow .e-input-group input.e-input, .e-grid .e-editedrow .e-input-group.e-control-wrapper input.e-input, .e-grid .e-addedrow .e-input-group input.e-input, .e-grid .e-addedrow .e-input-group.e-control-wrapper input.e-input
+{   
+    height: 1vh !important;
+}   
