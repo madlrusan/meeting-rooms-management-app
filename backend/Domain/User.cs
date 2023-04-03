@@ -9,6 +9,8 @@ namespace Domain
         public string LastName { get; set; }
         [JsonIgnore]
         public int Pin { get; set; }
-        public DateTime CreatedTimeUTC { get; set; }   
+        public string Departament { get; set; }
+        public string Position { get; set; }
+        public DateTime CreatedTimeUTC { get; set; }
     }
 }

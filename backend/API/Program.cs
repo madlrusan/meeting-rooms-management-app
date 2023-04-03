@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGenConfig();
 var connectionString = builder.Configuration.GetConnectionString("Db");
+builder.Services.AddDbContext<RoomDbContext>(c => c.UseSqlServer(connectionString, b => b.MigrationsAssembly("API")));
 if (connectionString is not null)
 {
     builder.Services.AddServices(connectionString);
@@ -24,7 +25,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
 
     var context = services.GetRequiredService<RoomDbContext>();
-    context.Database.Migrate();
+    //context.Database.Migrate();
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

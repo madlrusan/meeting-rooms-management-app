@@ -19,6 +19,7 @@ namespace API.Configuration
         private static IServiceCollection AddScopes(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
             return services;
         }
         private static IServiceCollection AddDataServices(this IServiceCollection services, string connectionString)

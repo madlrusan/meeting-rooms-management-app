@@ -3,8 +3,10 @@ import { CheckBox, Card , Input} from '@rneui/themed';
 import { View } from "react-native";
 import { TextInput } from "react-native-paper";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNavigation } from "@react-navigation/native";
 import {FormContainer, InputGroup, LoginCard, SubmitButton, TextH3, loginStyles} from "../../components/LoginComponents/Login.components";
 export const Login = () => {
+    const navigator = useNavigation();
     const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
     const [checked, setChecked] = useState<boolean>(false);
@@ -49,7 +51,9 @@ export const Login = () => {
                             title={"Remember Me?"}
                         />
                     </View>
-                    <SubmitButton  title="Submit"/>
+                    <SubmitButton  title="Submit" onPress={() => {
+                        navigator.navigate("Dashboard" as never);
+                    }}/>
                 </LoginCard>
         </KeyboardAwareScrollView>
     );
