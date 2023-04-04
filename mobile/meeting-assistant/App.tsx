@@ -1,10 +1,10 @@
 
-import { Login } from './pages/Login/Login';
+import { Login } from './src/pages/Login/Login';
 import React from 'react';
 import { View , StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { MainScreen } from './pages/MainScreen/MainScreen';
+import { MainScreen } from './src/pages/MainScreen/MainScreen';
 
 const Stack = createNativeStackNavigator();
 const  App = () => {
