@@ -52,7 +52,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
 							</Text>
 						</View>
 					) : (
-						<Text>Cancel</Text>
+						<Text>Are you sure you want to cancel the meeting?</Text>
 					)}
 				</Dialog.Content>
 				<ActionsContainer>

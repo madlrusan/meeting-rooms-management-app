@@ -28,7 +28,7 @@ export const MainScreen = () => {
 	// use context --> to get room details
 	// const {roomName, roomStatus} = useContext(RoomContext);
 	const [visible, setVisible] = useState(false);
-	const GlobalStatus = StatusTypes.Available;
+	const GlobalStatus = StatusTypes.Busy;
 	const ButtonText = getButtonText(GlobalStatus);
 	return (
 		<MainContainer>

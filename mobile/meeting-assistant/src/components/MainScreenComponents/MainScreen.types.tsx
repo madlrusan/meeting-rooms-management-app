@@ -33,6 +33,6 @@ export const getButtonText = (status: StatusTypes) => {
 		case StatusTypes.Available:
 			return "Start";
 		case StatusTypes.Reserved:
-			return "Cancel";
+			return "Start";
 	}
 };

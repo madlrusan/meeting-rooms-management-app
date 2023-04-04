@@ -7,6 +7,7 @@ export const ActionsContainer = styled(Dialog.Actions)`
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+    margin-top: 10%;
 `;
 export const ButtonStyle = {
 	width: "20%",
