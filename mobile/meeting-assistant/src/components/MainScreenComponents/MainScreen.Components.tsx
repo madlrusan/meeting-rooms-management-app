@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Platform } from "react-native";
 import styled, { css } from "styled-components/native";
 import { Divider, Button } from "@rneui/themed";
 export const MainContainer = styled(View)`
@@ -90,11 +90,8 @@ export const RoomCircle = styled(View)<{ status: string }>`
 	width: 500px;
 	height: 500px;
 	border-radius: 250%;
-	align-items: right;
 	text-align: right;
-	justify-content: right;
 	margin-left: 5%;
-	/* margin-bottom: -10%; */
 	${(props) => {
 		switch (props.status) {
 			case "busy":

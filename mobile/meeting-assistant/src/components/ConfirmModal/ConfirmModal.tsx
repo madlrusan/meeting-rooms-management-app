@@ -30,15 +30,15 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
 	const intervalStart = moment()
 		.hour(startTime.hour)
 		.minutes(startTime.minutes)
-		.format("hh:mm");
+		.format("HH:mm");
 	const intervalEnd = moment()
 		.hour(endTime.endHour)
 		.minutes(startTime.minutes + endTime.diffMinutes)
-		.format("hh:mm");
+		.format("HH:mm");
 
 	const [openPIN, setOpenPIN] = useState(false);
 	return (
-		<ConfirmModalContainer visible={visible} onDismiss={hideModal}>
+		<ConfirmModalContainer visible={visible}>
 			<KeyboardAvoidingView
 				contentContainerStyle={avoidingView}
 				behavior={Platform.OS === "ios" ? "padding" : "height"}>

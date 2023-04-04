@@ -33,7 +33,7 @@ export const FormContainer = styled(View)`
 	justify-content: space-between;
 	align-items: center;
 	padding: 0px;
-	gap: 20%;
+	/* gap:20%; */
 	/* width: 100%; */
 `;
 
@@ -48,8 +48,6 @@ export const InputGroup = styled(View)`
 `;
 
 export const SubmitButton = styled(Button)`
-	margin-top: 0% !important;
-	/* width: 50vw; */
 	margin-bottom: 0% !important;
 `;
 

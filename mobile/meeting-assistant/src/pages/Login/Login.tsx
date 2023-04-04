@@ -14,6 +14,7 @@ import {
 } from "../../components/LoginComponents/Login.components";
 export const Login = () => {
 	const navigator = useNavigation();
+	// const {roomName, setRoomName} = useContext(RoomContext);
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const [checked, setChecked] = useState<boolean>(false);
@@ -34,7 +35,7 @@ export const Login = () => {
 							autoComplete="email"
 							inputMode="email"
 							keyboardType="email-address"
-							label="Enter your work email"
+							label="Enter the room email"
 						/>
 					</InputGroup>
 					<InputGroup>
@@ -43,25 +44,13 @@ export const Login = () => {
 							placeholder="password"
 							autoComplete="password"
 							secureTextEntry={!showPassword}
-							label="Enter your password"
+							label="Enter the room password password"
 							rightIcon={
 								<TextInput.Icon icon="eye" onPress={handleClickShowPassword} />
 							}
 						/>
 					</InputGroup>
 				</FormContainer>
-				<View style={loginStyles.rememberCheckbox}>
-					<CheckBox
-						checked={checked}
-						onPress={() => {
-							setChecked(!checked);
-						}}
-						iconType="material-community"
-						checkedIcon="checkbox-outline"
-						uncheckedIcon={"checkbox-blank-outline"}
-						title={"Remember Me?"}
-					/>
-				</View>
 				<SubmitButton
 					title="Submit"
 					onPress={() => {

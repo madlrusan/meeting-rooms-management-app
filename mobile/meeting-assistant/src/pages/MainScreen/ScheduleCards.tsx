@@ -11,20 +11,32 @@ import moment from "moment";
 import { StatusTypes } from "../../dto/Status.enums";
 export const ScheduleCard = () => {
 	const EventsTimeIntervals: EventTimeInterval[] = getTimeIntervals();
+	const GlobalStatus = StatusTypes.Available;
 	return (
 		<ScrollView>
 			{EventsTimeIntervals.map((timeInterval, key) => {
 				return (
 					<MeetingCard key={key}>
 						<TextContainer>
-							<CardText>Meeting subject </CardText>
+							{GlobalStatus === StatusTypes.Available ? (
+								<CardText>Nothing scheduled</CardText>
+							) : (
+								<CardText>Meeting subject </CardText>
+							)}
 							<CardText>
 								{timeInterval.startTime} - {timeInterval.endTime}
 							</CardText>
 						</TextContainer>
-						<CardText status={`${StatusTypes.Reserved.toLowerCase()}`}>
-							Status
-						</CardText>
+						<TextContainer>
+							{GlobalStatus === StatusTypes.Available ? (
+								<CardText>{""}</CardText>
+							) : (
+								<CardText>Hosted by Madalina Rusan </CardText>
+							)}
+							<CardText status={`${GlobalStatus.toLowerCase()}`}>
+								{GlobalStatus}
+							</CardText>
+						</TextContainer>
 					</MeetingCard>
 				);
 			})}
