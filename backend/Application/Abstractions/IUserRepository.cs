@@ -12,5 +12,6 @@ namespace Application.Abstractions
     {
         public Task<string> Login(LoginModel model);
         public Task Register(RegisterModel model);
+        public Task<IEnumerable<UsersViewModel>> GetAllUsers();
     }
 }

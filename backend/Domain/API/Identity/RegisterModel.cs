@@ -12,5 +12,8 @@ namespace Domain.API.Identity
         public string? LastName { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
+        public int Pin { get; set; }
+        public string? Departament { get; set; }
+        public string? Position { get; set; }
     }
 }

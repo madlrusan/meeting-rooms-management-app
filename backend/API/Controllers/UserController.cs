@@ -2,12 +2,13 @@
 using Domain.API.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("api/auth")]
+    [Route("user/auth")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -58,6 +59,13 @@ namespace API.Controllers
         public IActionResult CheckSession()
         {
             return Ok();
+        }
+
+        [HttpGet("getAllUsers")]
+        public async Task<ActionResult<IEnumerable<UsersViewModel>>> GetAllUsers()
+        {
+            var entities = await _userRepository.GetAllUsers();
+            return Ok(entities);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Domain;
 using Domain.API.Identity;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
@@ -44,7 +45,11 @@ namespace DataAccess.Repositories
                     LastName = model.LastName,
                     Email = model.Email,
                     EmailConfirmed = true,
-                    UserName = model.Email
+                    UserName = model.Email,
+                    Pin = model.Pin,
+                    Departament = model.Departament,
+                    Position = model.Position
+                    
                 };
                 await _userManager.CreateAsync(newUser, model.Password);
 
@@ -146,6 +151,21 @@ namespace DataAccess.Repositories
         {
             if (model.Email is null || !IsValidEmail(model.Email) || string.IsNullOrWhiteSpace(model.Password))
                 throw new ValidationException("Invalid Credentials!");
+        }
+        public async Task<IEnumerable<UsersViewModel>> GetAllUsers()
+        {
+            var users = await _userManager.Users.ToListAsync();
+
+            return users.Select(u => new UsersViewModel
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Departament = u.Departament,
+                Position = u.Position,
+                Email = u.Email,
+                Pin = u.Pin
+            });
         }
     }
 }

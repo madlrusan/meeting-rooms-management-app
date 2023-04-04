@@ -13,17 +13,30 @@ export const Dashboard = (props: DahsboardProps) => {
 	const { userRole } = props;
 	const drawerWidth = 200;
 	const getPath = window.location.pathname;
-	return userRole === "admin" ? (
+	return userRole !== "admin" ? (
 		<>
-			<DashboardAppBar drawerWidth={drawerWidth}/>
-			<SideMenu userRole={""} menuItems={AdminMenuItems} width={drawerWidth} selectedItem={getPath}/>
-			<MainContentCard page={Pages.Dashboard}  />
+			<DashboardAppBar drawerWidth={drawerWidth} />
+
+			<SideMenu
+				userRole={""}
+				menuItems={AdminMenuItems.filter(
+					(item) => item.itemName !== "Employees"
+				)}
+				width={drawerWidth}
+				selectedItem={getPath}
+			/>
+			<MainContentCard page={Pages.Dashboard} />
 		</>
 	) : (
 		<>
-            <DashboardAppBar drawerWidth={drawerWidth} />
-			<SideMenu userRole={""} menuItems={AdminMenuItems.filter(item =>  item.itemName !== "Employees")} width={drawerWidth} selectedItem={getPath}/>
-            <MainContentCard page={Pages.Dashboard} />
-        </>
-	) ;
+			<DashboardAppBar drawerWidth={drawerWidth} />
+			<SideMenu
+				userRole={""}
+				menuItems={AdminMenuItems}
+				width={drawerWidth}
+				selectedItem={getPath}
+			/>
+			<MainContentCard page={Pages.Dashboard} />
+		</>
+	);
 };

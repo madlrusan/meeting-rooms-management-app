@@ -11,7 +11,7 @@ using BCryptNetCore = BCrypt.Net.BCrypt;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("room/auth/login")]
+    [Route("room/auth")]
     public class RoomController : ControllerBase
 	{
 		private readonly IRoomRepository roomRepository;

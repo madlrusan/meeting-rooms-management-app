@@ -6,15 +6,14 @@ export const gridTemplate = (props:any) => {
 	return (
 		<table className="detailtable" style={{ width: "100%" }}>
 			<colgroup>
-				<col style={{ width: "35%" }}/>
-				<col style={{ width: "35%" }}/>
-				<col style={{ width: "30%" }}/>
+				<col style={{ width: "50%" }}/>
+				<col style={{ width: "50%" }}/>
 			</colgroup>
 			<tbody>
 				<tr>
-					<td rowSpan={4} className='images'>
+					{/* <td rowSpan={4} className='images'>
 						<img className='photo' style={{width: "25%", height: "25%"}} src={src} alt={props.employeeId}/>
-					</td>
+					</td> */}
 					<td>
 						<span style={{ fontWeight: 500 }}> First Name: </span> {props.employeeFirstName}
 					</td>
