@@ -18,8 +18,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoginUser } from "../../api/user";
 import { useMutation } from "react-query";
-import { Navigate, redirect, useNavigate } from "react-router-dom";
-import { BASE_URL_FE } from "../../components/constants";
+import { useNavigate } from "react-router-dom";
 import { getJWTData } from "../../components/common/HelperFunctions";
 export const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);

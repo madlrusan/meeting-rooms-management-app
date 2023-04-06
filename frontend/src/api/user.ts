@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BASE_URL_API } from "../components/constants";
+import { BASE_URL_API } from "../components/common/constants";
 
 export const LoginUser = async ({ email, password }: any) => {
 	

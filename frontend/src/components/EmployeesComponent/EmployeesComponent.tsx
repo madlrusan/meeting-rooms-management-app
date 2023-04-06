@@ -1,4 +1,3 @@
-import React from "react";
 import {
 	GridComponent,
 	ColumnsDirective,
@@ -7,53 +6,30 @@ import {
 	Toolbar,
 	Edit,
 	Inject,
-	EditSettingsModel,
 	DetailRow,
 	CommandColumn,
-	CommandModel,
-	PageSettingsModel,
-	FilterSettingsModel,
 	Filter,
 	Sort,
-	columnChooserOpened,
 	ColumnChooser,
 } from "@syncfusion/ej2-react-grids";
-import { employeeData, roomData } from "../../dto/mocks/data";
-import { gridTemplate } from "./Employees.types";
+import {
+	commands,
+	editparams,
+	editSettings,
+	filterSettings,
+	gridTemplate,
+	idRules,
+	onComplete,
+	pageSettings,
+	toolbarOptions,
+	validationRule,
+} from "./Employees.types";
 import "./style.css";
 import { GetEmployees } from "../../api/employees";
-export const EmployeeComponent = () => {
-	const filterSettings: FilterSettingsModel = { type: "Excel" };
-	const editSettings = {
-		allowEditing: true,
-		allowAdding: true,
-		allowDeleting: true,
-		allowEditOnDblClick: false,
-	};
-	const editparams = { params: { popupHeight: "300px" } };
-	const validationRule = { required: true };
-	const idRules = { required: true, number: true };
-	const pageSettings: PageSettingsModel = { pageCount: 5, pageSizes: true };
-	const toolbarOptions: any = ["ColumnChooser"];
-	const commands: CommandModel[] = [
-		{
-			type: "Edit",
-			buttonOption: { iconCss: " e-icons e-edit", cssClass: "e-flat" },
-		},
-		{
-			type: "Delete",
-			buttonOption: { iconCss: "e-icons e-delete", cssClass: "e-flat" },
-		},
-		{
-			type: "Save",
-			buttonOption: { iconCss: "e-icons e-update", cssClass: "e-flat" },
-		},
-		{
-			type: "Cancel",
-			buttonOption: { iconCss: "e-icons e-cancel-icon", cssClass: "e-flat" },
-		},
-	];
-
+interface GridProps {
+	// Define component props here
+}
+export const EmployeeComponent: React.FC<GridProps> = (props) => {
 	const { data: employees } = GetEmployees();
 	return (
 		<div className="control-pane">
@@ -69,6 +45,8 @@ export const EmployeeComponent = () => {
 					allowFiltering={true}
 					filterSettings={filterSettings}
 					toolbar={toolbarOptions}
+					actionComplete={onComplete}
+					// currentAction={onActionBegin}
 					showColumnChooser={true}>
 					<ColumnsDirective>
 						<ColumnDirective
@@ -87,17 +65,20 @@ export const EmployeeComponent = () => {
 							width="40"
 							validationRules={validationRule}></ColumnDirective>
 						<ColumnDirective
+							headerText="Email"
+							field="employeeEmail"
+							width="50"></ColumnDirective>
+						<ColumnDirective
 							field="employeePosition"
 							headerText="Position"
 							width="60"
-							editType="dropdownedit"
 							edit={editparams}></ColumnDirective>
 						<ColumnDirective
 							field="employeeDepartment"
 							headerText="Department"
 							width="50"
-							editType="dropdownedit"
 							edit={editparams}></ColumnDirective>
+
 						<ColumnDirective
 							headerText="Manage Records"
 							width="50"

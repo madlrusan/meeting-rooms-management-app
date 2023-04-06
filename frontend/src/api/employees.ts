@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from "react-query";
-import { BASE_URL_API } from "../components/constants";
+import { BASE_URL_API } from "../components/common/constants";
 import { IEmployee } from "../dto/models/IEmployee";
 
 export function GetEmployees() {
