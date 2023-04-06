@@ -1,6 +1,7 @@
 import { useQuery, UseQueryResult } from "react-query";
 import { BASE_URL_API } from "../components/common/constants";
-import { IEmployee } from "../dto/models/IEmployee";
+import { IDialogModel } from "../components/EmployeesComponent/DialogTemplate/DialogTemplate.types";
+import { IEmployee, RegisterEmployeeModel } from "../dto/models/IEmployee";
 
 export function GetEmployees() {
 	return useQuery<IEmployee[]>("allEmployees", async () => {
@@ -23,3 +24,15 @@ export function GetEmployees() {
 		}));
 	});
 }
+
+export const AddEmployee = async (newEmployee: RegisterEmployeeModel) => {
+	const response = await fetch(`${BASE_URL_API}/user/auth/register`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(newEmployee),
+	});
+	const responseData = await response.json();
+	return responseData;
+};

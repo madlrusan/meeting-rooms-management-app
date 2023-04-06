@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { IDialogModel } from "./DialogTemplate.types";
-
+import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
 export const DialogTemplate = (props: any) => {
 	const [value, setValue] = useState<any>();
 	const state = { ...props };
 	const onChange = (args: any) => {
-		console.log(args);
 		setValue({
 			[(args.target as HTMLInputElement).name]: args.target.value,
 		});
@@ -52,17 +51,7 @@ export const DialogTemplate = (props: any) => {
 							Employee Last Name
 						</label>
 					</div>
-					<div className="e-float-input e-control-wrapper">
-						<input
-							id="employeeEmail"
-							name="EmployeeEmail"
-							type="text"
-							value={data.employeeEmail}
-							onChange={onChange}
-						/>
-						<span className="e-float-line" />
-						<label className="e-float-text e-label-top">Employee Email</label>
-					</div>
+
 					<div className="e-float-input e-control-wrapper">
 						<input
 							id="employeeDepartment"
@@ -89,8 +78,46 @@ export const DialogTemplate = (props: any) => {
 							Employee Position
 						</label>
 					</div>
+					<div className="e-float-input e-control-wrapper">
+						<input
+							id="employeeEmail"
+							name="EmployeeEmail"
+							type="text"
+							value={data.employeeEmail}
+							onChange={onChange}
+						/>
+						<span className="e-float-line" />
+						<label className="e-float-text e-label-top">Employee Email</label>
+					</div>
+					{data.isAdd && (
+						<div className="e-float-input e-control-wrapper">
+							<input
+								id="employeePassword"
+								name="EmployeePassword"
+								type="text"
+								value={data.employeePassword}
+								onChange={onChange}
+							/>
+							<span className="e-float-line" />
+							<label className="e-float-text e-label-top">
+								Employee Password
+							</label>
+						</div>
+					)}
 				</div>
 			</div>
 		</div>
 	);
+};
+
+export const HTemplate = (args: any) => {
+	if (!args.isAdd) {
+		return (
+			<div>
+				Edit {args.employeeFirstName} {args.employeeLastName}
+			</div>
+		);
+	} else if (args.isAdd) {
+		return <div>Add a new employee</div>;
+	}
 };

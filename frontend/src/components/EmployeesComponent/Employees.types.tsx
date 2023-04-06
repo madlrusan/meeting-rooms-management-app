@@ -9,7 +9,7 @@ import React from "react";
 import "./style.css";
 import { Browser, extend } from "@syncfusion/ej2-base";
 import { IDialogModel } from "./DialogTemplate/DialogTemplate.types";
-import { DialogTemplate } from "./DialogTemplate/DialogTemplate";
+import { DialogTemplate, HTemplate } from "./DialogTemplate/DialogTemplate";
 
 export const gridTemplate = (props: any) => {
 	const src = props.employeeAvatar;
@@ -89,18 +89,32 @@ export const commands: CommandModel[] = [
 	},
 ];
 export const onComplete = (args: any) => {
+	console.log(args);
 	if (args.requestType == "searching") {
 		new DataManager(args.employees).executeQuery(
 			new Query().search(args.searchString, [])
 		);
 	}
 	if (args.requestType == "add") {
-		// (args.form.elements.namedItem("EmployeeId") as HTMLInputElement).focus();
-		if (Browser.isDevice) {
-			args.dialog.height = window.innerHeight - 90 + "px";
-			args.dialog.width = window.innerWidth + 90 + "px";
-			(args.dialog as any).dataBind();
-		}
+		// // (args.form.elements.namedItem("EmployeeId") as HTMLInputElement).focus();
+		// if (Browser.isDevice) {
+		// 	args.dialog.height = window.innerHeight - 90 + "px";
+		// 	args.dialog.width = window.innerWidth + 90 + "px";
+		// 	(args.dialog as any).dataBind();
+		// }
+		console.log(args);
+		const form = args.dialog.element.querySelector("form");
+		const validator = form.ej2_instances[0];
+		validator.reset();
+		validator.validate();
+		// 	const form = args.dialog.element.querySelector("form");
+		// 	const formData = new FormData(form);
+		// 	const firstName = formData.get("firstName");
+		// 	const lastName = formData.get("lastName");
+		// 	const email = formData.get("email");
+		// 	const password = formData.get("password");
+		// 	console.log(formData, firstName);
+		// }
 	}
 
 	if (args.requestType == "save") {
@@ -111,18 +125,7 @@ export const onComplete = (args: any) => {
 const dialogTemplate = (props: IDialogModel): any => {
 	return <DialogTemplate {...props} />;
 };
-const HTemplate = (args: any) => {
-	console.log("ht", args);
-	if (!args.isAdd) {
-		return (
-			<div>
-				Edit {args.employeeFirstName} {args.employeeLastName}
-			</div>
-		);
-	} else if (args.isAdd) {
-		return <div>Add a new employee</div>;
-	}
-};
+
 export const editSettings: any = {
 	allowEditing: true,
 	allowAdding: true,
