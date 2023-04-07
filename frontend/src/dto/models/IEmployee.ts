@@ -6,7 +6,5 @@ export interface IEmployee {
 	employeePosition: string;
 	employeeDepartment: string;
 	employeeEmail: string;
-}
-export interface RegisterEmployeeModel extends IEmployee {
-	employeePassword: string;
+	employeePassword?: string;
 }

@@ -167,6 +167,38 @@ namespace DataAccess.Repositories
                 Pin = u.Pin
             });
         }
+
+        public async Task UpdateUser(UpdateUserModel model)
+        {
+            if (!IsValidEmail(model.Email))
+                throw new ValidationException("Please provide an email!");
+            var existingUser = await GetUserByIdAsync(model.Id);
+            if (existingUser != null)
+            {
+                existingUser.FirstName = model.FirstName;
+                existingUser.LastName = model.LastName;
+                existingUser.Pin = model.Pin;
+                existingUser.Departament = model.Departament;
+                existingUser.Position = model.Position;
+            }
+            await _userManager.UpdateAsync(existingUser);
+
+        }
+        private async Task<User?> GetUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return user;
+        }
+        public async Task DeleteUser(DeleteUserModel model)
+        {
+            var existingUser = await GetUserByIdAsync(model.Id);
+            if(existingUser == null)
+            {
+                throw new ValidationException("User does not exist");
+            }
+            await _userManager.DeleteAsync(existingUser);
+        }
+        
     }
 }
 

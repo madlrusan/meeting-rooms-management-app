@@ -18,23 +18,25 @@ import {
 	editSettings,
 	filterSettings,
 	gridTemplate,
+	handleActionBegin,
 	idRules,
 	onComplete,
 	pageSettings,
 	toolbarOptions,
-	validationRule,
 } from "./Employees.types";
 import "./style.css";
 import { GetEmployees } from "../../api/employees";
-interface GridProps {
-	// Define component props here
-}
-export const EmployeeComponent: React.FC<GridProps> = (props) => {
+import { useRef } from "react";
+
+export const EmployeeComponent = (props: any) => {
 	const { data: employees } = GetEmployees();
+	const gridRef = useRef<GridComponent>(null);
 	return (
 		<div className="control-pane">
 			<div className="control-section">
 				<GridComponent
+					id="EmployeeGrid"
+					ref={gridRef}
 					dataSource={employees}
 					allowPaging={true}
 					editSettings={editSettings}
@@ -46,7 +48,7 @@ export const EmployeeComponent: React.FC<GridProps> = (props) => {
 					filterSettings={filterSettings}
 					toolbar={toolbarOptions}
 					actionComplete={onComplete}
-					// currentAction={onActionBegin}
+					actionBegin={handleActionBegin}
 					showColumnChooser={true}>
 					<ColumnsDirective>
 						<ColumnDirective
@@ -57,13 +59,11 @@ export const EmployeeComponent: React.FC<GridProps> = (props) => {
 						<ColumnDirective
 							field="employeeFirstName"
 							headerText="First Name"
-							width="40"
-							validationRules={validationRule}></ColumnDirective>
+							width="40"></ColumnDirective>
 						<ColumnDirective
 							field="employeeLastName"
 							headerText="Last Name"
-							width="40"
-							validationRules={validationRule}></ColumnDirective>
+							width="40"></ColumnDirective>
 						<ColumnDirective
 							headerText="Email"
 							field="employeeEmail"

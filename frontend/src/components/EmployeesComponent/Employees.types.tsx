@@ -1,15 +1,29 @@
-import { DataManager, Query } from "@syncfusion/ej2-data";
+import {
+	DataManager,
+	Query,
+	ReturnOption,
+	WebApiAdaptor,
+} from "@syncfusion/ej2-data";
 import {
 	CommandModel,
 	FilterSettingsModel,
+	GridComponent,
 	PageSettingsModel,
 	ToolbarItems,
 } from "@syncfusion/ej2-react-grids";
-import React from "react";
+import React, { useRef } from "react";
 import "./style.css";
-import { Browser, extend } from "@syncfusion/ej2-base";
 import { IDialogModel } from "./DialogTemplate/DialogTemplate.types";
-import { DialogTemplate, HTemplate } from "./DialogTemplate/DialogTemplate";
+import {
+	DialogForm,
+	FTemplate,
+	HTemplate,
+} from "./DialogTemplate/DialogTemplate";
+import { BASE_URL_API, USER_ENDPOINTS } from "../../dto/constants";
+import { Browser } from "@syncfusion/ej2-base";
+import { useMutation } from "react-query";
+import { DeleteEmployee } from "../../api/employees";
+import { IEmployee } from "../../dto/models/IEmployee";
 
 export const gridTemplate = (props: any) => {
 	const src = props.employeeAvatar;
@@ -89,49 +103,60 @@ export const commands: CommandModel[] = [
 	},
 ];
 export const onComplete = (args: any) => {
-	console.log(args);
-	if (args.requestType == "searching") {
+	if (args.requestType === "searching") {
 		new DataManager(args.employees).executeQuery(
 			new Query().search(args.searchString, [])
 		);
 	}
-	if (args.requestType == "add") {
-		// // (args.form.elements.namedItem("EmployeeId") as HTMLInputElement).focus();
-		// if (Browser.isDevice) {
-		// 	args.dialog.height = window.innerHeight - 90 + "px";
-		// 	args.dialog.width = window.innerWidth + 90 + "px";
-		// 	(args.dialog as any).dataBind();
-		// }
-		console.log(args);
-		const form = args.dialog.element.querySelector("form");
-		const validator = form.ej2_instances[0];
-		validator.reset();
-		validator.validate();
-		// 	const form = args.dialog.element.querySelector("form");
-		// 	const formData = new FormData(form);
-		// 	const firstName = formData.get("firstName");
-		// 	const lastName = formData.get("lastName");
-		// 	const email = formData.get("email");
-		// 	const password = formData.get("password");
-		// 	console.log(formData, firstName);
-		// }
-	}
-
-	if (args.requestType == "save") {
-		console.log(args);
+	if (args.requestType === "beginEdit" || args.requestType === "add") {
+		if (Browser.isDevice) {
+			args.dialog.height = window.innerHeight - 90 + "px";
+			args.dialog.dataBind();
+			args.dialog.close();
+		}
 	}
 };
-
-const dialogTemplate = (props: IDialogModel): any => {
-	return <DialogTemplate {...props} />;
+const DialogTemplate = (props: any) => {
+	return <DialogForm {...props} />;
 };
 
+export const handleActionBegin = (args: any) => {
+	if (args.requestType === "delete") {
+		const body = {
+			id: args.data[0].employeeId,
+		};
+		fetch(`${BASE_URL_API}${USER_ENDPOINTS.deleteUser}`, {
+			method: "DELETE",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+			body: JSON.stringify(body),
+		})
+			.then((response) => {
+				response.json();
+			})
+			.catch((error) => {
+				console.error("Error deleting record:", error);
+			});
+	}
+};
+export const OnDelete = (employee: IEmployee) => {
+	const onDelete = useMutation(DeleteEmployee, {
+		onSuccess: (data) => {
+			console.log("successful deleted", data);
+		},
+	});
+	onDelete.mutate(employee);
+};
 export const editSettings: any = {
 	allowEditing: true,
 	allowAdding: true,
 	allowDeleting: true,
 	mode: "Dialog",
 	headerTemplate: HTemplate,
-	template: dialogTemplate,
+	footerTemplate: FTemplate,
+	template: DialogTemplate,
 	allowEditOnDblClick: false,
+	showDeleteConfirmDialog: true,
 };

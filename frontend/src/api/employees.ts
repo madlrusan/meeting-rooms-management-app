@@ -1,11 +1,13 @@
 import { useQuery, UseQueryResult } from "react-query";
-import { BASE_URL_API } from "../components/common/constants";
+import { BASE_URL_API, USER_ENDPOINTS } from "../dto/constants";
 import { IDialogModel } from "../components/EmployeesComponent/DialogTemplate/DialogTemplate.types";
-import { IEmployee, RegisterEmployeeModel } from "../dto/models/IEmployee";
+import { IEmployee } from "../dto/models/IEmployee";
 
 export function GetEmployees() {
 	return useQuery<IEmployee[]>("allEmployees", async () => {
-		const response = await fetch(`${BASE_URL_API}/user/auth/getAllUsers`);
+		const response = await fetch(
+			`${BASE_URL_API}${USER_ENDPOINTS.getAllUsers}`
+		);
 		if (!response.ok) {
 			throw new Error("Failed to fetch users");
 		}
@@ -25,14 +27,64 @@ export function GetEmployees() {
 	});
 }
 
-export const AddEmployee = async (newEmployee: RegisterEmployeeModel) => {
-	const response = await fetch(`${BASE_URL_API}/user/auth/register`, {
+export const AddEmployee = async (newEmployee: IEmployee) => {
+	const body = {
+		firstName: newEmployee.employeeFirstName,
+		lastName: newEmployee.employeeLastName,
+		email: newEmployee.employeeEmail,
+		password: newEmployee.employeePassword,
+		pin: newEmployee.employeePIN,
+		departament: newEmployee.employeeDepartment,
+		position: newEmployee.employeePosition,
+	};
+	const response = await fetch(`${BASE_URL_API}${USER_ENDPOINTS.addUser}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify(newEmployee),
+		body: JSON.stringify(body),
 	});
 	const responseData = await response.json();
 	return responseData;
 };
+
+export const UpdateEmployee = async (employee: IEmployee) => {
+	const body = {
+		id: employee.employeeId,
+		firstName: employee.employeeFirstName,
+		lastName: employee.employeeLastName,
+		email: employee.employeeEmail,
+		pin: employee.employeePIN,
+		departament: employee.employeeDepartment,
+		position: employee.employeePosition,
+	};
+	const response = await fetch(`${BASE_URL_API}${USER_ENDPOINTS.updateUser}`, {
+		method: "PUT",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: "Bearer " + localStorage.getItem("token"),
+		},
+		body: JSON.stringify(body),
+	});
+	const responseData = await response.json();
+	return responseData;
+};
+
+export const DeleteEmployee = async (employee :IEmployee) => {
+    const body = {
+        id: employee.employeeId
+    };
+    const response = await fetch(
+			`${BASE_URL_API}${USER_ENDPOINTS.deleteUser}`,
+			{
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: "Bearer " + localStorage.getItem("token"),
+				},
+				body: JSON.stringify(body),
+			}
+		);
+		const responseData = await response.json();
+		return responseData;
+}

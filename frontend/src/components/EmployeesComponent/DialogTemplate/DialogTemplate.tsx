@@ -1,15 +1,36 @@
-import React, { useState } from "react";
-import { IDialogModel } from "./DialogTemplate.types";
-import { ButtonComponent } from "@syncfusion/ej2-react-buttons";
-export const DialogTemplate = (props: any) => {
-	const [value, setValue] = useState<any>();
-	const state = { ...props };
-	const onChange = (args: any) => {
-		setValue({
-			[(args.target as HTMLInputElement).name]: args.target.value,
-		});
+import { useState } from "react";
+import {
+	ButtonsContainer,
+	CancelButton,
+	SubmitButton,
+} from "./DialogTemplate.components";
+import { useMutation } from "react-query";
+import { useNavigate } from "react-router";
+import { AddEmployee, UpdateEmployee } from "../../../api/employees";
+export const DialogForm = (props: any) => {
+	const [val, setVal] = useState(props);
+	const navigate = useNavigate();
+	const onAdd = useMutation(AddEmployee, {
+		onSuccess: (data) => {
+			console.log("successful added", data);
+			navigate("/employees");
+		},
+	});
+	const onEdit = useMutation(UpdateEmployee, {
+		onSuccess: (data) => {
+			console.log("successful updated", data);
+			navigate("/employees");
+		},
+	});
+	const handleSubmit = (event: any) => {
+		console.log(event);
+		if (val.isAdd) {
+			onAdd.mutate(val);
+		} else {
+			onEdit.mutate(val);
+		}
+		event.preventDefault();
 	};
-	const data: IDialogModel = state;
 	return (
 		<div>
 			<div className="form-row">
@@ -19,8 +40,10 @@ export const DialogTemplate = (props: any) => {
 							id="employeePIN"
 							name="EmployeePIN"
 							type="text"
-							value={data.employeePIN}
-							onChange={onChange}
+							value={val.employeePIN}
+							onChange={(event) =>
+								setVal({ ...val, employeePIN: event.target.value })
+							}
 						/>
 						<span className="e-float-line" />
 						<label className="e-float-text e-label-top"> Employee PIN</label>
@@ -30,8 +53,10 @@ export const DialogTemplate = (props: any) => {
 							id="employeeFirstName"
 							name="EmployeeFirstName"
 							type="text"
-							value={data.employeeFirstName}
-							onChange={onChange}
+							value={val.employeeFirstName}
+							onChange={(event) =>
+								setVal({ ...val, employeeFirstName: event.target.value })
+							}
 						/>
 						<span className="e-float-line" />
 						<label className="e-float-text e-label-top">
@@ -43,8 +68,10 @@ export const DialogTemplate = (props: any) => {
 							id="employeeLastName"
 							name="EmployeeLastName"
 							type="text"
-							value={data.employeeLastName}
-							onChange={onChange}
+							value={val.employeeLastName}
+							onChange={(event) =>
+								setVal({ ...val, employeeLastName: event.target.value })
+							}
 						/>
 						<span className="e-float-line" />
 						<label className="e-float-text e-label-top">
@@ -57,8 +84,10 @@ export const DialogTemplate = (props: any) => {
 							id="employeeDepartment"
 							name="EmployeeDepartment"
 							type="text"
-							value={data.employeeDepartment}
-							onChange={onChange}
+							value={val.employeeDepartment}
+							onChange={(event) =>
+								setVal({ ...val, employeeDepartment: event.target.value })
+							}
 						/>
 						<span className="e-float-line" />
 						<label className="e-float-text e-label-top">
@@ -70,8 +99,10 @@ export const DialogTemplate = (props: any) => {
 							id="employeePosition"
 							name="EmployeePosition"
 							type="text"
-							value={data.employeePosition}
-							onChange={onChange}
+							value={val.employeePosition}
+							onChange={(event) =>
+								setVal({ ...val, employeePosition: event.target.value })
+							}
 						/>
 						<span className="e-float-line" />
 						<label className="e-float-text e-label-top">
@@ -83,20 +114,24 @@ export const DialogTemplate = (props: any) => {
 							id="employeeEmail"
 							name="EmployeeEmail"
 							type="text"
-							value={data.employeeEmail}
-							onChange={onChange}
+							value={val.employeeEmail}
+							onChange={(event) =>
+								setVal({ ...val, employeeEmail: event.target.value })
+							}
 						/>
 						<span className="e-float-line" />
 						<label className="e-float-text e-label-top">Employee Email</label>
 					</div>
-					{data.isAdd && (
+					{val.isAdd && (
 						<div className="e-float-input e-control-wrapper">
 							<input
 								id="employeePassword"
 								name="EmployeePassword"
 								type="text"
-								value={data.employeePassword}
-								onChange={onChange}
+								value={val.employeePassword}
+								onChange={(event) =>
+									setVal({ ...val, employeePassword: event.target.value })
+								}
 							/>
 							<span className="e-float-line" />
 							<label className="e-float-text e-label-top">
@@ -106,6 +141,21 @@ export const DialogTemplate = (props: any) => {
 					)}
 				</div>
 			</div>
+			<ButtonsContainer>
+				<CancelButton
+					cssClass="e-primary"
+					onClick={(event: any) => {
+						console.log("Cancel");
+						event.preventDefault();
+					}}>
+					Cancel
+				</CancelButton>
+				<SubmitButton
+					cssClass="e-primary"
+					onClick={(event: any) => handleSubmit(event)}>
+					Save
+				</SubmitButton>
+			</ButtonsContainer>
 		</div>
 	);
 };
@@ -120,4 +170,8 @@ export const HTemplate = (args: any) => {
 	} else if (args.isAdd) {
 		return <div>Add a new employee</div>;
 	}
+};
+
+export const FTemplate = (args: any) => {
+	return <div>{""}</div>;
 };

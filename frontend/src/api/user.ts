@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { BASE_URL_API } from "../components/common/constants";
+import { BASE_URL_API, USER_ENDPOINTS } from "../dto/constants";
 
 export const LoginUser = async ({ email, password }: any) => {
-	
-	const response = await fetch(`${BASE_URL_API}/user/auth/login`, {
+	const response = await fetch(`${BASE_URL_API}${USER_ENDPOINTS.login}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
@@ -12,5 +11,5 @@ export const LoginUser = async ({ email, password }: any) => {
 		body: JSON.stringify({ email, password }),
 	});
 	const responseData = await response.json();
-    return responseData;
+	return responseData;
 };

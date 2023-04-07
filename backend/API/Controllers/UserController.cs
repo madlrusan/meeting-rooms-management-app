@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace API.Controllers
 {
     [ApiController]
-    [Route("user/auth")]
+    [Route("user/")]
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
@@ -66,6 +66,44 @@ namespace API.Controllers
         {
             var entities = await _userRepository.GetAllUsers();
             return Ok(entities);
+        }
+
+        [HttpPut("updateUser")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUser(UpdateUserModel model)
+        {
+            try
+            {
+                await _userRepository.UpdateUser(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpDelete("deleteUser")]
+        [Authorize]
+        public async Task<IActionResult> DeleteUser(DeleteUserModel model)
+        {
+            try
+            {
+                await _userRepository.DeleteUser(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }
