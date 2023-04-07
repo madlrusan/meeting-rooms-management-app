@@ -1,4 +1,5 @@
 ﻿using Application.Abstractions;
+using DataAccess.Services;
 using Domain;
 using Domain.API.Identity;
 using Microsoft.AspNetCore.Identity;
@@ -9,16 +10,16 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Mail;
 using System.Security.Claims;
 using System.Text;
-
 namespace DataAccess.Repositories
 {
     public class UserRepository : IUserRepository
     {
         private readonly UserManager<User> _userManager;
-        private const string SECRET_KEY = "nVsc7jp9Kv1pnyqLyeyYsbQNyK7RjLuYh2erLN0VMb7KMuTR1RkHvH32AHeXKxJa";
-        public UserRepository(UserManager<User> userManager)
+        private readonly JwtService _jwtService;
+        public UserRepository(UserManager<User> userManager, JwtService jwtService)
         {
             _userManager = userManager;
+            _jwtService = jwtService;
         }
 
         public async Task Register(RegisterModel model)
@@ -52,6 +53,14 @@ namespace DataAccess.Repositories
                     
                 };
                 await _userManager.CreateAsync(newUser, model.Password);
+                if(model.isAdmin)
+                {
+                    object roleResult = await _userManager.AddToRoleAsync(newUser, "Admin");
+                }
+                else
+                {
+                    object roleResult = await _userManager.AddToRoleAsync(newUser, "User");
+                }
 
             }
         }
@@ -96,65 +105,32 @@ namespace DataAccess.Repositories
         public async Task<string> Login(LoginModel model)
         {
             CheckCredentialsForLogin(model);
-            var existingUser = await GetUserByEmailAsync(model.Email);
-            if (existingUser is null)
-            {
-                throw new ValidationException("Invalid credentials!");
-            }
-            await CheckIfPwdsMatchesAsync(existingUser, model.Password);
-            var tokenAsString = GenerateToken(existingUser);
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user is null)
+                throw new ValidationException("User does not exist or wrong password!");
+
+            var isValidPassword = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!isValidPassword)
+                throw new ValidationException("User does not exist or wrong password!");
+            var roles = _userManager.GetRolesAsync(user);
+            var tokenAsString = _jwtService.GenerateToken(user, (IList<string>)roles);
             return tokenAsString;
 
 
         }
 
-        private string GenerateToken(User existingUser)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var claims = GenerateClaims(existingUser);
-            var tokenDescriptor = GenerateTokenDescriptor(claims);
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            return tokenHandler.WriteToken(token);
-        }
-
-        private SecurityTokenDescriptor GenerateTokenDescriptor(List<Claim> claims)
-        {
-            var key = Encoding.ASCII.GetBytes(SECRET_KEY);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(10),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                            SecurityAlgorithms.HmacSha256Signature)
-            };
-            return tokenDescriptor;
-        }
-        private List<Claim> GenerateClaims(User existingUser)
-        {
-            var claims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.Sub, existingUser.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, existingUser.Email),
-                    new Claim(ClaimTypes.Name, existingUser.FirstName + " " + existingUser.LastName)
-                };
-            return claims;
-        }
-
-        private async Task CheckIfPwdsMatchesAsync(User existingUser, string password)
-        {
-            var isValidPassword = await _userManager.CheckPasswordAsync(existingUser, password);
-            if (!isValidPassword)
-                throw new ValidationException("Invalid credentials!");
-        }
-
         private void CheckCredentialsForLogin(LoginModel model)
         {
-            if (model.Email is null || !IsValidEmail(model.Email) || string.IsNullOrWhiteSpace(model.Password))
-                throw new ValidationException("Invalid Credentials!");
+            if (!IsValidEmail(model.Email))
+                throw new ValidationException("Please provide an email!");
+
+            if (string.IsNullOrWhiteSpace(model.Password))
+                throw new ValidationException("Please provide a password!");
         }
+
         public async Task<IEnumerable<UsersViewModel>> GetAllUsers()
         {
-            var users = await _userManager.Users.ToListAsync();
+            var users = await _userManager.GetUsersInRoleAsync("User");
 
             return users.Select(u => new UsersViewModel
             {
@@ -164,7 +140,7 @@ namespace DataAccess.Repositories
                 Departament = u.Departament,
                 Position = u.Position,
                 Email = u.Email,
-                Pin = u.Pin
+                Pin = (int)u.Pin
             });
         }
 

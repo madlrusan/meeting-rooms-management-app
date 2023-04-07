@@ -15,5 +15,6 @@ namespace Domain.API.Identity
         public int Pin { get; set; }
         public string? Departament { get; set; }
         public string? Position { get; set; }
+        public bool isAdmin { get; set; }
     }
 }

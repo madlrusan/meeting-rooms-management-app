@@ -24,7 +24,7 @@ namespace API.Configuration
         }
         private static IServiceCollection AddDataServices(this IServiceCollection services, string connectionString)
         {
-            services.AddDbContext<RoomDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("DataAccess")));
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("DataAccess")));
             services.AddIdentity<User, IdentityRole>(o =>
             {
                 o.Password.RequireDigit = false;
@@ -32,7 +32,7 @@ namespace API.Configuration
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric = false;
                 o.Password.RequiredLength = 7;
-            }).AddEntityFrameworkStores<RoomDbContext>()
+            }).AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders()
                 .AddRoleManager<RoleManager<IdentityRole>>();
             return services;
