@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Application.Abstractions;
 using DataAccess.Repositories;
