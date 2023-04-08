@@ -6,5 +6,12 @@ export const USER_ENDPOINTS = {
 	addUser: "/user/register",
 	getAllUsers: "/user/getAllUsers",
 	updateUser: "/user/updateUser",
-    deleteUser: "/user/deleteUser"
+	deleteUser: "/user/deleteUser",
+};
+export const ROOM_ENDPOINTS = {
+	login: "/room/login",
+	createRoom: "/room/createRoom",
+	getAllRooms: "/room/getAllRooms",
+	updateRoom: "/room/updateRoom",
+    deleteRoom: "/room/deleteRoom"
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { DateTimePickerComponent } from "@syncfusion/ej2-react-calendars";
 import {DropDownListComponent}  from "@syncfusion/ej2-react-dropdowns";
-import { roomData } from "../../dto/mocks/data";
+// import { roomData } from "../../dto/mocks/data";
 import { RecurrenceEditorComponent } from "@syncfusion/ej2-react-schedule";
 export const resourceHeaderTemplate = (props : any) => {
 	function getRoomName(value: any) {
@@ -30,7 +30,8 @@ export const onRenderCell = (args : any) => {
 };
 export const editorWindowTemplate = (props: any) => {
 	const roomField = {text: "name", value: "id"};
-	const roomDataS = roomData.map((room) => ({name : room.name, id: room.roomId}));
+    const roomDataS = [{name: "name", id: "12"}];
+	// const roomDataS = roomData.map((room) => ({name : room.roomName, id: room.roomId}));
     let recurrenceObj;
 	return(
 		<table className="custom-event-editor" style={{ width: "100%" }}>

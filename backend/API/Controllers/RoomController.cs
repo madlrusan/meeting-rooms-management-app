@@ -4,13 +4,15 @@ using Application.Abstractions;
 using DataAccess.Repositories;
 using Domain;
 using Domain.API.RoomIdentity;
+using Domain.API.UserIdentity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace API.Controllers
 {
     [ApiController]
-    [Route("room/auth")]
+    [Route("room/")]
     public class RoomController : ControllerBase
 	{
 		private readonly IRoomRepository _roomRepository;
@@ -37,41 +39,70 @@ namespace API.Controllers
                 return BadRequest(e);
             }
         }
+
+        [HttpPost("createRoom")]
+        public async Task<IActionResult> CreateRoom(RoomCreateModel model)
+        {
+            try
+            {
+                await _roomRepository.CreateRoom(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpGet("getAllRooms")]
+        public async Task<ActionResult<IEnumerable<RoomsViewModel>>> GetAllUsers()
+        {
+            var entities = await _roomRepository.GetAllRooms();
+            return Ok(entities);
+        }
+        
+        [HttpPut("updateRoom")]
+        [Authorize]
+        public async Task<IActionResult> UpdateRoom(UpdateRoomModel model)
+        {
+            try
+            {
+                await _roomRepository.UpdateRoom(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpDelete("deleteRoom")]
+        [Authorize]
+        public async Task<IActionResult> DeleteRoom(DeleteRoomModel model)
+        {
+            try
+            {
+                await _roomRepository.DeleteRoom(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
     }
 
-    //[HttpPost("room/auth/create")]
-    //public IActionResult Create(Room room)
-    //{
-    //    Room _room = new()
-    //    {
-    //        RoomName = room.RoomName,
-    //        RoomCapacity = room.RoomCapacity,
-    //        Password = BCrypt.Net.BCrypt.HashPassword(room.Password),
-    //        Email = room.Email.ToLower(),
-    //        RoomType = room.RoomType,
-    //        RoomFeatures = room.RoomFeatures,
-    //        RoomLocation = room.RoomLocation,
-            
-    //    };
-    //    if (string.IsNullOrEmpty(room.Password))
-    //    {
-    //        _room.Password = null;
-    //    }
-
-    //    try
-    //    {
-    //        Room returnedRoom = RoomRepository.Create(_room);
-    //        string jwt = _jwtService.Generate(_room.Id);
-    //        return Created("success", new { jwt });
-    //    }
-    //    catch (FormatException e)
-    //    {
-    //        return BadRequest(new { message = e.Message });
-    //    }
-    //    catch (Exception)
-    //    {
-    //        return BadRequest(new { message = "Email already exists" });
-    //    }
-    //}
 }
 

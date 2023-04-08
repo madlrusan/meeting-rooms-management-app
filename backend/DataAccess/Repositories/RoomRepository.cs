@@ -46,7 +46,6 @@ namespace DataAccess.Repositories
                     RoomName = model.RoomName,
                     RoomType = model.RoomType,
                     RoomCapacity = model.RoomCapacity,
-                    RoomFeatures = model.RoomFeatures,
                     RoomLocation = model.RoomLocation,
                     Email = model.Email,
 
@@ -79,14 +78,42 @@ namespace DataAccess.Repositories
             {
                 Id = r.Id,
                 RoomCapacity = r.RoomCapacity,
-                RoomFeatures = r.RoomFeatures,
                 RoomLocation = r.RoomLocation,
                 RoomName = r.RoomName,
                 RoomType = r.RoomType,
+                Email = r.Email
             });
         }
 
-        //public async Task UpdateRoom()
+        public async Task UpdateRoom(UpdateRoomModel model)
+        {
+            if (!IsValidEmail(model.Email))
+                throw new ValidationException("Please provide an email!");
+            var existingRoom = await GetRoomByIdAsync(model.Id);
+            if(existingRoom is not null)
+            {
+                existingRoom.RoomName = model.RoomName;
+                existingRoom.RoomCapacity = model.RoomCapacity;
+                existingRoom.RoomLocation = model.RoomLocation;
+                existingRoom.RoomType = model.RoomType;
+                existingRoom.Email = model.Email;
+            }
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteRoom(DeleteRoomModel model)
+        {
+            var existingRoom = await GetRoomByIdAsync(model.Id);
+            if(existingRoom is null)
+            {
+                throw new ValidationException("Room does not exist");
+            }
+            _appDbContext.Rooms.Remove(existingRoom);
+            await _appDbContext.SaveChangesAsync();
+            
+        }
+
+
         //-------- helper functions
         private bool IsValidEmail(string email)
         {
@@ -126,6 +153,7 @@ namespace DataAccess.Repositories
         public async Task<bool> CreateRoomAsync(Room newRoom, string password)
         {
             newRoom.Password = new PasswordHasher<Room>().HashPassword(newRoom, password);
+            Console.WriteLine(newRoom);
             _appDbContext.Rooms.Add(newRoom);
             await _appDbContext.SaveChangesAsync();
             return true;
@@ -149,6 +177,11 @@ namespace DataAccess.Repositories
             var passwordHasher = new PasswordHasher<Room>();
             var result = passwordHasher.VerifyHashedPassword(dbRoom, dbRoom.Password, password);
             return result == PasswordVerificationResult.Success;
+        }
+        public async Task<Room?> GetRoomByIdAsync(string id)
+        {
+            var room = await _appDbContext.Rooms.FindAsync(id);
+            return room;
         }
     }
 }

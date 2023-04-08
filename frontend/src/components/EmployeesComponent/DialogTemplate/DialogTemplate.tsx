@@ -23,7 +23,6 @@ export const DialogForm = (props: any) => {
 		},
 	});
 	const handleSubmit = (event: any) => {
-		console.log(event);
 		if (val.isAdd) {
 			onAdd.mutate(val);
 		} else {

@@ -12,13 +12,14 @@ import { extend } from "@syncfusion/ej2-base";
 import { ScheduleContainer } from "./Scheduler.components";
 import "./style.css";
 import { editorWindowTemplate, majorSlotTemplate, onRenderCell, resourceHeaderTemplate } from "./Scheduler.types";
-import { eventData, roomData } from "../../dto/mocks/data";
+import { eventData } from "../../dto/mocks/data";
 import { UserContext } from "../../context/userContext";
 
 
 export const SchedulerContainer = () => {
     const {userRole} = useContext(UserContext);
 	const mockData = extend([], eventData,  true );
+    const roomData = [{name: "ceva", id: "ceva"}];
 	let scheduleObj;
 	return userRole === "admin" ? (
 		<div className='schedule-control-section'>

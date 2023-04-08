@@ -1,10 +1,12 @@
 export interface IRoom {
-    roomId: number;
-    name: string;
-    capacity: number;
-    type: string;
-    color: string;
-    features : string[];
-    location? : string;
-    link?: string;
+    roomId: string;
+    roomName: string;
+    roomCapacity: number;
+    roomType: string;
+    color?: string;
+    roomFeatures? : string[];
+    roomLocation? : string;
+    roomLink?: string;
+    roomEmail: string;
+    roomPassword: string;
 }

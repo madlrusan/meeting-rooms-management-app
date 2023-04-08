@@ -8,7 +8,7 @@ namespace Domain.API.RoomIdentity
         public string RoomType { get; set; }
         public int RoomCapacity { get; set; }
         public string RoomLocation { get; set; }
-        public List<RoomFeature> RoomFeatures { get; set; }
+        public string Email { get; set; }
     }
 }
 
