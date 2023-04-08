@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.Net.Mail;
 using Application.Abstractions;
 using DataAccess.Services;
 using Domain;
-using Domain.API.Identity;
 using Domain.API.RoomIdentity;
+using Domain.API.UserIdentity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repositories
 {
-	public class RoomRepository : IRoomRepository
+    public class RoomRepository : IRoomRepository
     {
-        private readonly UserManager<Room> _roomManager;
-        private readonly UserManager<User> _userManager;
+        private readonly AppDbContext _appDbContext;
         private readonly JwtService _jwtService;
 
-        public RoomRepository(UserManager<Room> roomManager, UserManager<User> userManager, JwtService jwtService)
+        public RoomRepository(AppDbContext appDbContext, JwtService jwtService)
         {
-            _roomManager = roomManager;
-            _userManager = userManager;
+            _appDbContext = appDbContext;
             _jwtService = jwtService;
         }
 
-
-        public async Task RegisterRoom(RoomRegisterModel model)
+        public async Task CreateRoom(RoomCreateModel model)
         {
-            if (model.Email is not null && model.Password is not null)
+            if(model.Email is not null && model.Password is not null)
             {
                 if (!IsValidEmail(model.Email))
                 {
@@ -43,55 +40,54 @@ namespace DataAccess.Repositories
                 {
                     throw new ValidationException("Room already exists");
                 }
-                var newUser = new User()
+                CheckRoomContent(model.RoomName, model.RoomType);
+                var newRoom = new Room()
                 {
+                    RoomName = model.RoomName,
+                    RoomType = model.RoomType,
+                    RoomCapacity = model.RoomCapacity,
+                    RoomFeatures = model.RoomFeatures,
+                    RoomLocation = model.RoomLocation,
                     Email = model.Email,
+
                 };
-                var userResult = await _userManager.CreateAsync(newUser, model.Password);
-                object roleResult = await _userManager.AddToRoleAsync(newUser, "Room");
-                if (userResult.Succeeded)
-                {
-                    CheckUserName(model.RoomName, model.RoomType);
-                    var newRoom = new Room()
-                    {
-                        RoomName = model.RoomName,
-                        RoomType = model.RoomType,
-                        RoomCapacity = model.RoomCapacity,
-                        RoomFeatures = model.RoomFeatures,
-                        RoomLocation = model.RoomLocation,
-                        User = newUser,
-                        UserId = newUser.Id
-                    };
-                    await _roomManager.CreateAsync(newRoom, model.Password);
-                }
+                await CreateRoomAsync(newRoom, model.Password);
             }
         }
 
-        //public Task<IEnumerable<RoomViewsModel>> GetAllRooms()
-        //{
-        //    //var rooms = await _roomManager.Users.Include(u => u.User).Select(u => u.);
-        //    //return rooms.Select(r => new RoomViewsModel
-        //    //{
-        //    //    Id = r.Id,
-        //    //    RoomName = r.RoomName,
-        //    //    RoomType = r.RoomType,
-        //    //    RoomCapacity = r.RoomCapacity,
-        //    //    RoomFeatures = r.RoomFeatures,
-        //    //    RoomLocation = r.RoomLocation,
-        //    //});
-        //    return new IEnumerable<RoomViewsModel>{ };
-
-        //}
-        private bool IsValidPassword(string password)
+        public async Task<string> Login(RoomLoginModel model)
         {
-            return password.Length > 8;
+            CheckCredentialsForLogin(model);
+            var room = await GetRoomByEmailAsync(model.Email);
+            if(room is null)
+            {
+                throw new ValidationException("Room does not exist or wrong password!");
+            }
+            var isValidPassword = await CheckRoomPasswordAsync(room, model.Password);
+            if (!isValidPassword)
+                throw new ValidationException("Room does not exist or wrong password!");
+
+            var tokenAsString = _jwtService.GenerateRoomToken(room);
+            return tokenAsString;
+
         }
 
-        private async Task<Room?> GetRoomByEmailAsync(string email)
+        public async Task<IEnumerable<RoomsViewModel>> GetAllRooms()
         {
-            var room = await _roomManager.FindByEmailAsync(email);
-            return room;
+            var rooms = await _appDbContext.Rooms.ToListAsync();
+            return rooms.Select(r => new RoomsViewModel
+            {
+                Id = r.Id,
+                RoomCapacity = r.RoomCapacity,
+                RoomFeatures = r.RoomFeatures,
+                RoomLocation = r.RoomLocation,
+                RoomName = r.RoomName,
+                RoomType = r.RoomType,
+            });
         }
+
+        //public async Task UpdateRoom()
+        //-------- helper functions
         private bool IsValidEmail(string email)
         {
             var trimmedEmail = email.Trim();
@@ -110,31 +106,30 @@ namespace DataAccess.Repositories
                 return false;
             }
         }
-
-        private void CheckUserName(string? FirstName, string? LastName)
+        private bool IsValidPassword(string password)
         {
-            if (string.IsNullOrEmpty(FirstName) || string.IsNullOrEmpty(LastName))
-            {
-                throw new ValidationException("Invalid first or last name!");
-            }
+            return password.Length > 8;
         }
+        private async Task<Room?> GetRoomByEmailAsync(string email)
+        {
+            var user = await _appDbContext.Rooms.FirstOrDefaultAsync(r => r.Email == email);
+            return user;
+        }
+        private void CheckRoomContent(string? name, string? type)
+        {
+            if(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(type))
+            {
+                throw new ValidationException("Invalid room name or room type!");
+            }
 
-
-        //public Task<string> Login(RoomLoginModel model)
-        //{
-        //    //CheckCredentialsForLogin(model);
-        //    //var user = await _roomManager.FindByEmailAsync(model.Email);
-        //    //if (user is null)
-        //    //    throw new ValidationException("User does not exist or wrong password!");
-
-        //    //var isValidPassword = await _roomManager.CheckPasswordAsync(user, model.Password);
-        //    //if (!isValidPassword)
-        //    //    throw new ValidationException("User does not exist or wrong password!");
-        //    //var roles = _roomManager.GetRolesAsync(user);
-        //    //var tokenAsString = _jwtService.GenerateToken(user, (IList<string>)roles);
-        //    //return tokenAsString;
-        //    return "string";
-        //}
+        }
+        public async Task<bool> CreateRoomAsync(Room newRoom, string password)
+        {
+            newRoom.Password = new PasswordHasher<Room>().HashPassword(newRoom, password);
+            _appDbContext.Rooms.Add(newRoom);
+            await _appDbContext.SaveChangesAsync();
+            return true;
+        }
         private void CheckCredentialsForLogin(RoomLoginModel model)
         {
             if (!IsValidEmail(model.Email))
@@ -143,7 +138,18 @@ namespace DataAccess.Repositories
             if (string.IsNullOrWhiteSpace(model.Password))
                 throw new ValidationException("Please provide a password!");
         }
+        public async Task<bool> CheckRoomPasswordAsync(Room room, string password)
+        {
+            var dbRoom = await _appDbContext.Rooms.FirstOrDefaultAsync(r => r.Id == room.Id);
+            if(dbRoom is null)
+            {
+                throw new ValidationException("Room does not exist or wrong password!");
+            }
 
+            var passwordHasher = new PasswordHasher<Room>();
+            var result = passwordHasher.VerifyHashedPassword(dbRoom, dbRoom.Password, password);
+            return result == PasswordVerificationResult.Success;
+        }
     }
 }
 

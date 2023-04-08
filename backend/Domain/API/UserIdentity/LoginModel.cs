@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.API.Identity
+namespace Domain.API.UserIdentity
 {
     public class LoginModel
     {

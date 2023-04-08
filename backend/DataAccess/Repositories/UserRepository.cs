@@ -1,7 +1,7 @@
-﻿using Application.Abstractions;
+using Application.Abstractions;
 using DataAccess.Services;
 using Domain;
-using Domain.API.Identity;
+using Domain.API.UserIdentity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -49,11 +49,12 @@ namespace DataAccess.Repositories
                     UserName = model.Email,
                     Pin = model.Pin,
                     Departament = model.Departament,
-                    Position = model.Position
-                    
+                    Position = model.Position,
+                    isAdmin = model.isAdmin
+
                 };
                 await _userManager.CreateAsync(newUser, model.Password);
-                if(model.isAdmin)
+                if (model.isAdmin)
                 {
                     object roleResult = await _userManager.AddToRoleAsync(newUser, "Admin");
                 }
@@ -112,8 +113,8 @@ namespace DataAccess.Repositories
             var isValidPassword = await _userManager.CheckPasswordAsync(user, model.Password);
             if (!isValidPassword)
                 throw new ValidationException("User does not exist or wrong password!");
-            var roles = _userManager.GetRolesAsync(user);
-            var tokenAsString = _jwtService.GenerateToken(user, (IList<string>)roles);
+            var roles = await _userManager.GetRolesAsync(user);
+            var tokenAsString = _jwtService.GenerateToken(user, roles);
             return tokenAsString;
 
 
@@ -168,13 +169,13 @@ namespace DataAccess.Repositories
         public async Task DeleteUser(DeleteUserModel model)
         {
             var existingUser = await GetUserByIdAsync(model.Id);
-            if(existingUser == null)
+            if (existingUser == null)
             {
                 throw new ValidationException("User does not exist");
             }
             await _userManager.DeleteAsync(existingUser);
         }
-        
+
     }
 }
 

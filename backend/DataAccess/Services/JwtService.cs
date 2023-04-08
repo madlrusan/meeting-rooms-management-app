@@ -1,4 +1,4 @@
-﻿using Domain;
+using Domain;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
@@ -47,5 +47,26 @@ namespace DataAccess.Services
             }
             return claims;
         }
+
+        private List<Claim> GenerateRoomClaims(Room existingRoom)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, existingRoom.Id),
+                new Claim(JwtRegisteredClaimNames.Email, existingRoom.Email),
+                new Claim(ClaimTypes.Name, existingRoom.RoomName)
+            };
+            return claims;
+        }
+
+        public string GenerateRoomToken(Room existingRoom)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var claims = GenerateRoomClaims(existingRoom);
+            var tokenDescriptor = GenerateTokenDescriptor(claims);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
     }
 }

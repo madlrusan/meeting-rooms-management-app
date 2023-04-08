@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using DataAccess;
 using DataAccess.Repositories;
+using DataAccess.Services;
 using Domain;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +36,7 @@ namespace API.Configuration
             }).AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders()
                 .AddRoleManager<RoleManager<IdentityRole>>();
+            services.AddScoped<JwtService>();
             return services;
         }
 

@@ -11,4 +11,10 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="7.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="API\RoomIdentity\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="API\RoomIdentity\" />
+  </ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
-﻿using System;
-namespace Domain.API.Identity
+using System;
+namespace Domain.API.UserIdentity
 {
 	public class UsersViewModel
 	{
