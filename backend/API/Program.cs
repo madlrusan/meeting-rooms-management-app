@@ -1,3 +1,4 @@
+using System;
 using API.Configuration;
 using DataAccess;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGenConfig();
 var connectionString = builder.Configuration.GetConnectionString("Db");
-builder.Services.AddDbContext<RoomDbContext>(c => c.UseSqlServer(connectionString, b => b.MigrationsAssembly("API")));
+builder.Services.AddDbContext<AppDbContext>(c => c.UseSqlServer(connectionString, b => b.MigrationsAssembly("API")));
 if (connectionString is not null)
 {
     builder.Services.AddServices(connectionString);
@@ -24,7 +25,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
-    var context = services.GetRequiredService<RoomDbContext>();
+    var context = services.GetRequiredService<AppDbContext>();
     //context.Database.Migrate();
 }
 // Configure the HTTP request pipeline.

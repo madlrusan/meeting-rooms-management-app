@@ -7,10 +7,11 @@ namespace Domain
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        [JsonIgnore]
+        //[JsonIgnore]
         public int Pin { get; set; }
         public string Departament { get; set; }
         public string Position { get; set; }
+        public bool isAdmin { get; set; }
         public DateTime CreatedTimeUTC { get; set; }
     }
 }

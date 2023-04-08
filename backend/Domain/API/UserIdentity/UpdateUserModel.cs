@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.API.Identity
+namespace Domain.API.UserIdentity
 {
 	public class UpdateUserModel
     {

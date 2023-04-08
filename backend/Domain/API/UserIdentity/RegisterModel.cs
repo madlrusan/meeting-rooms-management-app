@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.API.Identity
+namespace Domain.API.UserIdentity
 {
     public class RegisterModel
     {
@@ -15,5 +16,6 @@ namespace Domain.API.Identity
         public int Pin { get; set; }
         public string? Departament { get; set; }
         public string? Position { get; set; }
+        public bool isAdmin { get; set; }
     }
 }

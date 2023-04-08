@@ -1,12 +1,11 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using API.Services;
 using Application.Abstractions;
 using DataAccess.Repositories;
 using Domain;
+using Domain.API.RoomIdentity;
 using Microsoft.AspNetCore.Mvc;
-//using BCryptNet = BCrypt.Net.BCrypt;
-using BCryptNetCore = BCrypt.Net.BCrypt;
+
 
 namespace API.Controllers
 {
@@ -14,29 +13,29 @@ namespace API.Controllers
     [Route("room/auth")]
     public class RoomController : ControllerBase
 	{
-		private readonly IRoomRepository roomRepository;
-        private readonly JwtService _jwtService;
-
+		private readonly IRoomRepository _roomRepository;
+       
         public RoomController(IRoomRepository roomRepository)
 		{
-			this.roomRepository = roomRepository;
+			_roomRepository = roomRepository;
 		}
 
 		[HttpPost("login")]
-		public async Task<IActionResult> Login(string email, string password)
+		public async Task<IActionResult> Login(RoomLoginModel model)
         {
-            Room user = roomRepository.Login(email);
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Invalid Credentials" });
+                var token = await _roomRepository.Login(model);
+                return Ok(new { Token = token });
             }
-
-            if (!BCryptNetCore.Verify(password, user.Password))
+            catch (ValidationException ex)
             {
-                return BadRequest(new { message = "Invalid Credentials" });
+                return BadRequest(ex.Message);
             }
-            string jwt = _jwtService.Generate(user.Id);
-            return Ok(new { user, jwt });
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 

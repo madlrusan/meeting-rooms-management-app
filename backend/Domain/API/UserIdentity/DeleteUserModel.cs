@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Domain.API.Identity
+namespace Domain.API.UserIdentity
 {
 	public class DeleteUserModel
 	{

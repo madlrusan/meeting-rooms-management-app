@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions;
-using Domain.API.Identity;
+using Domain.API.UserIdentity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
