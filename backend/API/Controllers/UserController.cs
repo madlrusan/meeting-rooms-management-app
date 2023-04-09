@@ -105,5 +105,24 @@ namespace API.Controllers
                 return BadRequest(e);
             }
         }
+
+        [HttpGet("getUserById")]
+        [Authorize]
+        public async Task<IActionResult> GetUser(string Id)
+        {
+            try
+            {
+                var user  = await _userRepository.GetUser(Id);
+                return Ok(user);
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
     }
 }

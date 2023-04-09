@@ -70,21 +70,34 @@ export const UpdateEmployee = async (employee: IEmployee) => {
 	return responseData;
 };
 
-export const DeleteEmployee = async (employee :IEmployee) => {
-    const body = {
-        id: employee.employeeId
-    };
-    const response = await fetch(
-			`${BASE_URL_API}${USER_ENDPOINTS.deleteUser}`,
-			{
-				method: "DELETE",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer " + localStorage.getItem("token"),
-				},
-				body: JSON.stringify(body),
-			}
-		);
-		const responseData = await response.json();
-		return responseData;
-}
+export const DeleteEmployee = async (employee: IEmployee) => {
+	const body = {
+		id: employee.employeeId,
+	};
+	const response = await fetch(`${BASE_URL_API}${USER_ENDPOINTS.deleteUser}`, {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json",
+			Authorization: "Bearer " + localStorage.getItem("token"),
+		},
+		body: JSON.stringify(body),
+	});
+	const responseData = await response.json();
+	return responseData;
+};
+export const GetUserById = async (id: string) => {
+	const response = await fetch(
+		`${BASE_URL_API}${USER_ENDPOINTS.getUserById}?Id=${id}`,
+		{
+			method: "GET",
+			headers: {
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+		}
+	);
+	if (!response.ok) {
+		throw new Error("Failed to fetch users");
+	}
+	const employee = await response.json();
+	return employee;
+};

@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230409225926_ScheduleEvent")]
+    partial class ScheduleEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,40 +60,6 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
-                });
-
-            modelBuilder.Entity("Domain.ScheduleEvent", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("HostId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("RecurrenceRule")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HostId");
-
-                    b.ToTable("ScheduleEvents");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -212,13 +181,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "de71a089-0aa2-4b7d-b146-37d9a900104a",
+                            Id = "c407a2d3-04ab-4aef-91be-51b4b6cd2616",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "fdac9bb6-6728-4742-b0a2-24cb6a25435d",
+                            Id = "61fe855f-80e6-4594-becb-a43ac9350eca",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -330,30 +299,6 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RoomScheduleEvent", b =>
-                {
-                    b.Property<string>("RoomsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ScheduleEventsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("RoomsId", "ScheduleEventsId");
-
-                    b.HasIndex("ScheduleEventsId");
-
-                    b.ToTable("ScheduleEventRoom", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.ScheduleEvent", b =>
-                {
-                    b.HasOne("Domain.User", "Host")
-                        .WithMany()
-                        .HasForeignKey("HostId");
-
-                    b.Navigation("Host");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -401,21 +346,6 @@ namespace API.Migrations
                     b.HasOne("Domain.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("RoomScheduleEvent", b =>
-                {
-                    b.HasOne("Domain.Room", null)
-                        .WithMany()
-                        .HasForeignKey("RoomsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.ScheduleEvent", null)
-                        .WithMany()
-                        .HasForeignKey("ScheduleEventsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

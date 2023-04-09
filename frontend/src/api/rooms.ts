@@ -11,14 +11,18 @@ export function GetRooms() {
 			throw new Error("Failed to fetch users");
 		}
 		const rooms = await response.json();
-		return rooms.map((room: any) => ({
-			roomId: room.id,
-			roomName: room.roomName,
-			roomType: room.roomType,
-			roomCapacity: room.roomCapacity,
-			roomLocation: room.roomLocation,
-			roomEmail: room.email,
-		}));
+        
+		return rooms
+			.map((room: any) => ({
+				roomId: room.id,
+				roomName: room.roomName,
+				roomType: room.roomType,
+				roomCapacity: room.roomCapacity,
+				roomLocation: room.roomLocation,
+				roomEmail: room.email,
+			}))
+			.sort((a: { roomName: string; }, b: { roomName: any; }) => a.roomName.localeCompare(b.roomName));;
+       
 	});
 }
 

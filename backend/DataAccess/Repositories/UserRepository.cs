@@ -176,6 +176,24 @@ namespace DataAccess.Repositories
             await _userManager.DeleteAsync(existingUser);
         }
 
+        public async Task<UserViewModel> GetUser(string Id)
+        {
+            var existingUser = await GetUserByIdAsync(Id);
+            if(existingUser is null)
+            {
+                throw new ValidationException("User does not exist!");
+            }
+            var user = new UserViewModel()
+            {
+                FirstName = existingUser.FirstName,
+                LastName = existingUser.LastName,
+                Departament = existingUser.Departament,
+                Position = existingUser.Position,
+                Email = existingUser.Email,
+            };
+            return user;
+        }
+
     }
 }
 

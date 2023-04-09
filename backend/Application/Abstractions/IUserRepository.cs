@@ -15,5 +15,6 @@ namespace Application.Abstractions
         public Task<IEnumerable<UsersViewModel>> GetAllUsers();
         public Task UpdateUser(UpdateUserModel model);
         public Task DeleteUser(DeleteUserModel model);
+        public Task<UserViewModel> GetUser(string Id);
     }
 }

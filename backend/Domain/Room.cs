@@ -13,11 +13,14 @@ namespace Domain
         public string Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-		    public string RoomName { get; set; }
-    		public string RoomType { get; set; }
-		    public int RoomCapacity { get; set; }
-		    public string RoomLocation { get; set; }
+		public string RoomName { get; set; }
+    	public string RoomType { get; set; }
+		public int RoomCapacity { get; set; }
+		public string RoomLocation { get; set; }
         public DateTime CreatedTimeUTC { get; set; }
+
+
+        public ICollection<ScheduleEvent> ScheduleEvents { get; set; }
 
     }
 }

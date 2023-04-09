@@ -8,7 +8,7 @@ import {
 	Tooltip,
 	Typography,
 } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { getInitials, getRandomBgColor } from "../../../utils/helperFunctions";
 import { LeftSide } from "./AppBar.components";
 import { UserContext } from "../../../context/userContext";
@@ -25,8 +25,11 @@ export const DashboardAppBar = (props: DashboardAppBarProps) => {
 		logginUserFullName && logginUserFullName.length > 0
 			? logginUserFullName
 			: "A";
-	const { userFullName } = useContext(UserContext);
-
+	const { userRole, setUserRole } = useContext(UserContext);
+	useEffect(() => {
+		const role = localStorage.getItem("role");
+		if (role) setUserRole(role);
+	}, [userRole]);
 	// const [hasImage, setHasImage] = useState<boolean>(true);
 	// useEffect(()=>{
 	// 	setHasImage(false);
@@ -49,6 +52,7 @@ export const DashboardAppBar = (props: DashboardAppBarProps) => {
 	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
 		localStorage.clear();
+		setUserRole("");
 		navigate("/");
 	};
 

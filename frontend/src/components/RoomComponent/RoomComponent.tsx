@@ -7,7 +7,7 @@ import { UserRoomTable } from "./ForUsers/UserRoomTable";
 export const RoomContainer = () => {
 	const { userRole } = useContext(UserContext);
     const {data : rooms} = GetRooms();
-	return userRole === "admin" ? (
+	return userRole === "Admin" ? (
         <AdminRoomTable roomsData={rooms} />
 	) : (
         <UserRoomTable roomsData={rooms}/>

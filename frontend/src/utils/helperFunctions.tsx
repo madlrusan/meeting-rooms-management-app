@@ -1,13 +1,16 @@
+import jwt_decode from "jwt-decode";
+import { UserContext } from "../context/userContext";
+import { useContext } from "react";
 export const getInitials = (name: string) => {
 	const names = name.split(" ");
 	let initials = "";
-	for(name in names) {
-		initials += (names[name].substring(0,1).toUpperCase());
+	for (name in names) {
+		initials += names[name].substring(0, 1).toUpperCase();
 	}
 	return initials;
 };
 
-export const getRandomBgColor = (string: string) =>{
+export const getRandomBgColor = (string: string) => {
 	let hash = 13;
 	let i;
 
@@ -27,6 +30,47 @@ export const getRandomBgColor = (string: string) =>{
 	return {
 		sx: {
 			bgcolor: color,
-		}
+		},
 	};
+};
+
+export const loginHelper = (token: any) => {
+	localStorage.setItem("token", token);
+	GetJWTData();
+};
+
+export const GetJWTData = () => {
+	const token = localStorage.getItem("token");
+	if (!token) return false;
+	if (token) {
+		const decoded: JWTDecoded = jwt_decode(token);
+		if (decoded) {
+			localStorage.setItem("logginUserFullName", decoded.unique_name);
+            localStorage.setItem("sub", decoded.sub);
+			if (decoded.role !== undefined) {
+				localStorage.setItem("role", decoded.role);
+			} else localStorage.setItem("role", "Admin");
+		}
+	}
+	return true;
+};
+
+type JWTDecoded = {
+	sub: string;
+	email: string;
+	unique_name: string;
+	role: string;
+};
+
+export const getRandomHexColor = (str: string): string => {
+	let hash = 0;
+	for (let i = 0; i < str.length; i++) {
+		hash = str.charCodeAt(i) + ((hash << 5) - hash);
+	}
+	let color = "#";
+	for (let i = 0; i < 3; i++) {
+		const value = (hash >> (i * 8)) & 0xff;
+		color += value.toString(16).padStart(2, "0");
+	}
+	return color;
 };

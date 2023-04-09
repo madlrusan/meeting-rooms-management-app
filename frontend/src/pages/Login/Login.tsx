@@ -19,7 +19,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoginUser } from "../../api/user";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { getJWTData } from "../../components/common/HelperFunctions";
+import { loginHelper } from "../../utils/helperFunctions";
 export const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -35,8 +35,7 @@ export const Login = () => {
 	const logIn = useMutation(LoginUser, {
 		onSuccess: (data) => {
 			localStorage.setItem("token", data.token);
-			getJWTData();
-			localStorage.setItem("role", "admin");
+			loginHelper(data.token);
 			navigate("/dashboard");
 		},
 	});

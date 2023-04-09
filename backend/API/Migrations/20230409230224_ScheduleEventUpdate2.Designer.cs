@@ -4,6 +4,7 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230409230224_ScheduleEventUpdate2")]
+    partial class ScheduleEventUpdate2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -54,7 +57,12 @@ namespace API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ScheduleEventId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ScheduleEventId");
 
                     b.ToTable("Rooms");
                 });
@@ -212,13 +220,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "de71a089-0aa2-4b7d-b146-37d9a900104a",
+                            Id = "dc0771f3-5cd2-4881-bb55-8933688b9af6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "fdac9bb6-6728-4742-b0a2-24cb6a25435d",
+                            Id = "a10934bf-53b2-4002-9168-d03fdfe25239",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -330,19 +338,11 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("RoomScheduleEvent", b =>
+            modelBuilder.Entity("Domain.Room", b =>
                 {
-                    b.Property<string>("RoomsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ScheduleEventsId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("RoomsId", "ScheduleEventsId");
-
-                    b.HasIndex("ScheduleEventsId");
-
-                    b.ToTable("ScheduleEventRoom", (string)null);
+                    b.HasOne("Domain.ScheduleEvent", null)
+                        .WithMany("Rooms")
+                        .HasForeignKey("ScheduleEventId");
                 });
 
             modelBuilder.Entity("Domain.ScheduleEvent", b =>
@@ -405,19 +405,9 @@ namespace API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RoomScheduleEvent", b =>
+            modelBuilder.Entity("Domain.ScheduleEvent", b =>
                 {
-                    b.HasOne("Domain.Room", null)
-                        .WithMany()
-                        .HasForeignKey("RoomsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.ScheduleEvent", null)
-                        .WithMany()
-                        .HasForeignKey("ScheduleEventsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Rooms");
                 });
 #pragma warning restore 612, 618
         }
