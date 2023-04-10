@@ -9,8 +9,6 @@ import { SchedulerContainer } from "../SchedulerComponent/SchedulerComponent";
 import { RoomContainer } from "../RoomComponent/RoomComponent";
 import { EmployeeComponent } from "../EmployeesComponent/EmployeesComponent";
 import { MapCompontent } from "../MapComponent/MapComponent";
-
-// import { Title } from "@mui/icons-material";
 type DashboardCardProps = {
     page: string;
 }

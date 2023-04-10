@@ -69,8 +69,9 @@ export const getRandomHexColor = (str: string): string => {
 	}
 	let color = "#";
 	for (let i = 0; i < 3; i++) {
-		const value = (hash >> (i * 8)) & 0xff;
-		color += value.toString(16).padStart(2, "0");
+		const value = (hash >> (i * 3)) & 0xff;
+		const component = Math.floor(value*0.8); // set minimum value to 128
+		color += component.toString(16).padStart(2, "0");
 	}
 	return color;
 };

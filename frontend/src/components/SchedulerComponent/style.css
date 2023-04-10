@@ -6,7 +6,7 @@
 .e-schedule .e-timeline-view .e-content-wrap table col,
 .e-schedule .e-timeline-month-view .e-date-header-wrap table col,
 .e-schedule .e-timeline-month-view .e-content-wrap table col {
-	width: 30px !important;
+	width: 10px !important;
 }
 
 .timeline-resource.e-schedule .e-timeline-view .e-resource-left-td {
@@ -366,13 +366,13 @@
 	}
 }
 .e-time-slots div {
-	font-size: 15px;
-	margin-left: 25%;
+	font-size: 13px;
+	margin-left: 0px;
 }
 .e-schedule .e-timeline-view .e-navigate,
 .e-schedule .e-timeline-view .e-date-header-wrap table tbody td > span {
 	font-size: 15px;
-	margin: 0 40%;
+	/* margin: 0 40%; */
 }
 .e-header-row {
 	height: 5vh;
@@ -427,11 +427,20 @@ button#e-tbr-btn_3 {
 }
 button#e-tbr-btn_3:hover {
 	border-radius: 10px;
-	background-color:rgba(0,0,0,.12);
+	background-color: rgba(0, 0, 0, 0.12);
 }
 button#e-tbr-btn_2 {
 	border-radius: 10px;
 }
 button#e-tbr-btn_2 > span:first-child {
-    margin-left: 10px;
+	margin-left: 10px;
+}
+.e-schedule-dialog .e-location-container {
+	display: none;
+}
+.e-schedule-dialog .e-subject-container {
+	width: 100%;
+}
+.e-schedule-dialog .e-all-day-container , .e-time-zone-container {
+	display: none;
 }

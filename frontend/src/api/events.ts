@@ -15,12 +15,6 @@ export function GetEvents() {
 			GId: event.gId,
 			Id: event.id,
 			Subject: event.subject,
-			// StartTime: new Date(event.startTime).toLocaleString("en-US", {
-			// 	timeZone: "UTC",
-			// }),
-			// EndTime: new Date(event.endTime).toLocaleString("en-US", {
-			// 	timeZone: "UTC",
-			// }),
 			StartTime: new Date(event.startTime),
 			EndTime: new Date(event.endTime),
 			RecurrenceRule: event.recurrenceRule,
@@ -30,3 +24,28 @@ export function GetEvents() {
 		}));
 	});
 }
+
+export const AddEvent = async (newEvent: any) => {
+	const body = {
+		subject: "string",
+		startTime: "string",
+		endTime: "string",
+		recurrenceRule: "string",
+		notes: "string",
+		roomIds: ["string", "string"],
+		hostId: "string",
+	};
+	const response = await fetch(
+		`${BASE_URL_API}${EVENT_ENDPOINTS.createEvent}`,
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+			body: JSON.stringify(body),
+		}
+	);
+	const responseData = await response.json();
+	return responseData;
+};

@@ -9,7 +9,6 @@ import { AddRoom, UpdateRoom } from "../../../../api/rooms";
 import { useMutation } from "react-query";
 
 export const DialogForm = (props: any) => {
-	console.log(props);
 	const [val, setVal] = useState(props);
 	const navigate = useNavigate();
 	const handleSubmit = (event: any) => {
