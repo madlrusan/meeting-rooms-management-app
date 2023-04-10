@@ -40,7 +40,7 @@ export const onRenderCell = (args: any) => {
 	}
 };
 export const EditorWindowTemplate = (props: any) => {
-	console.log(props);
+	// console.log(props);
 	const [val, setVal] = useState(props);
 	const { data: roomData } = GetRooms();
 	// const {data: hostData}. =GetHost();

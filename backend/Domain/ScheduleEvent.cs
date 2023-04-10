@@ -15,7 +15,7 @@ namespace Domain
         public DateTime EndTime { get; set; }
         public string RecurrenceRule { get; set; }
         public string Notes { get; set; }
-
+        public DateTime CreatedTimeUTC { get; set; }
 
 
         public virtual ICollection<Room> Rooms { get; set; }

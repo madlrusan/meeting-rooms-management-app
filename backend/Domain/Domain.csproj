@@ -13,8 +13,10 @@
 
   <ItemGroup>
     <None Remove="API\RoomIdentity\" />
+    <None Remove="API\EventsIdentity\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\RoomIdentity\" />
+    <Folder Include="API\EventsIdentity\" />
   </ItemGroup>
 </Project>

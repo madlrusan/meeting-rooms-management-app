@@ -20,19 +20,19 @@ import {
 	onRenderCell,
 	resourceHeaderTemplate,
 } from "./Scheduler.types";
-import { eventData } from "../../dto/mocks/data";
+import { eventData, eventsData_json } from "../../dto/mocks/data";
 import { UserContext } from "../../context/userContext";
 import { GetRooms } from "../../api/rooms";
-import { GetEmployees } from "../../api/employees";
+import { GetEvents } from "../../api/events";
 
 export const SchedulerContainer = () => {
 	const { data: roomData } = GetRooms();
-	const { data: employeeData } = GetEmployees();
-	const { userRole } = useContext(UserContext);
-	const mockData = extend([], eventData, true);
-	const roomSchedulerData = roomData ? getSchedulerRooms(roomData) : [{}];
+    const {data : eventsData } = GetEvents();
+	const mockData = eventsData ? extend([], eventsData, true) : extend([], [], true);;
+	// const mockData = extend([], eventsData_json, true);
+    const roomSchedulerData = roomData ? getSchedulerRooms(roomData) : [{}];
 	let scheduleObj;
-
+    console.log(mockData);
 	return (
 		<div className="schedule-control-section">
 			<div className="col-lg-12 control-section">
@@ -46,11 +46,11 @@ export const SchedulerContainer = () => {
 						eventSettings={{
 							dataSource: mockData,
 							fields: {
-								id: "Id",
-								subject: { title: "Summary", name: "Subject" },
-								startTime: { title: "From", name: "StartTime" },
-								endTime: { title: "To", name: "EndTime" },
-								hostId: { title: "Host:", name: "HostId" },
+								Id: "Id",
+								Subject: { title: "Subject", name: "Subject" },
+								StartTime: { title: "From", name: "StartTime" },
+								EndTime: { title: "To", name: "EndTime" },
+								HostId: { title: "Host:", name: "HostId" },
 							},
 						}}
 						group={{ resources: ["MeetingRoom"] }}

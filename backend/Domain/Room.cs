@@ -19,7 +19,7 @@ namespace Domain
 		public string RoomLocation { get; set; }
         public DateTime CreatedTimeUTC { get; set; }
 
-
+        [JsonIgnore]
         public ICollection<ScheduleEvent> ScheduleEvents { get; set; }
 
     }

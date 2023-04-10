@@ -16,3 +16,8 @@ export const ROOM_ENDPOINTS = {
 	updateRoom: "/room/updateRoom",
     deleteRoom: "/room/deleteRoom"
 };
+
+export const EVENT_ENDPOINTS = {
+    createEvent: "/event/createEvent",
+    getAllEvents: "/event/getAllEvents"
+}
