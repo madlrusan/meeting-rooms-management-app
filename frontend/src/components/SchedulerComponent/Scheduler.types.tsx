@@ -45,11 +45,11 @@ export const getSchedulerRooms = (rooms: IRoom[]) => {
 	return schedulerRooms;
 };
 
-export const onPopupOpen = async (props: any) => {
+export const onPopupOpen = async (args: any) => {
 	const resourceEl = document.querySelector(
 		".e-resource-details.e-text-ellipsis"
 	);
-	const id = props.data.HostId;
+	const id = args.data.HostId;
 	let host;
 	if (id) {
 		host = await GetUserById(id);
@@ -59,14 +59,27 @@ export const onPopupOpen = async (props: any) => {
 	}
 	if (resourceEl)
 		resourceEl.textContent = `Hosted by ${host.firstName} ${host.lastName} `;
+	if (args.type === "Editor") {
+		args.duration = 15;
+		const eventData = args.data;
+		const formElements = args.element.querySelector(".e-dialog-parent");
+        console.log(formElements);
+		for(let i=0 ; i<10; i++) {
+            const element = formElements
+							.querySelectorAll(".e-float-input")[i]
+							.querySelector(".e-field")
+            console.log(element);
+        }
+		// console.log(values);
+	}
 };
+
 export function onActionBegin(args: any, event: any) {
-	console.log("actionBegin", args, event);
 	if (args.requestType === "dateNavigate") {
 		//
 	}
 	if (args.requestType === "eventCreate") {
-		// handle event creation here
+		console.log("eventCreate", args);
 	} else if (args.requestType === "eventChange") {
 		// handle event editing here
 	} else if (args.requestType === "eventRemove") {
@@ -74,22 +87,35 @@ export function onActionBegin(args: any, event: any) {
 	}
 }
 
-export const onCellClick = (args: CellClickEventArgs, eventsData: IEvents[]) => {
+export const onCellClick = (
+	args: CellClickEventArgs,
+	eventsData: IEvents[]
+) => {
 	console.log("cellClick", args, eventsData);
-    const clickedTime = args.startTime;
-		const clickedEndTime = args.endTime;
-// const eventsArray = Object.keys(eventsData).map((key) => eventsData[key]);
-		//Check if any event exists for the selected time range
-		const isConflict = eventsData.some(
-			(event : any) =>
-				event.StartTime <= clickedEndTime && event.EndTime >= clickedTime
-		);
+	const clickedTime = args.startTime;
+	const clickedEndTime = args.endTime;
+	const isConflict = eventsData.some(
+		(event: any) =>
+			event.StartTime <= clickedEndTime && event.EndTime >= clickedTime
+	);
 
-		// If there is a conflict, prevent adding a new event
-		if (isConflict) {
-			args.cancel = true;
-		}
-        if(args.isAllDay) {
-            args.cancel = true;
-        }
+	if (isConflict) {
+		args.cancel = true;
+	}
+	if (args.isAllDay) {
+		args.cancel = true;
+	}
+};
+
+export const onEventClick = (args: any) => {
+	console.log(`onEventClick`, args);
+};
+
+export const FieldsData = {
+	id: "Id",
+	subject: { name: "Subject", title: "Meeting Subject" },
+	description: { name: "Description", title: "Notes" },
+	startTime: { name: "StartTime", title: "From" },
+	endTime: { name: "EndTime", title: "To" },
+	recurrenceRule: { name: "RecurrenceRule", title: "Recurrence" },
 };

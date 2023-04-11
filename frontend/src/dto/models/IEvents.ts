@@ -5,7 +5,7 @@ export interface IEvents {
     StartTime: Date;
     EndTime: Date;
     RecurrenceRule: string;
-    Notes: string;
+    Description: string;
     RoomId: string;
     HostId: string;
 }

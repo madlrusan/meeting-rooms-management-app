@@ -18,7 +18,7 @@ export function GetEvents() {
 			StartTime: new Date(event.startTime),
 			EndTime: new Date(event.endTime),
 			RecurrenceRule: event.recurrenceRule,
-			Notes: event.notes,
+			Description: event.notes,
 			RoomId: event.roomId,
 			HostId: event.hostId,
 		}));

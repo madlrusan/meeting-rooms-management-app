@@ -6,7 +6,7 @@
 .e-schedule .e-timeline-view .e-content-wrap table col,
 .e-schedule .e-timeline-month-view .e-date-header-wrap table col,
 .e-schedule .e-timeline-month-view .e-content-wrap table col {
-	width: 10px !important;
+	width: 20px !important;
 }
 
 .timeline-resource.e-schedule .e-timeline-view .e-resource-left-td {

@@ -8,7 +8,7 @@ import {
 	Resize,
 	DragAndDrop,
 	ScheduleComponent,
-    CellClickEventArgs,
+	CellClickEventArgs,
 } from "@syncfusion/ej2-react-schedule";
 import { extend } from "@syncfusion/ej2-base";
 import { ScheduleContainer } from "./Scheduler.components";
@@ -18,6 +18,7 @@ import {
 	majorSlotTemplate,
 	onActionBegin,
 	onCellClick,
+	onEventClick,
 	onPopupOpen,
 	onRenderCell,
 	resourceHeaderTemplate,
@@ -27,49 +28,47 @@ import { GetEvents } from "../../api/events";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { IRoom } from "../../dto/models/IRooms";
 import { IEvents } from "../../dto/models/IEvents";
+import { eventData } from "../../dto/mocks/data";
+import { EditorWindow } from "./EditorWindow/EditorWindow";
 
 export const SchedulerContainer = () => {
-	const [schedulEventData, setScheduleEventData] = useState<IEvents[]>([]);
-	const [scheduleRoomData, setScheduleRoomData] = useState<IRoom[] | {}[]>([]);
-	const { data: roomData } = GetRooms();
+	const [events, setEvents] = useState<IEvents[]>([]);
+	const [rooms, setRooms] = useState<IRoom[] | {}[]>([]);
+	const { data: roomsData } = GetRooms();
 	const { data: eventsData } = GetEvents();
-	const mockData : IEvents[] = eventsData ?? [];
-	const roomSchedulerData = roomData ? getSchedulerRooms(roomData) : [{}];
+	const FinalEventsData: IEvents[] = eventsData ?? [];
+	const FinalRoomsData = roomsData ? getSchedulerRooms(roomsData) : [{}];
 	const scheduleRef = useRef<ScheduleComponent>(null);
-    const options = {
-        allowAllDay : false,
-    }
-	useMemo(() => {
-		setScheduleEventData(mockData);
-		setScheduleRoomData(roomSchedulerData);
-	}, [eventsData]);
+	// useMemo(() => {
+	// 	setEvents(FinalEventsData);
+	// 	setRooms(FinalRoomsData);
+	// }, [FinalEventsData]);
 
-	useEffect(() => {
-		setScheduleEventData(mockData);
-        setScheduleRoomData(roomSchedulerData);
-		const handleClickOutside = (event: MouseEvent) => {
-			const componentNode = scheduleRef?.current?.element;
-			if (componentNode?.contains(event.target as Node)) {
-				return;
-			}
-			if (
-				scheduleRef.current &&		!scheduleRef.current.element.contains(event.target as Node)
-			) {
-				scheduleRef.current.activeViewOptions.allowVirtualScrolling = false;
-			}
-		};
-		document.addEventListener("click", handleClickOutside);
-		return () => {
-			document.removeEventListener("click", handleClickOutside);
-		};
-	}, [eventsData, roomData]);
+	// useEffect(() => {
+	// 	setEvents(FinalEventsData);
+	// 	setRooms(FinalRoomsData);
+	// 	const handleClickOutside = (event: MouseEvent) => {
+	// 		const componentNode = scheduleRef?.current?.element;
+	// 		if (componentNode?.contains(event.target as Node)) {
+	// 			return;
+	// 		}
+	// 		if (
+	// 			scheduleRef.current && 			!scheduleRef.current.element.contains(event.target as Node)
+	// 		) {
+	// 			scheduleRef.current.activeViewOptions.allowVirtualScrolling = false;
+	// 		}
+	// 	};
+	// 	document.addEventListener("click", handleClickOutside);
+	// 	return () => {
+	// 		document.removeEventListener("click", handleClickOutside);
+	// 	};
+	// }, [eventsData, roomsData]);
 
 	return (
 		<div className="schedule-control-section">
 			<div className="col-lg-12 control-section">
 				<div className="control-wrapper">
-					<ScheduleContainer
-                    {...options}
+					{/* <ScheduleContainer
 						width="100%"
 						allowMultiCellSelection={true}
 						height="75vh"
@@ -77,16 +76,14 @@ export const SchedulerContainer = () => {
 						currentView="TimelineDay"
 						selectedDate={new Date()}
 						eventSettings={{
-							dataSource: schedulEventData,
+							dataSource: FinalEventsData,
 							fields: {
-								Id: "Id",
-								Subject: { title: "Subject", name: "Subject" },
-								StartTime: { title: "From", name: "StartTime" },
-								EndTime: { title: "To", name: "EndTime" },
-								// HostId: { title: "Host:", name: "HostId" },
-								// RecurrenceRule: {title: "RecurrenceRule", name: "RecurrenceRule"},
-								// Description: { title: "Notes", name: "Notes" },
-								// RoomId: { title: "RoomId", name: "RoomId"}
+								id: "Id",
+								subject: { name: "Subject", title: "Meeting Subject" },
+								description: { name: "Notes", title: "Notes" },
+								startTime: { name: "StartTime", title: "From" },
+								endTime: { name: "EndTime", title: "To" },
+								recurrenceRule: { name: "RecurrenceRule", title: "Recurrence" },
 							},
 							allowFollowingEvents: false,
 						}}
@@ -98,16 +95,17 @@ export const SchedulerContainer = () => {
 						startHour="07:00"
 						endHour="20:00"
 						timeScale={{
-							slotCount: 4,
+							slotCount: 2,
 							enable: true,
 							majorSlotTemplate: majorSlotTemplate,
 						}}
 						renderCell={onRenderCell}
 						cellClick={(e: CellClickEventArgs) => {
-							onCellClick(e, schedulEventData);
+							onCellClick(e, events);
 						}}
 						// select={onCellClick}
 						actionBegin={onActionBegin}
+						eventClick={onEventClick}
 						showWeekend={false}>
 						<ResourcesDirective>
 							<ResourceDirective
@@ -115,20 +113,18 @@ export const SchedulerContainer = () => {
 								title="Room Location"
 								name="MeetingRoom"
 								allowMultiple={true}
-								dataSource={scheduleRoomData}
+								dataSource={rooms}
 								textField="roomName"
 								idField="roomId"
 								colorField="color"></ResourceDirective>
 						</ResourcesDirective>
 						<ViewsDirective>
-							<ViewDirective
-								option="TimelineWeek"
-								interval={5}
-							/>
+							<ViewDirective option="TimelineDay" />
 						</ViewsDirective>
 						<Inject services={[TimelineViews, Resize, DragAndDrop]} />
-					</ScheduleContainer>
+					</ScheduleContainer> */}
 				</div>
+                <EditorWindow />
 			</div>
 		</div>
 	);
