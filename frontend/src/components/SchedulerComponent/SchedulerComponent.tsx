@@ -39,40 +39,42 @@ export const SchedulerContainer = () => {
 	const FinalEventsData: IEvents[] = eventsData ?? [];
 	const FinalRoomsData = roomsData ? getSchedulerRooms(roomsData) : [{}];
 	const scheduleRef = useRef<ScheduleComponent>(null);
-	// useMemo(() => {
-	// 	setEvents(FinalEventsData);
-	// 	setRooms(FinalRoomsData);
-	// }, [FinalEventsData]);
+	useMemo(() => {
+		setEvents(FinalEventsData);
+		setRooms(FinalRoomsData);
+	}, [FinalEventsData]);
 
-	// useEffect(() => {
-	// 	setEvents(FinalEventsData);
-	// 	setRooms(FinalRoomsData);
-	// 	const handleClickOutside = (event: MouseEvent) => {
-	// 		const componentNode = scheduleRef?.current?.element;
-	// 		if (componentNode?.contains(event.target as Node)) {
-	// 			return;
-	// 		}
-	// 		if (
-	// 			scheduleRef.current && 			!scheduleRef.current.element.contains(event.target as Node)
-	// 		) {
-	// 			scheduleRef.current.activeViewOptions.allowVirtualScrolling = false;
-	// 		}
-	// 	};
-	// 	document.addEventListener("click", handleClickOutside);
-	// 	return () => {
-	// 		document.removeEventListener("click", handleClickOutside);
-	// 	};
-	// }, [eventsData, roomsData]);
+	useEffect(() => {
+		setEvents(FinalEventsData);
+		setRooms(FinalRoomsData);
+		const handleClickOutside = (event: MouseEvent) => {
+			const componentNode = scheduleRef?.current?.element;
+			if (componentNode?.contains(event.target as Node)) {
+				return;
+			}
+			if (
+				scheduleRef.current &&
+				!scheduleRef.current.element.contains(event.target as Node)
+			) {
+				scheduleRef.current.activeViewOptions.allowVirtualScrolling = false;
+			}
+		};
+		document.addEventListener("click", handleClickOutside);
+		return () => {
+			document.removeEventListener("click", handleClickOutside);
+		};
+	}, [eventsData, roomsData]);
 
 	return (
 		<div className="schedule-control-section">
 			<div className="col-lg-12 control-section">
 				<div className="control-wrapper">
-					{/* <ScheduleContainer
+					<ScheduleContainer
 						width="100%"
 						allowMultiCellSelection={true}
 						height="75vh"
 						ref={scheduleRef}
+						editorTemplate={EditorWindow}
 						currentView="TimelineDay"
 						selectedDate={new Date()}
 						eventSettings={{
@@ -122,9 +124,9 @@ export const SchedulerContainer = () => {
 							<ViewDirective option="TimelineDay" />
 						</ViewsDirective>
 						<Inject services={[TimelineViews, Resize, DragAndDrop]} />
-					</ScheduleContainer> */}
+					</ScheduleContainer>
 				</div>
-                <EditorWindow />
+				{/* <EditorWindow /> */}
 			</div>
 		</div>
 	);

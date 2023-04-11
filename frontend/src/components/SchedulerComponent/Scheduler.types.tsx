@@ -111,11 +111,11 @@ export const onEventClick = (args: any) => {
 	console.log(`onEventClick`, args);
 };
 
-export const FieldsData = {
-	id: "Id",
-	subject: { name: "Subject", title: "Meeting Subject" },
-	description: { name: "Description", title: "Notes" },
-	startTime: { name: "StartTime", title: "From" },
-	endTime: { name: "EndTime", title: "To" },
-	recurrenceRule: { name: "RecurrenceRule", title: "Recurrence" },
-};
+// export const FieldsData = {
+// 	id: "Id",
+// 	subject: { name: "Subject", title: "Meeting Subject" },
+// 	description: { name: "Description", title: "Notes" },
+// 	startTime: { name: "StartTime", title: "From" },
+// 	endTime: { name: "EndTime", title: "To" },
+// 	recurrenceRule: { name: "RecurrenceRule", title: "Recurrence" },
+// };
