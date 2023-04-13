@@ -1,0 +1,450 @@
+.e-schedule .e-timeline-view .e-date-header-wrap table tbody td,
+.e-schedule .e-timeline-month-view .e-date-header-wrap table tbody td {
+	height: 40px !important;
+}
+.e-schedule .e-timeline-view .e-date-header-wrap table col,
+.e-schedule .e-timeline-view .e-content-wrap table col,
+.e-schedule .e-timeline-month-view .e-date-header-wrap table col,
+.e-schedule .e-timeline-month-view .e-content-wrap table col {
+	width: 20px !important;
+}
+
+.timeline-resource.e-schedule .e-timeline-view .e-resource-left-td {
+	vertical-align: bottom;
+}
+
+.timeline-resource.e-schedule.e-device .e-timeline-view .e-resource-left-td {
+	width: 75px;
+}
+
+.timeline-resource.e-schedule .e-timeline-view .e-resource-left-td {
+	width: 240px;
+}
+
+.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text {
+	display: flex;
+	font-weight: 500;
+	padding: 0;
+	height: 5vh;
+	text-align: center;
+}
+
+.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #0000001f;
+	border-style: solid;
+	border-width: 1px 1px 0 0;
+	flex: 0 0 33.3%;
+	font-weight: 500;
+	height: inherit;
+	padding: 7% 0;
+	font-size: 15px;
+}
+
+.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div:last-child {
+	border-right: 0;
+}
+
+.timeline-resource.e-schedule .e-timeline-view .e-block-appointment {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+
+.bootstrap4
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text,
+.bootstrap5
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text {
+	height: 37px;
+}
+
+.bootstrap4
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	height: 37px;
+	line-height: 37px;
+}
+
+.fluent-dark
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div,
+.fluent-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #292827;
+}
+
+.material-dark
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div,
+.material-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #616161;
+}
+
+.fabric-dark
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div,
+.fabric-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #414040;
+}
+
+.bootstrap-dark
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div,
+.bootstrap-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #505050;
+}
+
+.bootstrap5-dark
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div,
+.bootstrap5-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #444c54;
+}
+
+.tailwind-dark
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div {
+	border-color: #4b5563;
+}
+
+.highcontrast
+	.timeline-resource.e-schedule
+	.e-resource-cells
+	.template-wrap
+	> div {
+	border-color: #969696;
+}
+
+.bootstrap4.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text,
+.bootstrap5.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text,
+.bootstrap5-dark.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text {
+	height: 39px;
+}
+
+.bootstrap4.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	height: 39px;
+	line-height: 39px;
+}
+
+.tailwind
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text,
+.tailwind-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text {
+	height: 39px;
+}
+
+.tailwind
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div,
+.tailwind-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	height: 39px;
+	line-height: 39px;
+}
+
+.tailwind
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	background-color: #f3f4f6;
+	border-color: #e5e7eb;
+}
+
+.tailwind-dark
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	background-color: #374151;
+	border-color: #4b5563;
+}
+
+.tailwind.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text,
+.tailwind-dark.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text {
+	height: 40px;
+}
+
+.tailwind.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div,
+.tailwind-dark.e-bigger
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	height: 40px;
+	line-height: 40px;
+}
+
+.highcontrast
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text {
+	height: 36px;
+}
+
+.highcontrast
+	.timeline-resource.e-schedule
+	.e-timeline-view
+	.e-resource-left-td
+	.e-resource-text
+	> div {
+	border-color: #969696;
+}
+
+.timeline-resource.e-schedule .template-wrap {
+	display: grid;
+	height: inherit;
+	min-height: inherit;
+	text-align: center;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+
+.timeline-resource.e-schedule .template-wrap > div {
+	border-right: 1px solid #0000001f;
+    flex: 0 0 33.3%;
+    font-weight: 500;
+    line-height: 8vh;
+    text-align: center;
+    display: flex;
+    overflow: hidden;
+    margin: 0 -1px;
+    padding: 50% 0;
+    font-size: 13px;
+    text-overflow: ellipsis;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-resource.e-schedule .template-wrap > div:last-child {
+	border-right: 0;
+}
+
+.timeline-resource.e-schedule .e-timeline-view .e-resource-cells,
+.timeline-resource.e-schedule .e-timeline-month-view .e-resource-cells {
+	padding-left: 0;
+}
+.timeline-resource.e-schedule .e-timeline-view .e-resource-cells > div,
+.timeline-resource.e-schedule .e-timeline-month-view .e-resource-cells > div {
+	min-height: 100%;
+	height: inherit;
+}
+.timeline-resource.e-schedule .e-timeline-view .e-date-header-wrap table col,
+.timeline-resource.e-schedule .e-timeline-view .e-content-wrap table col {
+	width: 100px;
+}
+
+.timeline-resource.e-schedule .e-read-only {
+	opacity: 0.8;
+}
+
+@media (max-width: 550px) {
+	.timeline-resource.e-schedule .e-timeline-view .e-resource-left-td {
+		width: 100px;
+	}
+	.timeline-resource.e-schedule
+		.e-timeline-view
+		.e-resource-left-td
+		.e-resource-text
+		> div,
+	.timeline-resource.e-schedule .e-resource-cells .template-wrap > div {
+		flex: 0 0 100%;
+	}
+	.timeline-resource.e-schedule
+		.e-resource-cells
+		.template-wrap
+		> div:first-child {
+		border-right: 0;
+	}
+	.timeline-resource.e-schedule
+		.e-timeline-view
+		.e-resource-left-td
+		.e-resource-text
+		> div:first-child {
+		border-right: 0;
+	}
+	.timeline-resource.e-schedule .room-type,
+	.timeline-resource.e-schedule .room-capacity {
+		display: none;
+	}
+}
+.e-time-slots div {
+	font-size: 13px;
+	margin-left: 0px;
+}
+.e-schedule .e-timeline-view .e-navigate,
+.e-schedule .e-timeline-view .e-date-header-wrap table tbody td > span {
+	font-size: 15px;
+	/* margin: 0 40%; */
+}
+.e-header-row {
+	height: 5vh;
+}
+.e-schedule .e-timeline-view .e-date-header-wrap table td.e-current-day {
+	font-weight: bold;
+}
+.e-schedule .e-timeline-view .e-date-header-wrap table td.e-current-day,
+.e-schedule .e-timeline-month-view .e-date-header-wrap table td.e-current-day {
+	color: #1976d2;
+}
+.e-schedule .e-timeline-view .e-work-cells,
+.e-schedule .e-timeline-month-view .e-work-cells {
+	background-color: #b7b7b757;
+}
+.e-schedule .e-timeline-view .e-work-hours {
+	background-color: #fff;
+}
+.e-quick-popup-wrapper
+	.e-event-popup
+	.e-popup-header
+	.e-subject-wrap
+	.e-subject {
+	background-color: transparent;
+	border: none;
+}
+
+.e-footer-content .e-btn.e-primary.e-flat:not([DISABLED]) {
+	background-color: #e3165b;
+	border-color: #dc3545;
+	color: #fff;
+}
+.e-footer-content .e-btn:hover.e-primary.e-flat:not([DISABLED]) {
+	background-color: #861036;
+	border-color: #7c394e;
+}
+
+.e-popup-header,
+.e-event-popup,
+.e-quick-popup-wrapper.e-lib.e-popup.e-control.e-popup-open,
+.e-popup-header {
+	border-top-right-radius: 25px;
+	border-top-left-radius: 25px;
+}
+.e-cell-popup,
+.e-popup.e-popup-open {
+	border-radius: 25px;
+}
+button#e-tbr-btn_3 {
+	/* background-color: lightgray; */
+	border-radius: 10px;
+}
+button#e-tbr-btn_3:hover {
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0.12);
+}
+button#e-tbr-btn_2 {
+	border-radius: 10px;
+}
+button#e-tbr-btn_2 > span:first-child {
+	margin-left: 10px;
+}
+.e-schedule-dialog .e-location-container {
+	display: none;
+}
+.e-schedule-dialog .e-subject-container {
+	width: 100%;
+}
+.e-schedule-dialog .e-all-day-container , .e-time-zone-container {
+	display: none;
+}

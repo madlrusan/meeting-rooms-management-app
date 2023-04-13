@@ -47,6 +47,41 @@ namespace API.Controllers
             return Ok(entities);
         }
 
+        [HttpPut("updateEvent")]
+        public async Task<IActionResult> UpdateEvent(EventUpdateModel model)
+        {
+            try
+            {
+                await _eventRepository.UpdateEvent(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpDelete("deleteEvent")]
+        public async Task<IActionResult> DeleteEvent(EventDeleteModel model)
+        {
+            try
+            {
+                await _eventRepository.DeleteEvent(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
     }
 }
 

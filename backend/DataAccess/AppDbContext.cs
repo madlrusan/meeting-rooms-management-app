@@ -17,10 +17,6 @@ namespace DataAccess
                 new IdentityRole("User"){NormalizedName = "USER"},
             };
             builder.Entity<IdentityRole>().HasData(defaultUserRoles);
-            builder.Entity<ScheduleEvent>()
-                .HasMany(s => s.Rooms)
-                .WithMany(r => r.ScheduleEvents)
-                .UsingEntity(j => j.ToTable("ScheduleEventRoom"));
             base.OnModelCreating(builder);
         }
         public DbSet<User> Users { get; set; }

@@ -18,7 +18,7 @@ namespace Domain
         public DateTime CreatedTimeUTC { get; set; }
 
 
-        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual Room Room { get; set; }
         public virtual User Host { get; set; }
 
     }

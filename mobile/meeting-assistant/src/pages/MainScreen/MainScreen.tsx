@@ -16,6 +16,7 @@ import {
 	BottomView,
 	DisplayButton,
 	ButtonStyle,
+	SubjectContainer,
 } from "../../components/MainScreenComponents/MainScreen.Components";
 import { ScheduleCard } from "./ScheduleCards";
 import {
@@ -23,12 +24,12 @@ import {
 	getButtonText,
 } from "../../components/MainScreenComponents/MainScreen.types";
 import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
-
+import { ScrollView } from "react-native";
 export const MainScreen = () => {
 	// use context --> to get room details
 	// const {roomName, roomStatus} = useContext(RoomContext);
 	const [visible, setVisible] = useState(false);
-	const GlobalStatus = StatusTypes.Busy;
+	const GlobalStatus = StatusTypes.Available;
 	const ButtonText = getButtonText(GlobalStatus);
 	return (
 		<MainContainer>
@@ -46,12 +47,13 @@ export const MainScreen = () => {
 				) : (
 					<HostText>Hosted by Madalina Rusan</HostText>
 				)}
-				{GlobalStatus === StatusTypes.Available ? (
-					<SubjectText>Nothing scheduled</SubjectText>
-				) : (
-					<SubjectText>React Meeting intro</SubjectText>
-				)}
-
+				<SubjectContainer horizontal showsHorizontalScrollIndicator={false}>
+					{GlobalStatus === StatusTypes.Available ? (
+						<SubjectText>Nothing scheduled</SubjectText>
+					) : (
+						<SubjectText>React Meeting intro</SubjectText>
+					)}
+				</SubjectContainer>
 				<MiddleDivider />
 				<StatusText>{GlobalStatus.toUpperCase()}</StatusText>
 				<BottomView>

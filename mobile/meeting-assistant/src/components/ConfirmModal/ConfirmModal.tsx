@@ -86,6 +86,7 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
 							mode="contained"
 							onPress={() => {
 								setOpenPIN(false);
+                                setVisible(false);
 							}}
 							style={ButtonStyle}>
 							Ok

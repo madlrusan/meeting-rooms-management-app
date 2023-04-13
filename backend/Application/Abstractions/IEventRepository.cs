@@ -8,6 +8,8 @@ namespace Application.Abstractions
 	{
         public Task CreateEvent(EventCreateModel model);
         public Task<IEnumerable<EventViewModel>> GetAllEvents();
+        public Task UpdateEvent(EventUpdateModel model);
+        public Task DeleteEvent(EventDeleteModel model);
     }
 }
 

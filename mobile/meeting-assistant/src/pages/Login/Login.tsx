@@ -12,12 +12,22 @@ import {
 	TextH3,
 	loginStyles,
 } from "../../components/LoginComponents/Login.components";
+import { useMutation } from "react-query";
 export const Login = () => {
 	const navigator = useNavigation();
-	// const {roomName, setRoomName} = useContext(RoomContext);
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const [checked, setChecked] = useState<boolean>(false);
+
+	const [email, setEmail] = useState<string>("");
+	const [password, setPasssword] = useState<string>("");
+	const logIn = useMutation(LoginRoom, {
+		onSuccess: (data) => {
+			localStorage.setItem("token", data.token);
+			loginHelper(data.token);
+			navigator.navigate("Dashboard" as never);
+		},
+	});
 	return (
 		<KeyboardAwareScrollView>
 			<LoginCard containerStyle={loginStyles.loginCard}>
@@ -36,6 +46,9 @@ export const Login = () => {
 							inputMode="email"
 							keyboardType="email-address"
 							label="Enter the room email"
+							onChange={(e) => {
+								setEmail(e.target.value);
+							}}
 						/>
 					</InputGroup>
 					<InputGroup>
@@ -48,13 +61,16 @@ export const Login = () => {
 							rightIcon={
 								<TextInput.Icon icon="eye" onPress={handleClickShowPassword} />
 							}
+							onChange={(e) => {
+								setPassword(e.target.value);
+							}}
 						/>
 					</InputGroup>
 				</FormContainer>
 				<SubmitButton
 					title="Submit"
 					onPress={() => {
-						navigator.navigate("Dashboard" as never);
+						logIn.mutate({ email, password });
 					}}
 				/>
 			</LoginCard>

@@ -1,4 +1,4 @@
-import { View, Text, Platform } from "react-native";
+import { View, Text, Platform, ScrollView } from "react-native";
 import styled, { css } from "styled-components/native";
 import { Divider, Button } from "@rneui/themed";
 export const MainContainer = styled(View)`
@@ -7,7 +7,7 @@ export const MainContainer = styled(View)`
 `;
 
 export const LeftContainer = styled(View)<{ status: string }>`
-	flex: 0.5;
+	flex: 0.6;
 	flex-direction: column;
 	${(props) => {
 		switch (props.status) {
@@ -37,13 +37,13 @@ export const ScreenDivider = styled(Divider)`
 `;
 
 export const ClockText = styled(Text)`
-	font-size: 90px;
+	font-size: 80px;
 	margin: 12% 3% 0% 3%;
 	font-weight: 300;
 	text-align: center;
 `;
 export const DateText = styled(Text)`
-	font-size: 50px;
+	font-size: 40px;
 	font-weight: 200;
 	text-align: center;
 `;
@@ -60,27 +60,34 @@ export const ScheduleContainer = styled(View)`
 `;
 
 export const HostText = styled(Text)`
-	font-size: 30px;
+	font-size: 25px;
 	margin-top: 10%;
 	margin-right: 10%;
-	font-weight: 200;
+	font-weight: 300;
 	text-align: right;
+	/* width: 50px; */
 `;
 
 export const SubjectText = styled(Text)`
-	font-size: 100px;
-	margin-top: 1%;
-	font-weight: 100;
+	font-size: 98px;
+	/* margin-top: 1%; */
+	font-weight: 200;
 	text-align: left;
 `;
+
+export const SubjectContainer = styled(ScrollView)`
+	margin: 0px;
+	height: 0px;
+`;
 export const MiddleDivider = styled(Divider)`
-	height: 0.1%;
-	margin-top: 1.6%;
+	/* height: 0.2%; */
+	/* margin-top: -29%; */
 	background-color: grey;
+    flex: 0.003;
 `;
 
 export const StatusText = styled(Text)`
-	font-size: 150px;
+	font-size: 135px;
 	font-weight: 400;
 	margin-top: 0%;
 	text-align: center;
@@ -88,6 +95,7 @@ export const StatusText = styled(Text)`
 
 export const RoomCircle = styled(View)<{ status: string }>`
 	width: 500px;
+    /* flex: 15; */
 	height: 500px;
 	border-radius: 250%;
 	text-align: right;
@@ -102,10 +110,10 @@ export const RoomCircle = styled(View)<{ status: string }>`
 				return css`
 					background-color: #9dd98f;
 				`;
-			case "reserved":
-				return css`
-					background-color: #8fbfd9;
-				`;
+			// case "reserved":
+			// 	return css`
+			// 		background-color: #8fbfd9;
+			// 	`;
 		}
 	}}
 `;
@@ -118,13 +126,13 @@ export const RoomNameText = styled(Text)`
 `;
 
 export const BottomView = styled(View)`
-	flex: 1;
+	flex: 3;
 	margin-top: 10%;
 	flex-direction: row;
 `;
 
 export const DisplayButton = styled(Button)`
-	width: 300px;
+	width: 200px;
 	margin-top: 250px;
 	margin-left: 10%;
 `;
