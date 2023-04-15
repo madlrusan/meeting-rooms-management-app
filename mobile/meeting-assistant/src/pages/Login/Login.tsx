@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckBox, Card, Input } from "@rneui/themed";
 import { View } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -13,21 +13,34 @@ import {
 	loginStyles,
 } from "../../components/LoginComponents/Login.components";
 import { useMutation } from "react-query";
+import { LoginRoom } from "../../api/room";
 export const Login = () => {
 	const navigator = useNavigation();
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const [checked, setChecked] = useState<boolean>(false);
 
-	const [email, setEmail] = useState<string>("");
-	const [password, setPasssword] = useState<string>("");
-	const logIn = useMutation(LoginRoom, {
-		onSuccess: (data) => {
-			localStorage.setItem("token", data.token);
-			loginHelper(data.token);
-			navigator.navigate("Dashboard" as never);
-		},
+	const [state, setState] = useState({
+		loginCredentials: { email: "", password: "" },
+		isSubmitted: true,
 	});
+	useEffect(() => {
+		if (
+			state.loginCredentials.email !== "" &&
+			state.loginCredentials.password !== ""
+		) {
+			setState((prevState: any) => {
+				return { ...prevState, isSubmitted: false };
+			});
+		} else {
+			setState((prevState: any) => {
+				return { ...prevState, isSubmitted: true };
+			});
+		}
+	}, [state.loginCredentials]);
+	const onSubmit = (state: any) => {
+		LoginRoom(state);
+	};
 	return (
 		<KeyboardAwareScrollView>
 			<LoginCard containerStyle={loginStyles.loginCard}>
@@ -46,31 +59,49 @@ export const Login = () => {
 							inputMode="email"
 							keyboardType="email-address"
 							label="Enter the room email"
-							onChange={(e) => {
-								setEmail(e.target.value);
-							}}
+							value={state.loginCredentials.email}
+							onChangeText={(text: string) =>
+								setState((prevState: any) => {
+									return {
+										...prevState,
+										loginCredentials: {
+											email: text,
+											password: prevState.loginCredentials.password,
+										},
+									};
+								})
+							}
 						/>
 					</InputGroup>
 					<InputGroup>
 						<Input
 							id="password_input"
 							placeholder="password"
+							value={state.loginCredentials.password}
 							autoComplete="password"
 							secureTextEntry={!showPassword}
 							label="Enter the room password password"
 							rightIcon={
 								<TextInput.Icon icon="eye" onPress={handleClickShowPassword} />
 							}
-							onChange={(e) => {
-								setPassword(e.target.value);
-							}}
+							onChangeText={(text) =>
+								setState((prevState: any) => {
+									return {
+										...prevState,
+										loginCredentials: {
+											password: text,
+											email: prevState.loginCredentials.email,
+										},
+									};
+								})
+							}
 						/>
 					</InputGroup>
 				</FormContainer>
 				<SubmitButton
 					title="Submit"
 					onPress={() => {
-						logIn.mutate({ email, password });
+						onSubmit(state.loginCredentials);
 					}}
 				/>
 			</LoginCard>

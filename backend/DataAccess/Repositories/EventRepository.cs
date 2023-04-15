@@ -95,7 +95,7 @@ namespace DataAccess.Repositories
                     eventViewModels.Add(new EventViewModel
                     {
                         GId = @event.Id,
-                        Id = i + 1,
+                        Id = i++,
                         Subject = @event.Subject,
                         StartTime = @event.StartTime,
                         EndTime = @event.EndTime,

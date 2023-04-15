@@ -1,12 +1,9 @@
 import { IRoom } from "../../dto/models/IRooms";
 import { getRandomHexColor } from "../../utils/helperFunctions";
-import { GetUserById, UpdateEmployee } from "../../api/employees";
-import { CellClickEventArgs } from "@syncfusion/ej2-react-schedule";
+import { GetUserById } from "../../api/employees";
 import { IEvents } from "../../dto/models/IEvents";
 import { EditorWindow } from "./EditorWindow/EditorWindow";
 import React from "react";
-import { useMutation } from "react-query";
-import { useNavigate } from "react-router";
 import { AddEvent, DeleteEvent, UpdateEvent } from "../../api/events";
 export const resourceHeaderTemplate = (props: any) => {
 	function getRoomName(value: any) {
@@ -110,57 +107,61 @@ export const onActionBegin = (args: any, allEvents: IEvents[]) => {
 		// args.cancel = true;
 	}
 	if (args.requestType === "eventCreate" && args.addedRecords.length > 0) {
-		args.data.forEach(async (record: any) => {
-			const eventData = record;
-			if (
-				allEvents.some(
-					(e) => e.RoomId === eventData.RoomId && e.GId === eventData.GId
-				)
-			) {
-				args.requestType = "eventChange"; // Change the requestType to eventChange
-				console.log(
-					`Event with GId ${eventData.GId} already exists in allEvents`
-				);
-			} else {
-				await AddEvent(eventData);
-			}
-		});
+		// args.data.forEach(async (record: any) => {
+		// 	const eventData = record;
+		// 	if (
+		// 		allEvents.some(
+		// 			(e) => e.RoomId === eventData.RoomId && e.GId === eventData.GId
+		// 		)
+		// 	) {
+		// 		args.requestType = "eventChange"; // Change the requestType to eventChange
+		// 		console.log(
+		// 			`Event with GId ${eventData.GId} already exists in allEvents`
+		// 		);
+		// 	} else {
+		// 		await AddEvent(eventData);
+		// 	}
+		// });
 	}
 	if (args.requestType === "eventChange") {
-		if (Array.isArray(args.data)) {
-			args.data.forEach(async (record: any) => {
-				const eventData = record;
-				UpdateEvent(eventData);
-			});
-		} else {
-			const eventData = args.data;
-			UpdateEvent(eventData);
-		}
+		// if (Array.isArray(args.data)) {
+		// 	args.data.forEach(async (record: any) => {
+		// 		const eventData = record;
+		// 		UpdateEvent(eventData);
+		// 	});
+		// } else {
+		// 	const eventData = args.data;
+		// 	UpdateEvent(eventData);
+		// }
 	}
 	if (args.requestType === "eventRemove") {
-		if (args.changedRecords) {
-			const eventData = args.changedRecords;
-			eventData.forEach(async (element: any) => {
-				const id = element.GId;
-				DeleteEvent(id);
-			});
-		}
-		if (args.deletedRecords) {
-			const eventData = args.deletedRecords;
-			eventData.forEach(async (element: any) => {
-				const id = element.GId;
-				DeleteEvent(id);
-			});
-		}
-		if (args.data[0].parent) {
-			const eventData = args.data[0].parent;
-			const id = eventData.GId;
-			DeleteEvent(id);
-		}
-		if (args.data[0].occurrence) {
-			const id = args.data[0].occurrence.GId;
-			DeleteEvent(id);
-		}
-		console.log(args.data);
+		// if (args.changedRecords) {
+		// 	const eventData = args.changedRecords;
+		// 	eventData.forEach(async (element: any) => {
+		// 		const id = element.GId;
+		// 		DeleteEvent(id);
+		// 	});
+		// }
+		// if (args.deletedRecords) {
+		// 	const eventData = args.deletedRecords;
+		// 	eventData.forEach(async (element: any) => {
+		// 		const id = element.GId;
+		// 		DeleteEvent(id);
+		// 	});
+		// }
+		// if (args.data[0].parent) {
+		// 	const eventData = args.data[0].parent;
+		// 	const id = eventData.GId;
+		// 	DeleteEvent(id);
+		// }
+		// if (args.data[0].occurrence) {
+		// 	const id = args.data[0].occurrence.GId;
+		// 	DeleteEvent(id);
+		// }
+		console.log(args.data.args);
 	}
+};
+
+export const onActionComplete = (args: any) => {
+	console.log("onActionComplete", args);
 };

@@ -7,9 +7,7 @@ import {
 	ViewsDirective,
 	Resize,
 	ScheduleComponent,
-	CellClickEventArgs,
 } from "@syncfusion/ej2-react-schedule";
-import { extend } from "@syncfusion/ej2-base";
 import { ScheduleContainer } from "./Scheduler.components";
 import "./style.css";
 import {
@@ -17,6 +15,7 @@ import {
 	getSchedulerRooms,
 	majorSlotTemplate,
 	onActionBegin,
+	onActionComplete,
 	onCellClick,
 	onEventClick,
 	onPopupOpen,
@@ -25,16 +24,9 @@ import {
 } from "./Scheduler.types";
 import { GetRooms } from "../../api/rooms";
 import { GetEvents } from "../../api/events";
-import { memo, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { IRoom } from "../../dto/models/IRooms";
 import { IEvents } from "../../dto/models/IEvents";
-import { eventData } from "../../dto/mocks/data";
-import { EditorWindow } from "./EditorWindow/EditorWindow";
-import {
-	QuickPopUpContent,
-	QuickPopUpFooter,
-	QuickPopUpHeader,
-} from "./QuickPopUp/QuickPopUp";
 import React from "react";
 
 export const SchedulerContainer = memo(() => {
@@ -45,11 +37,6 @@ export const SchedulerContainer = memo(() => {
 	const FinalEventsData: IEvents[] = eventsData.data ?? [];
 	const FinalRoomsData = roomsData ? getSchedulerRooms(roomsData) : [];
 	const scheduleRef = useRef<ScheduleComponent>(null);
-	// useMemo(() => {
-	// 	setEvents(FinalEventsData);
-	// 	setRooms(FinalRoomsData);
-	// }, [FinalEventsData]);
-
 	useEffect(() => {
 		eventsData.data && setEvents(FinalEventsData);
 		setRooms(FinalRoomsData);
@@ -120,6 +107,7 @@ export const SchedulerContainer = memo(() => {
 					onPopupOpen(e, scheduleRef);
 				}}
 				allowResizing={false}
+                actionComplete={onActionComplete}
 				showWeekend={false}>
 				<ResourcesDirective>
 					<ResourceDirective
@@ -139,6 +127,6 @@ export const SchedulerContainer = memo(() => {
 			</ScheduleContainer>
 		</div>
 	) : (
-		<div>Is Loadinssg</div>
+		<div>Is Loading</div>
 	);
 });
