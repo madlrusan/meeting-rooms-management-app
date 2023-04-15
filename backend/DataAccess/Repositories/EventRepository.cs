@@ -71,8 +71,12 @@ namespace DataAccess.Repositories
                 Subject = model.Subject,
                 StartTime = model.StartTime,
                 EndTime = model.EndTime,
+                IsAllDay = model.IsAllDay,
                 RecurrenceRule = model.RecurrenceRule,
+                RecurrenceID = model.RecurrenceID,
+                RecurrenceException = model.RecurrenceException,
                 Notes = model.Notes,
+
                 Room = await _appDbContext.Rooms.FindAsync(model.RoomId),
                 Host = await _appDbContext.Users.FindAsync(model.HostId),
                 //CreatedTimeUTC = DateTime.UtcNow
@@ -96,8 +100,8 @@ namespace DataAccess.Repositories
                     {
                         Id = @event.Id,
                         Subject = @event.Subject,
-                        StartTime = @event.StartTime,
-                        EndTime = @event.EndTime,
+                        StartTime = (DateTime)@event.StartTime,
+                        EndTime = (DateTime)@event.EndTime,
                         RecurrenceRule = @event.RecurrenceRule,
                         Notes = @event.Notes,
                         RoomId = @event.Room.Id,

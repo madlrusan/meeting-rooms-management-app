@@ -1,11 +1,13 @@
 export interface IEvents {
-    GId: string;
-    Id: number;
-    Subject: string;
-    StartTime: Date;
-    EndTime: Date;
-    RecurrenceRule: string;
-    Description: string;
-    RoomId: string;
-    HostId: string;
+	Id: number;
+	Subject: string;
+	StartTime: Date;
+	EndTime: Date;
+	IsAllDay?: boolean;
+	RecurrenceRule: string;
+	RecurrenceID?: number;
+	RecurrenceExceptions?: string;
+	Notes: string;
+	RoomId: string;
+	HostId: string;
 }

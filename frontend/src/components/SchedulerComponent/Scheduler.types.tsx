@@ -5,6 +5,8 @@ import { IEvents } from "../../dto/models/IEvents";
 import { EditorWindow } from "./EditorWindow/EditorWindow";
 import React from "react";
 import { AddEvent, DeleteEvent, UpdateEvent } from "../../api/events";
+import { DataManager, Query, UrlAdaptor } from "@syncfusion/ej2-data";
+import { BASE_URL_API, EVENT_ENDPOINTS } from "../../dto/constants";
 export const resourceHeaderTemplate = (props: any) => {
 	function getRoomName(value: any) {
 		return value.resourceData.roomName;
@@ -101,38 +103,38 @@ export const EDTemplate = (args: any) => {
 
 	return <EditorWindow {...args} />;
 };
-export const onActionBegin = (args: any, allEvents: IEvents[]) => {
+export const onActionBegin = async (args: any, allEvents: IEvents[]) => {
 	console.log("onActionBegin", args);
 	if (args.requestType === "dateNavigate") {
 		// args.cancel = true;
 	}
 	if (args.requestType === "eventCreate" && args.addedRecords.length > 0) {
-		// args.data.forEach(async (record: any) => {
-		// 	const eventData = record;
-		// 	if (
-		// 		allEvents.some(
-		// 			(e) => e.RoomId === eventData.RoomId && e.GId === eventData.GId
-		// 		)
-		// 	) {
-		// 		args.requestType = "eventChange"; // Change the requestType to eventChange
-		// 		console.log(
-		// 			`Event with GId ${eventData.GId} already exists in allEvents`
-		// 		);
-		// 	} else {
-		// 		await AddEvent(eventData);
-		// 	}
-		// });
+		args.data.forEach(async (record: any) => {
+			const eventData = record;
+			if (
+				allEvents.some(
+					(e) => e.RoomId === eventData.RoomId && e.Id === eventData.Id
+				)
+			) {
+				args.requestType = "eventChange"; // Change the requestType to eventChange
+				console.log(
+					`Event with GId ${eventData.Id} already exists in allEvents`
+				);
+			} else {
+				await AddEvent(eventData);
+			}
+		});
 	}
 	if (args.requestType === "eventChange") {
-		// if (Array.isArray(args.data)) {
-		// 	args.data.forEach(async (record: any) => {
-		// 		const eventData = record;
-		// 		UpdateEvent(eventData);
-		// 	});
-		// } else {
-		// 	const eventData = args.data;
-		// 	UpdateEvent(eventData);
-		// }
+		if (Array.isArray(args.data)) {
+			args.data.forEach(async (record: any) => {
+				const eventData = record;
+				UpdateEvent(eventData);
+			});
+		} else {
+			const eventData = args.data;
+			UpdateEvent(eventData);
+		}
 	}
 	if (args.requestType === "eventRemove") {
 		// if (args.changedRecords) {
@@ -165,3 +167,11 @@ export const onActionBegin = (args: any, allEvents: IEvents[]) => {
 export const onActionComplete = (args: any) => {
 	console.log("onActionComplete", args);
 };
+
+// export const dataEventmanagerSource = new DataManager({
+//     url: `${BASE_URL_API}${EVENT_ENDPOINTS.getAllEvents}`,
+//     insertUrl: `${BASE_URL_API}${EVENT_ENDPOINTS.createEvent}`,
+//     removeUrl: `${BASE_URL_API}${EVENT_ENDPOINTS.deleteEvent}`,
+//     updateUrl: `${BASE_URL_API}${EVENT_ENDPOINTS.updateEvent}`,
+//     adaptor: new UrlAdaptor()
+// })

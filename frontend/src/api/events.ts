@@ -13,12 +13,14 @@ export function GetEvents() {
 		}
 		const events = await response.json();
 		return events.map((event: any) => ({
-			GId: event.gId,
 			Id: event.id,
 			Subject: event.subject,
 			StartTime: new Date(event.startTime),
 			EndTime: new Date(event.endTime),
-			RecurrenceRule: event.recurrenceRule ?? "",
+			IsAllDay: event.isAllDay,
+			RecurrenceRule: event.recurrenceRule,
+			RecurrenceID: event.recurrenceID,
+			RecurrenceException: event.recurrenceException,
 			Notes: event.notes,
 			RoomId: event.roomId,
 			HostId: event.hostId,
@@ -26,16 +28,21 @@ export function GetEvents() {
 	});
 }
 
-export const AddEvent = async (newEvent: any) => {
+export const AddEvent = async (newEvent: IEvents) => {
 	const notes = newEvent.Notes ?? "";
-	const recc = newEvent.RecurrenceRule ?? "";
+	const RecurrenceRule = newEvent.RecurrenceRule ?? "";
 	const startTime = convertTime(newEvent.StartTime);
 	const endTime = convertTime(newEvent.EndTime);
+	const recurrenceID = newEvent.RecurrenceID ?? 0;
+	const recurrenceException = newEvent.RecurrenceExceptions ?? "";
 	const body = {
 		subject: newEvent.Subject,
 		startTime: startTime,
 		endTime: endTime,
-		recurrenceRule: recc,
+		isAllDay: newEvent.IsAllDay,
+		recurrenceRule: RecurrenceRule,
+		recurrenceID: recurrenceID,
+		recurrenceException: recurrenceException,
 		notes: notes,
 		roomId: newEvent.RoomId,
 		hostId: localStorage.getItem("sub"),
