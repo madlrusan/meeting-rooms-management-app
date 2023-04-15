@@ -94,8 +94,7 @@ namespace DataAccess.Repositories
             {
                     eventViewModels.Add(new EventViewModel
                     {
-                        GId = @event.Id,
-                        Id = i++,
+                        Id = @event.Id,
                         Subject = @event.Subject,
                         StartTime = @event.StartTime,
                         EndTime = @event.EndTime,
@@ -174,7 +173,7 @@ namespace DataAccess.Repositories
             await _appDbContext.SaveChangesAsync();
         }
 
-        public async Task<ScheduleEvent> GetEventByIdAsync(string id)
+        public async Task<ScheduleEvent> GetEventByIdAsync(int id)
         {
             var scheduleEvent = await _appDbContext.ScheduleEvents.FindAsync(id);
             return scheduleEvent;

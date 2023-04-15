@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230408213921_removedRoomFeatures")]
-    partial class removedRoomFeatures
+    [Migration("20230415175730_updateEvents")]
+    partial class updateEvents
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,6 +60,67 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("Domain.ScheduleEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedTimeUTC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HostId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsAllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBlock")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecurrenceException")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecurrenceID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RecurrenceRule")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoomId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HostId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("ScheduleEvents");
                 });
 
             modelBuilder.Entity("Domain.User", b =>
@@ -181,13 +242,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "79784f2f-3f76-40f9-978b-8bc2ffbdd3b6",
+                            Id = "41cbf664-ce06-409d-8f59-1374effd6429",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "818e6cfc-5719-4827-a810-8531b38339de",
+                            Id = "d52b5e9b-db08-42cf-ab18-d0a3e3399ad6",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -299,6 +360,23 @@ namespace API.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.ScheduleEvent", b =>
+                {
+                    b.HasOne("Domain.User", "Host")
+                        .WithMany()
+                        .HasForeignKey("HostId");
+
+                    b.HasOne("Domain.Room", "Room")
+                        .WithMany("ScheduleEvents")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Host");
+
+                    b.Navigation("Room");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -348,6 +426,11 @@ namespace API.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Room", b =>
+                {
+                    b.Navigation("ScheduleEvents");
                 });
 #pragma warning restore 612, 618
         }

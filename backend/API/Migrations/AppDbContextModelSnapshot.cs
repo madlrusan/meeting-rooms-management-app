@@ -61,9 +61,11 @@ namespace API.Migrations
 
             modelBuilder.Entity("Domain.ScheduleEvent", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTimeUTC")
                         .HasColumnType("datetime2");
@@ -74,9 +76,25 @@ namespace API.Migrations
                     b.Property<string>("HostId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<bool>("IsAllDay")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsBlock")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsReadOnly")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Notes")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RecurrenceException")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecurrenceID")
+                        .HasColumnType("int");
 
                     b.Property<string>("RecurrenceRule")
                         .IsRequired()
@@ -221,13 +239,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "95538f96-30cf-4576-920f-a6237a042b27",
+                            Id = "41cbf664-ce06-409d-8f59-1374effd6429",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4414024f-7ade-4b81-afaa-9630f67201cc",
+                            Id = "d52b5e9b-db08-42cf-ab18-d0a3e3399ad6",
                             Name = "User",
                             NormalizedName = "USER"
                         });

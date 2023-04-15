@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class initDb : Migration
+    public partial class updateEvents : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -66,8 +66,6 @@ namespace API.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     RoomName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoomType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoomCapacity = table.Column<int>(type: "int", nullable: false),
@@ -186,22 +184,39 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoomFeature",
+                name: "ScheduleEvents",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RoomId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsAllDay = table.Column<bool>(type: "bit", nullable: false),
+                    RecurrenceID = table.Column<int>(type: "int", nullable: false),
+                    RecurrenceException = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecurrenceRule = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsReadOnly = table.Column<bool>(type: "bit", nullable: false),
+                    IsBlock = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedTimeUTC = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RoomId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    HostId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoomFeature", x => x.Id);
+                    table.PrimaryKey("PK_ScheduleEvents", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoomFeature_Rooms_RoomId",
+                        name: "FK_ScheduleEvents_AspNetUsers_HostId",
+                        column: x => x.HostId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ScheduleEvents_Rooms_RoomId",
                         column: x => x.RoomId,
                         principalTable: "Rooms",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -209,8 +224,8 @@ namespace API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "ad3c7bbe-9baf-4113-96a0-95b513c84b5a", null, "Admin", "ADMIN" },
-                    { "b03fbd51-af05-4a7b-83ab-4835319f317c", null, "User", "USER" }
+                    { "41cbf664-ce06-409d-8f59-1374effd6429", null, "Admin", "ADMIN" },
+                    { "d52b5e9b-db08-42cf-ab18-d0a3e3399ad6", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -253,8 +268,13 @@ namespace API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomFeature_RoomId",
-                table: "RoomFeature",
+                name: "IX_ScheduleEvents_HostId",
+                table: "ScheduleEvents",
+                column: "HostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ScheduleEvents_RoomId",
+                table: "ScheduleEvents",
                 column: "RoomId");
         }
 
@@ -277,7 +297,7 @@ namespace API.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "RoomFeature");
+                name: "ScheduleEvents");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

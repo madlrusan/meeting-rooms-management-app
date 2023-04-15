@@ -3,7 +3,6 @@ namespace Domain.API.EventsIdentity
 {
 	public class EventViewModel
 	{
-        public string GId { get; set; }
         public int Id { get; set; }
         public string Subject { get; set; }
         public DateTime StartTime { get; set; }
