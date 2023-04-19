@@ -15,10 +15,12 @@ namespace API.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
+        private readonly ISyncFusionRepository _syncFusionRepository;
 
-        public EventController(IEventRepository eventRepository)
+        public EventController(IEventRepository eventRepository, ISyncFusionRepository syncFusionRepository)
         {
             _eventRepository = eventRepository;
+            _syncFusionRepository = syncFusionRepository;
         }
 
 
@@ -26,6 +28,7 @@ namespace API.Controllers
         public async Task<IActionResult> CreateEvent(EventCreateModel model)
         {
             try
+
             {
                 await _eventRepository.CreateEvent(model);
                 return Ok();
@@ -76,6 +79,24 @@ namespace API.Controllers
             catch (ValidationException ex)
             {
                 return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSyncfuion(EventsParams eventsParams)
+        {
+            try
+            {
+                var data = await _syncFusionRepository.EditSyncfuion(eventsParams);
+                return Ok(new { data = data });
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(ex.Message);
             }
             catch (Exception e)
             {

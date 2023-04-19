@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Domain.API.EventsIdentity
 {
-	public class CRUDEventsModel
+	public class EventsModel
 	{
         public int Id { get; set; }
         public string Subject { get; set; }
