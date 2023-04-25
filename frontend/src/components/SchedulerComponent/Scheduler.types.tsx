@@ -7,6 +7,9 @@ import React from "react";
 import { AddEvent, DeleteEvent, UpdateEvent } from "../../api/events";
 import { DataManager, Query, UrlAdaptor } from "@syncfusion/ej2-data";
 import { BASE_URL_API, EVENT_ENDPOINTS } from "../../dto/constants";
+import { DropDownList } from "@syncfusion/ej2-react-dropdowns";
+import { createElement } from "@syncfusion/ej2-base";
+
 export const resourceHeaderTemplate = (props: any) => {
 	function getRoomName(value: any) {
 		return value.resourceData.roomName;
@@ -106,14 +109,15 @@ export const EDTemplate = (args: any) => {
 export const onActionBegin = async (args: any, allEvents: IEvents[]) => {
 	console.log("onActionBegin", args);
 	if (args.requestType === "dateNavigate") {
-		// args.cancel = true;
+		return;
 	}
 	if (args.requestType === "eventCreate" && args.addedRecords.length > 0) {
 		args.data.forEach(async (record: any) => {
 			const eventData = record;
 			if (
 				allEvents.some(
-					(e) => e.RoomId === eventData.RoomId && e.Id === eventData.Id
+					(e) =>
+						e.RoomId === eventData.RoomId && e.Id === eventData.Id
 				)
 			) {
 				args.requestType = "eventChange"; // Change the requestType to eventChange
@@ -164,14 +168,37 @@ export const onActionBegin = async (args: any, allEvents: IEvents[]) => {
 	}
 };
 
-export const onActionComplete = (args: any) => {
-	console.log("onActionComplete", args);
+export const onActionComplete = async (args: any) => {
+	console.log(args);
+	var deletedRecords = args.deletedRecords;
+	var changedRecords = args.changedRecords;
+	var addedRecords = args.addedRecords;
+	switch (args.requestType) {
+		case "eventCreated": {
+			var events = args.data;
+			events.forEach(async (e: any) => await AddEvent(e));
+			break;
+		}
+		case "eventChanged": {
+			deletedRecords.forEach(async (e: any) => await DeleteEvent(e.Id));
+			changedRecords.forEach(async (e: any) => await UpdateEvent(e));
+			addedRecords.forEach(async (e: any) => await AddEvent(e));
+			break;
+		}
+		case "eventRemoved": {
+			console.log(args);
+			changedRecords.forEach(async (e: any) => await UpdateEvent(e));
+			deletedRecords.forEach(async (e: any) => await DeleteEvent(e.Id));
+			break;
+		}
+		default: {
+			console.log("onActionComplete", args);
+		}
+	}
 };
 
 // export const dataEventmanagerSource = new DataManager({
-//     url: `${BASE_URL_API}${EVENT_ENDPOINTS.getAllEvents}`,
-//     insertUrl: `${BASE_URL_API}${EVENT_ENDPOINTS.createEvent}`,
-//     removeUrl: `${BASE_URL_API}${EVENT_ENDPOINTS.deleteEvent}`,
-//     updateUrl: `${BASE_URL_API}${EVENT_ENDPOINTS.updateEvent}`,
-//     adaptor: new UrlAdaptor()
-// })
+// 	url: `${BASE_URL_API}${EVENT_ENDPOINTS.getEventsByParams}`,
+// 	crossDomain: true,
+// 	adaptor: new UrlAdaptor(),
+// });

@@ -6,8 +6,8 @@ export interface IEvents {
 	IsAllDay?: boolean;
 	RecurrenceRule: string;
 	RecurrenceID?: number;
-	RecurrenceExceptions?: string;
-	Notes: string;
+	RecurrenceException?: string;
+	Description: string;
 	RoomId: string;
 	HostId: string;
 }

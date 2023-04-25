@@ -4,9 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using DataAccess.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Domain.API.EventsIdentity;
 using Application.Abstractions;
+using DataAccess;
+using System.Text.Json;
 
 namespace API.Controllers
 {
@@ -15,12 +16,12 @@ namespace API.Controllers
     public class EventController : ControllerBase
     {
         private readonly IEventRepository _eventRepository;
-        private readonly ISyncFusionRepository _syncFusionRepository;
+        private readonly AppDbContext _appDbContext;
 
-        public EventController(IEventRepository eventRepository, ISyncFusionRepository syncFusionRepository)
+        public EventController(IEventRepository eventRepository, AppDbContext appDbContext)
         {
             _eventRepository = eventRepository;
-            _syncFusionRepository = syncFusionRepository;
+            _appDbContext = appDbContext;
         }
 
 
@@ -85,24 +86,6 @@ namespace API.Controllers
                 return BadRequest(e);
             }
         }
-
-        [HttpPost]
-        public async Task<IActionResult> EditSyncfuion(EventsParams eventsParams)
-        {
-            try
-            {
-                var data = await _syncFusionRepository.EditSyncfuion(eventsParams);
-                return Ok(new { data = data });
-            }
-            catch (ValidationException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e);
-            }
-        }
-    }
+       }
 }
 

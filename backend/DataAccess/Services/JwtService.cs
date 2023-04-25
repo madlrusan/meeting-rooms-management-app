@@ -52,7 +52,7 @@ namespace DataAccess.Services
         {
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, existingRoom.Id),
+                new Claim(JwtRegisteredClaimNames.Sub, existingRoom.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, existingRoom.Email),
                 new Claim(ClaimTypes.Name, existingRoom.RoomName)
             };

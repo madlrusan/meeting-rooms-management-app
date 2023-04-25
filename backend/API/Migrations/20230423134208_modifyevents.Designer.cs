@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230415175730_updateEvents")]
-    partial class updateEvents
+    [Migration("20230423134208_modifyevents")]
+    partial class modifyevents
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,9 +27,9 @@ namespace API.Migrations
 
             modelBuilder.Entity("Domain.Room", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedTimeUTC")
                         .HasColumnType("datetime2");
@@ -70,44 +70,34 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedTimeUTC")
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.Property<string>("HostId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsAllDay")
+                    b.Property<bool?>("IsAllDay")
                         .HasColumnType("bit");
-
-                    b.Property<bool>("IsBlock")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsReadOnly")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RecurrenceException")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecurrenceID")
+                    b.Property<int?>("RecurrenceID")
                         .HasColumnType("int");
 
                     b.Property<string>("RecurrenceRule")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoomId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Subject")
@@ -242,13 +232,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "41cbf664-ce06-409d-8f59-1374effd6429",
+                            Id = "3fe4b2e3-7b85-44ad-a12b-8208b9452b9d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "d52b5e9b-db08-42cf-ab18-d0a3e3399ad6",
+                            Id = "e2f3c2ec-9225-431b-9a05-97fd7af54f63",
                             Name = "User",
                             NormalizedName = "USER"
                         });

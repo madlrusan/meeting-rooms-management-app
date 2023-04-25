@@ -19,9 +19,9 @@ export function GetEvents() {
 			EndTime: new Date(event.endTime),
 			IsAllDay: event.isAllDay,
 			RecurrenceRule: event.recurrenceRule,
-			RecurrenceID: event.recurrenceID,
+			RecurrenceID: event.recurrenceID === 0? null : event.recurrenceID,
 			RecurrenceException: event.recurrenceException,
-			Notes: event.notes,
+			Description: event.description,
 			RoomId: event.roomId,
 			HostId: event.hostId,
 		}));
@@ -29,21 +29,21 @@ export function GetEvents() {
 }
 
 export const AddEvent = async (newEvent: IEvents) => {
-	const notes = newEvent.Notes ?? "";
+	const notes = newEvent.Description ?? "";
 	const RecurrenceRule = newEvent.RecurrenceRule ?? "";
 	const startTime = convertTime(newEvent.StartTime);
 	const endTime = convertTime(newEvent.EndTime);
-	const recurrenceID = newEvent.RecurrenceID ?? 0;
-	const recurrenceException = newEvent.RecurrenceExceptions ?? "";
+	console.log(newEvent);
 	const body = {
+		id: newEvent.Id,
 		subject: newEvent.Subject,
 		startTime: startTime,
 		endTime: endTime,
 		isAllDay: newEvent.IsAllDay,
 		recurrenceRule: RecurrenceRule,
-		recurrenceID: recurrenceID,
-		recurrenceException: recurrenceException,
-		notes: notes,
+		recurrenceID: newEvent.RecurrenceID,
+		recurrenceException: newEvent.RecurrenceException,
+		description: notes,
 		roomId: newEvent.RoomId,
 		hostId: localStorage.getItem("sub"),
 	};
@@ -63,18 +63,22 @@ export const AddEvent = async (newEvent: IEvents) => {
 };
 
 export const UpdateEvent = async (event: any) => {
-	const notes = event.Notes ?? "";
+	const notes = event.Description ?? "";
 	const recc = event.RecurrenceRule ?? "";
 	const startTime = convertTime(event.StartTime);
 	const endTime = convertTime(event.EndTime);
 	const body = {
-		id: event.GId,
+		isAllDay: event.IsAllDay,
+		recurrenceID: event.recurrenceID,
+		id: event.Id,
 		subject: event.Subject,
 		startTime: startTime,
 		endTime: endTime,
 		recurrenceRule: recc,
-		notes: notes,
+		recurrenceException: event.RecurrenceException,
+		description: notes,
 		roomId: event.RoomId,
+		hostId: localStorage.getItem("sub"),
 	};
 	const response = await fetch(
 		`${BASE_URL_API}${EVENT_ENDPOINTS.updateEvent}`,

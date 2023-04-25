@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace API.Migrations
 {
     /// <inheritdoc />
-    public partial class updateEvents : Migration
+    public partial class initialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,7 +63,7 @@ namespace API.Migrations
                 name: "Rooms",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoomName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -190,17 +190,14 @@ namespace API.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Subject = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsAllDay = table.Column<bool>(type: "bit", nullable: false),
-                    RecurrenceID = table.Column<int>(type: "int", nullable: false),
-                    RecurrenceException = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RecurrenceRule = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsReadOnly = table.Column<bool>(type: "bit", nullable: false),
-                    IsBlock = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedTimeUTC = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    RoomId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsAllDay = table.Column<bool>(type: "bit", nullable: true),
+                    RecurrenceRule = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RecurrenceID = table.Column<int>(type: "int", nullable: true),
+                    RecurrenceException = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     HostId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
@@ -224,8 +221,8 @@ namespace API.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "41cbf664-ce06-409d-8f59-1374effd6429", null, "Admin", "ADMIN" },
-                    { "d52b5e9b-db08-42cf-ab18-d0a3e3399ad6", null, "User", "USER" }
+                    { "5064b0b3-5a05-4d6a-88b9-6d09fe6259cf", null, "User", "USER" },
+                    { "634d42b1-67a9-445c-84f2-3909d8b7ff5e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

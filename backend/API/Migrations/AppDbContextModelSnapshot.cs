@@ -24,9 +24,9 @@ namespace API.Migrations
 
             modelBuilder.Entity("Domain.Room", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedTimeUTC")
                         .HasColumnType("datetime2");
@@ -67,8 +67,14 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
 
                     b.Property<string>("HostId")
                         .HasColumnType("nvarchar(450)");
@@ -76,24 +82,17 @@ namespace API.Migrations
                     b.Property<bool?>("IsAllDay")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Notes")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("RecurrenceException")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("RecurrenceID")
                         .HasColumnType("int");
 
                     b.Property<string>("RecurrenceRule")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoomId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
@@ -230,13 +229,13 @@ namespace API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "28a41be5-8131-46ab-b37f-2ebe5c1c4817",
+                            Id = "3fe4b2e3-7b85-44ad-a12b-8208b9452b9d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4b555c18-e96b-4098-bb85-48ac3869a8b5",
+                            Id = "e2f3c2ec-9225-431b-9a05-97fd7af54f63",
                             Name = "User",
                             NormalizedName = "USER"
                         });
