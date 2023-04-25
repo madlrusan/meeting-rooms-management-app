@@ -28,6 +28,7 @@ export const WholeWindow = () => {
 				return Pages.Dashboard;
 		}
 	};
+	const firstLogin = localStorage.getItem("firstLogin");
 	return (
 		<>
 			<DashboardAppBar drawerWidth={drawerWidth} />

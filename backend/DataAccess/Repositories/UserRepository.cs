@@ -50,7 +50,8 @@ namespace DataAccess.Repositories
                     Pin = model.Pin,
                     Departament = model.Departament,
                     Position = model.Position,
-                    isAdmin = model.isAdmin
+                    isAdmin = model.isAdmin,
+                    isFirstLoggin = model.isFirstLogin,
 
                 };
                 await _userManager.CreateAsync(newUser, model.Password);
@@ -157,6 +158,7 @@ namespace DataAccess.Repositories
                 existingUser.Pin = model.Pin;
                 existingUser.Departament = model.Departament;
                 existingUser.Position = model.Position;
+                existingUser.isFirstLoggin = model.isFirstLogin;
             }
             await _userManager.UpdateAsync(existingUser);
 
@@ -190,10 +192,27 @@ namespace DataAccess.Repositories
                 Departament = existingUser.Departament,
                 Position = existingUser.Position,
                 Email = existingUser.Email,
+                isFirstLoggin = (bool)existingUser.isFirstLoggin
             };
             return user;
         }
 
+        public async Task UpdateUserPassword(UpdatePasswordModel model)
+        {
+            var existingUser = await GetUserByIdAsync(model.Id);
+            if (existingUser is null)
+            {
+                throw new ValidationException("User does not exist!");
+            }
+
+            if (existingUser != null)
+            {
+                var removePass = await _userManager.RemovePasswordAsync(existingUser);
+                if(removePass.Succeeded) await _userManager.AddPasswordAsync(existingUser, model.Password);
+                existingUser.isFirstLoggin = false;
+            }
+            await _userManager.UpdateAsync(existingUser);
+        }
     }
 }
 

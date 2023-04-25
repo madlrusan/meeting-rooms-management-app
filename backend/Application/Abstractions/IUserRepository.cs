@@ -16,5 +16,6 @@ namespace Application.Abstractions
         public Task UpdateUser(UpdateUserModel model);
         public Task DeleteUser(DeleteUserModel model);
         public Task<UserViewModel> GetUser(string Id);
+        public Task UpdateUserPassword(UpdatePasswordModel model);
     }
 }

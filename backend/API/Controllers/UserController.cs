@@ -124,5 +124,24 @@ namespace API.Controllers
                 return BadRequest(e);
             }
         }
+       
+        [HttpPut("updateUserPasssword")]
+        [Authorize]
+        public async Task<IActionResult> UpdateUserPassword(UpdatePasswordModel model)
+        {
+            try
+            {
+                await _userRepository.UpdateUserPassword(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
     }
 }

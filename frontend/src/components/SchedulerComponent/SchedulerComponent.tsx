@@ -31,7 +31,7 @@ import React from "react";
 import { Ajax } from "@syncfusion/ej2-base";
 import { BASE_URL_API, EVENT_ENDPOINTS } from "../../dto/constants";
 
-export const SchedulerContainer = memo(() => {
+export const SchedulerContainer = () => {
 	const [events, setEvents] = useState<IEvents[]>([]);
 	const [rooms, setRooms] = useState<IRoom[]>([]);
 	const { data: roomsData, isLoading } = GetRooms();
@@ -142,4 +142,4 @@ export const SchedulerContainer = memo(() => {
 		// </div>
 		<div>Is Loading</div>
 	);
-});
+};

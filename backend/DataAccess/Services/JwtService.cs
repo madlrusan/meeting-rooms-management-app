@@ -38,9 +38,10 @@ namespace DataAccess.Services
             {
                 new Claim(JwtRegisteredClaimNames.Sub, existingUser.Id),
                 new Claim(JwtRegisteredClaimNames.Email, existingUser.Email),
-                new Claim(ClaimTypes.Name, existingUser.FirstName + " " + existingUser.LastName)
+                new Claim(ClaimTypes.Name, existingUser.FirstName + " " + existingUser.LastName),
             };
-
+            if ((bool)existingUser.isFirstLoggin) claims.Add(new Claim("firstLog", "true"));
+            else claims.Add(new Claim("firstLog", "false"));
             foreach (var role in roles)
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));

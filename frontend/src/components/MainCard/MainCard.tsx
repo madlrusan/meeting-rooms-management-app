@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, Typography } from "@mui/material";
 // import { Login } from "../../pages/Login/Login";
 import { MainContainer } from "./MainCard.components";
@@ -8,29 +8,54 @@ import { DashboardCardContent } from "../common/DashboardCardContent/DashboardCa
 import { SchedulerContainer } from "../SchedulerComponent/SchedulerComponent";
 import { RoomContainer } from "../RoomComponent/RoomComponent";
 import { EmployeeComponent } from "../EmployeesComponent/EmployeesComponent";
+import { GetUserById } from "../../api/employees";
+import { UpdatePasswordModal } from "../UpdatePasswordModal/UpdatePasswordModal";
+import { UserContext } from "../../context/userContext";
 type DashboardCardProps = {
 	page: string;
 };
 export const MainContentCard = (props: DashboardCardProps) => {
 	const { page } = props;
+	const [openD, setOpenD] = useState<boolean>(false);
+	const isFirstLogin = localStorage.getItem("firstLogin");
+	const { userRole } = useContext(UserContext);
+	useEffect(() => {
+		if (isFirstLogin === "true") {
+			setOpenD(true);
+		}
+		else setOpenD(false);
+	}, [isFirstLogin]);
 	switch (page) {
 		case "dashboard": {
+			
+			const DashboardItems = userRole !== "Admin" ? AdminMenuItems.filter(
+							(item) => item.itemName !== "Dashboard" && item.itemName !== "Employees"
+						) : AdminMenuItems.filter(
+							(item) => item.itemName !== "Dashboard"
+						);
+
+			const handleClose = (e: any) => {
+				console.log(e);
+				setOpenD(false);
+			};
 			return (
 				<>
 					<MainContainer>
-						{AdminMenuItems.filter((item) => item.itemName !== "Dashboard").map(
-							(item, key) => {
-								return (
-									<DashboardSmallCard key={key}>
-										<DashboardCardContent
-											title={item.itemName}
-											description={item.description}
-											path={item.path}
-										/>
-									</DashboardSmallCard>
-								);
-							}
-						)}
+						{DashboardItems.map((item, key) => {
+							return (
+								<DashboardSmallCard key={key}>
+									<DashboardCardContent
+										title={item.itemName}
+										description={item.description}
+										path={item.path}
+									/>
+								</DashboardSmallCard>
+							);
+						})}
+						<UpdatePasswordModal
+							open={openD}
+							handleClose={(e: any) => handleClose(e)}
+						/>
 					</MainContainer>
 				</>
 			);
@@ -58,7 +83,10 @@ export const MainContentCard = (props: DashboardCardProps) => {
 			return (
 				<>
 					<MainContainer>
-						<Typography variant="h3"> Employees Records </Typography>
+						<Typography variant="h3">
+							{" "}
+							Employees Records{" "}
+						</Typography>
 						<EmployeeComponent />
 					</MainContainer>
 				</>
@@ -83,14 +111,23 @@ const Smth1 = () => {
 	return (
 		<>
 			<h2>Recent Deposits</h2>
-			<Typography component="p" variant="h4">
+			<Typography
+				component="p"
+				variant="h4"
+			>
 				$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00
 			</Typography>
-			<Typography color="text.secondary" sx={{ flex: 1 }}>
+			<Typography
+				color="text.secondary"
+				sx={{ flex: 1 }}
+			>
 				on 15 March, 2019
 			</Typography>
 			<div>
-				<Link color="primary" href="/dashboard">
+				<Link
+					color="primary"
+					href="/dashboard"
+				>
 					View balance
 				</Link>
 			</div>

@@ -36,6 +36,8 @@ export const AddEmployee = async (newEmployee: IEmployee) => {
 		pin: newEmployee.employeePIN,
 		departament: newEmployee.employeeDepartment,
 		position: newEmployee.employeePosition,
+		isAdmin: false,
+		isFirstLogin: true,
 	};
 	const response = await fetch(`${BASE_URL_API}${USER_ENDPOINTS.addUser}`, {
 		method: "POST",
@@ -91,6 +93,7 @@ export const GetUserById = async (id: string) => {
 		{
 			method: "GET",
 			headers: {
+				"Content-Type": "application/json",
 				Authorization: "Bearer " + localStorage.getItem("token"),
 			},
 		}

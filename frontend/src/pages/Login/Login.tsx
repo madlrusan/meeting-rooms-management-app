@@ -20,6 +20,7 @@ import { LoginUser } from "../../api/user";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { loginHelper } from "../../utils/helperFunctions";
+import { GetUserById } from "../../api/employees";
 export const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -33,9 +34,10 @@ export const Login = () => {
 	const [email, setEmail] = useState<string>("");
 	const [password, setPassword] = useState<string>("");
 	const logIn = useMutation(LoginUser, {
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
 			localStorage.setItem("token", data.token);
 			loginHelper(data.token);
+			
 			navigate("/dashboard");
 		},
 	});
@@ -46,7 +48,10 @@ export const Login = () => {
 			<h3>Please enter your login details below</h3>
 			<FormContainer>
 				<InputGroup>
-					<InputLabel htmlFor="email_input"> Email address</InputLabel>
+					<InputLabel htmlFor="email_input">
+						{" "}
+						Email address
+					</InputLabel>
 					<FormInput
 						id="email_input"
 						placeholder="Enter your work email"
@@ -68,8 +73,13 @@ export const Login = () => {
 									aria-label="toggle password visibility"
 									onClick={handleClickShowPassword}
 									onMouseDown={handleMouseDownPassword}
-									edge="end">
-									{showPassword ? <VisibilityOff /> : <Visibility />}
+									edge="end"
+								>
+									{showPassword ? (
+										<VisibilityOff />
+									) : (
+										<Visibility />
+									)}
 								</IconButton>
 							</InputAdornment>
 						}
@@ -79,21 +89,22 @@ export const Login = () => {
 					/>
 				</InputGroup>
 				<FormControlLabel
-					control={<Checkbox value="remember" color="primary" />}
+					control={
+						<Checkbox
+							value="remember"
+							color="primary"
+						/>
+					}
 					label="Remember me"
 				/>
-				<Grid item xs>
-					<Link href="#" variant="body2">
-						Forgot password?
-					</Link>
-				</Grid>
-			</FormContainer>
+				</FormContainer>
 			<SubmitButton
 				type="submit"
 				variant="contained"
 				onClick={() => {
 					logIn.mutate({ email, password });
-				}}>
+				}}
+			>
 				Submit
 			</SubmitButton>
 		</CardContainer>

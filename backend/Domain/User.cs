@@ -11,6 +11,7 @@ namespace Domain
         public string Departament { get; set; }
         public string Position { get; set; }
         public bool isAdmin { get; set; }
+        public bool? isFirstLoggin {get; set;}
         public DateTime CreatedTimeUTC { get; set; }
     }
 }

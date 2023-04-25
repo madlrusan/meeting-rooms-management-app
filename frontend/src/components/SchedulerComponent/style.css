@@ -371,7 +371,7 @@
 }
 .e-time-slots div {
 	font-size: 13px;
-	margin-left: 0px;
+	margin-left: 1vw;
 }
 .e-schedule .e-timeline-view .e-navigate,
 .e-schedule .e-timeline-view .e-date-header-wrap table tbody td > span {

@@ -1,4 +1,5 @@
 import jwt_decode from "jwt-decode";
+import { GetUserById } from "../api/employees";
 
 export const getInitials = (name: string) => {
 	const names = name.split(" ");
@@ -33,12 +34,13 @@ export const getRandomBgColor = (string: string) => {
 	};
 };
 
-export const loginHelper = (token: any) => {
+export const loginHelper = async (token: any) => {
 	localStorage.setItem("token", token);
 	GetJWTData();
+	
 };
 
-export const GetJWTData = () => {
+export const GetJWTData = async () => {
 	const token = localStorage.getItem("token");
 	if (!token) return false;
 	if (token) {
@@ -49,8 +51,11 @@ export const GetJWTData = () => {
 			if (decoded.role !== undefined) {
 				localStorage.setItem("role", decoded.role);
 			} else localStorage.setItem("role", "Admin");
+			localStorage.setItem("firstLogin", decoded.firstLog);
 		}
+		
 	}
+	
 	return true;
 };
 
@@ -59,6 +64,7 @@ type JWTDecoded = {
 	email: string;
 	unique_name: string;
 	role: string;
+	firstLog: string;
 };
 
 export const getRandomHexColor = (str: string): string => {
@@ -85,3 +91,4 @@ export const convertTime = (date: Date) => {
 	// Return new date as ISO string
 	return newDate.toISOString();
 };
+

@@ -17,5 +17,6 @@ namespace Domain.API.UserIdentity
         public string? Departament { get; set; }
         public string? Position { get; set; }
         public bool isAdmin { get; set; }
+        public bool isFirstLogin { get; set; }
     }
 }

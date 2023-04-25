@@ -10,6 +10,7 @@ export const USER_ENDPOINTS = {
 	updateUser: "/user/updateUser",
 	deleteUser: "/user/deleteUser",
 	getUserById: "/user/getUserById",
+	updateUserPassowrd: "/user/updateUserPasssword",
 };
 export const ROOM_ENDPOINTS = {
 	login: "/room/login",
