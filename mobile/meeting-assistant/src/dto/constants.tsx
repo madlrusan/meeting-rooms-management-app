@@ -1,4 +1,5 @@
-export const BASE_URL_API = "https://localhost:7081";
+export const BASE_URL_API = "https://meetingly-api.azurewebsites.net";
+// export const BASE_URL_API = "https://localhost:7046";
 export const BASE_URL_FE = "http://localhost:3000";
 
 export const USER_ENDPOINTS = {

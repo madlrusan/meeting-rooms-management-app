@@ -69,8 +69,9 @@ export const HostText = styled(Text)`
 `;
 
 export const SubjectText = styled(Text)`
-	font-size: 98px;
+	font-size: 90px;
 	/* margin-top: 1%; */
+    margin-left: 10px;
 	font-weight: 200;
 	text-align: left;
 `;
@@ -118,11 +119,11 @@ export const RoomCircle = styled(View)<{ status: string }>`
 	}}
 `;
 export const RoomNameText = styled(Text)`
-	text-align: right;
-	width: 60%;
-	margin-top: 10%;
+	text-align: center;
+	width: 70%;
+	margin-top: 20%;
 	margin-left: 10%;
-	font-size: 70px;
+	font-size: 80px;
 `;
 
 export const BottomView = styled(View)`
@@ -132,12 +133,27 @@ export const BottomView = styled(View)`
 `;
 
 export const DisplayButton = styled(Button)`
-	width: 200px;
-	margin-top: 250px;
+	/* width: 200px; */
+    /* height: 100px; */
+	margin-top: 110%;
 	margin-left: 10%;
+    font-size: 500px;
 `;
 
 export const ButtonStyle = {
-	backgroundColor: "#28353a",
-	borderRadius: 20,
+	backgroundColor: '#28353a',
+    borderRadius: 20,
+    width: 200,
+    height: 50,
+    // marginLeft: 50,
+    // marginTop: 300,
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: "#fff",
+    // fontSize: "100px !important",
+    // lineHeight: "100px !important",
 };
+// export const ButtonText ={
+//     color: '#fff',
+//     fontSize: 20,
+// }

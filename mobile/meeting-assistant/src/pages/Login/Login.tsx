@@ -14,8 +14,10 @@ import {
 } from "../../components/LoginComponents/Login.components";
 import { useMutation } from "react-query";
 import { LoginRoom } from "../../api/room";
+import {loginHelper } from "../../utils/helperFunctions.ts";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Login = () => {
-	const navigator = useNavigation();
+	const navigate = useNavigation();
 	const [showPassword, setShowPassword] = useState(false);
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const [checked, setChecked] = useState<boolean>(false);
@@ -38,9 +40,14 @@ export const Login = () => {
 			});
 		}
 	}, [state.loginCredentials]);
-	const onSubmit = (state: any) => {
-		LoginRoom(state);
-	};
+	const logIn = useMutation(LoginRoom, {
+        onSuccess: async (data) => {
+            // console.log("token", data.token);
+            AsyncStorage.setItem("token", data.token);
+            loginHelper(data.token);
+            navigate.navigate("Dashboard" as never);
+        },
+    });
 	return (
 		<KeyboardAwareScrollView>
 			<LoginCard containerStyle={loginStyles.loginCard}>
@@ -59,6 +66,7 @@ export const Login = () => {
 							inputMode="email"
 							keyboardType="email-address"
 							label="Enter the room email"
+                            // value="roomtest1@mail.com"
 							value={state.loginCredentials.email}
 							onChangeText={(text: string) =>
 								setState((prevState: any) => {
@@ -77,6 +85,7 @@ export const Login = () => {
 						<Input
 							id="password_input"
 							placeholder="password"
+                            // value=""
 							value={state.loginCredentials.password}
 							autoComplete="password"
 							secureTextEntry={!showPassword}
@@ -101,7 +110,10 @@ export const Login = () => {
 				<SubmitButton
 					title="Submit"
 					onPress={() => {
-						onSubmit(state.loginCredentials);
+						// // onSubmit(state.loginCredentials);
+                        
+                        logIn.mutate(state.loginCredentials);
+                        // navigate.navigate("Dashboard" as never);
 					}}
 				/>
 			</LoginCard>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StatusTypes } from "../../dto/Status.enums";
 import {
 	MainContainer,
@@ -17,6 +17,7 @@ import {
 	DisplayButton,
 	ButtonStyle,
 	SubjectContainer,
+    ButtonText
 } from "../../components/MainScreenComponents/MainScreen.Components";
 import { ScheduleCard } from "./ScheduleCards";
 import {
@@ -24,13 +25,24 @@ import {
 	getButtonText,
 } from "../../components/MainScreenComponents/MainScreen.types";
 import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
-import { ScrollView } from "react-native";
+import { ScrollView, TouchableOpacity, Text } from "react-native";
+// import {getData} from "../../utils/helperFunctions.ts";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 export const MainScreen = () => {
 	// use context --> to get room details
-	// const {roomName, roomStatus} = useContext(RoomContext);
 	const [visible, setVisible] = useState(false);
 	const GlobalStatus = StatusTypes.Available;
 	const ButtonText = getButtonText(GlobalStatus);
+    const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    const getUserName = async () => {
+      const name = await AsyncStorage.getItem("roomName");
+      setUserName(name);
+    };
+    getUserName();
+  }, []);
 	return (
 		<MainContainer>
 			<LeftContainer status={GlobalStatus}>
@@ -66,7 +78,7 @@ export const MainScreen = () => {
 						{ButtonText}
 					</DisplayButton>
 					<RoomCircle status={GlobalStatus}>
-						<RoomNameText>Room Nelson Mandela</RoomNameText>
+						<RoomNameText>Room {userName}</RoomNameText>
 					</RoomCircle>
 				</BottomView>
 			</RoomDetails>
