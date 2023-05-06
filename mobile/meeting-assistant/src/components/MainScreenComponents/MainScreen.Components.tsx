@@ -91,6 +91,7 @@ export const StatusText = styled(Text)`
 	font-size: 135px;
 	font-weight: 400;
 	margin-top: 0%;
+	padding-top: 0%;
 	text-align: center;
 `;
 
@@ -106,10 +107,12 @@ export const RoomCircle = styled(View)<{ status: string }>`
 			case "busy":
 				return css`
 					background-color: #d98f8f;
+					margin-left: 45%;
 				`;
 			case "available":
 				return css`
 					background-color: #9dd98f;
+					/* margin-left: 45%; */
 				`;
 			// case "reserved":
 			// 	return css`
@@ -132,9 +135,11 @@ export const BottomView = styled(View)`
 	flex-direction: row;
 `;
 
-export const DisplayButton = styled(Button)`
+export const DisplayButton = styled(Button)<{buttonStyle: any}>`
 	/* width: 200px; */
     /* height: 100px; */
+	/* border-radius: 20%; */
+	/* color: #28353a !important; */
 	margin-top: 110%;
 	margin-left: 10%;
     font-size: 500px;

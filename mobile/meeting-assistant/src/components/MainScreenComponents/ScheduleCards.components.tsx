@@ -7,29 +7,58 @@ export const MeetingCard = styled(Card)`
 	margin: 2%;
 	background-color: #f9f7f7;
 `;
-export const TextContainer = styled(View)`
+export const TextContainer = styled(View)<{hasEvent?: boolean}>`
 	flex: 1;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	
+	${(props) =>{
+		if(props.hasEvent) {
+			return css`
+				margin-top: 10px;
+			`;
+		}
+	}}
 `;
-export const CardText = styled(Text)<{ status?: string }>`
+export const CardText = styled(Text)<{ status?: string; toBold?: boolean, isHost?: boolean }>`
 	text-align: center;
 	${(props) => {
 		switch (props.status) {
 			case "busy":
 				return css`
-					color: #fa0000;
+					color: #c50e0e;
+					font-weight: 800;
 				`;
 			case "available":
 				return css`
-					color: #165607;
+					color: #268511;
+					font-weight: 800;
+					margin-top: 10px;
 				`;
 			case "reserved":
 				return css`
-					color: #086192;
+					color: #076fa7;
+					font-weight: 800;
 				`;
 		}
+		if (props.toBold) {
+			return css`
+				font-weight: 800;
+			`;
+		}
+		if(props.isHost) {
+			return css`
+				font-weight: 600;
+			`;
+		}
 	}}
+`;
+export const HostTextContainer = styled(View)`
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: left;
 `;

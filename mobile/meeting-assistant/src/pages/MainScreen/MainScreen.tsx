@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StatusTypes } from "../../dto/Status.enums";
+import React, { useState, useEffect, useContext } from "react";
+import { StatusTypes } from "../../dto/enums/Status.enums";
 import {
 	MainContainer,
 	RoomDetails,
@@ -17,75 +17,100 @@ import {
 	DisplayButton,
 	ButtonStyle,
 	SubjectContainer,
-    ButtonText
 } from "../../components/MainScreenComponents/MainScreen.Components";
 import { ScheduleCard } from "./ScheduleCards";
 import {
 	Clock,
 	getButtonText,
 } from "../../components/MainScreenComponents/MainScreen.types";
-import { ConfirmModal } from "../../components/ConfirmModal/ConfirmModal";
+import { ConfirmModal } from "../../components/ConfirmModal/MainModal/ConfirmModal";
 import { ScrollView, TouchableOpacity, Text } from "react-native";
-// import {getData} from "../../utils/helperFunctions.ts";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { GetEvents } from "../../api/events";
+import { IEvents } from "../../dto/models/IEvent";
+import { RoomContext } from "../../context/roomContext";
+import { getStatusAsEnum } from "../../utils/roomHelpers";
 
 export const MainScreen = () => {
-	// use context --> to get room details
 	const [visible, setVisible] = useState(false);
-	const GlobalStatus = StatusTypes.Available;
-	const ButtonText = getButtonText(GlobalStatus);
-    const [userName, setUserName] = useState("");
+	const { roomStatus, setRoomStatus, currentEvent } = useContext(RoomContext);
+	const [status, setStatus] = useState<StatusTypes>(StatusTypes.Available);
+	const [openedFromCard, setOpenedFromCard] = useState<boolean>(false);
+	useEffect(() => {
+		const tempStatus = getStatusAsEnum(roomStatus);
+		setStatus(tempStatus);
+	}, [roomStatus]);
 
-  useEffect(() => {
-    const getUserName = async () => {
-      const name = await AsyncStorage.getItem("roomName");
-      setUserName(name);
-    };
-    getUserName();
-  }, []);
+	console.log(
+		"current event",
+		currentEvent,
+		roomStatus,
+		roomStatus === StatusTypes.Available
+	);
+	const ButtonText = getButtonText(status);
+
+	const [roomName, setRoomName] = useState("");
+const handleOpenDialog = () => {
+	setVisible(true);
+	setOpenedFromCard(true);
+};
+	useEffect(() => {
+		const getUserName = async () => {
+			const name = await AsyncStorage.getItem("roomName");
+			if (name) setRoomName(name);
+		};
+		getUserName();
+	}, []);
 	return (
 		<MainContainer>
-			<LeftContainer status={GlobalStatus}>
+			<LeftContainer status={status}>
 				<Clock />
 				<SmallDivider />
 				<ScheduleContainer>
-					<ScheduleCard />
+					<ScheduleCard openModal={handleOpenDialog} />
 				</ScheduleContainer>
 			</LeftContainer>
 			<ScreenDivider />
 			<RoomDetails>
-				{GlobalStatus === StatusTypes.Available ? (
+				{roomStatus === StatusTypes.Available ? (
 					<HostText>No one is host</HostText>
 				) : (
-					<HostText>Hosted by Madalina Rusan</HostText>
+					<HostText>Hosted by {currentEvent?.HostName}</HostText>
 				)}
-				<SubjectContainer horizontal showsHorizontalScrollIndicator={false}>
-					{GlobalStatus === StatusTypes.Available ? (
+				<SubjectContainer
+					horizontal
+					showsHorizontalScrollIndicator={false}
+				>
+					{roomStatus === StatusTypes.Available ? (
 						<SubjectText>Nothing scheduled</SubjectText>
 					) : (
-						<SubjectText>React Meeting intro</SubjectText>
+						<SubjectText>{currentEvent?.Subject}</SubjectText>
 					)}
 				</SubjectContainer>
 				<MiddleDivider />
-				<StatusText>{GlobalStatus.toUpperCase()}</StatusText>
+				<StatusText>{roomStatus.toUpperCase()}</StatusText>
 				<BottomView>
-					<DisplayButton
-						type="solid"
-						buttonStyle={ButtonStyle}
-						onPress={() => {
-							setVisible(true);
-						}}>
-						{ButtonText}
-					</DisplayButton>
-					<RoomCircle status={GlobalStatus}>
-						<RoomNameText>Room {userName}</RoomNameText>
+					{roomStatus === StatusTypes.Available && (
+						<DisplayButton
+							type="solid"
+							buttonStyle={ButtonStyle}
+							onPress={() => {
+								setVisible(true);
+								setOpenedFromCard(false);
+							}}
+						>
+							{ButtonText}
+						</DisplayButton>
+					)}
+					<RoomCircle status={status}>
+						<RoomNameText>Room {roomName}</RoomNameText>
 					</RoomCircle>
 				</BottomView>
 			</RoomDetails>
 			<ConfirmModal
 				visible={visible}
 				setVisible={setVisible}
-				actionType={ButtonText}
+				fromCard={openedFromCard}
 			/>
 		</MainContainer>
 	);

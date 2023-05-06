@@ -1,13 +1,9 @@
 import moment from "moment";
 import React from "react";
 
-export const getDialogTitle = (actionType: string) => {
-	switch (actionType) {
-		case "Cancel":
-			return "Cancel the meeting";
-		case "Start":
-			return "Start a meeting now";
-	}
+export const getDialogTitle = (fromCard: boolean) => {
+	if (fromCard) return "Book a meeting";
+	return "Start a meeting now";
 };
 
 export const getStartTime = () => {

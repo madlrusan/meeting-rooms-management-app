@@ -19,8 +19,8 @@ export const ROOM_ENDPOINTS = {
 };
 
 export const EVENT_ENDPOINTS = {
-	createEvent: "/event/createEvent",
-	getAllEvents: "/event/getAllEvents",
+	createEvent: "/event/createEventMobile",
+	getAllEvents: "/event/getAllEventsMobile",
 	updateEvent: "/event/updateEvent",
 	deleteEvent: "/event/deleteEvent",
 };

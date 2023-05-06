@@ -183,6 +183,86 @@ namespace DataAccess.Repositories
             var scheduleEvent = await _appDbContext.ScheduleEvents.FirstOrDefaultAsync(e => e.EventId == id);
             return scheduleEvent;
         }
+
+        public async Task<IEnumerable<EventViewModelMobile>> GetAllEventsMobile()
+        {
+            var events = await _appDbContext.ScheduleEvents
+                .Include(e => e.Room)
+                .Include(e => e.Host)
+                .ToListAsync();
+            var eventViewModels = new List<EventViewModelMobile>();
+            var i = 0;
+            foreach (var @event in events)
+            {
+                eventViewModels.Add(new EventViewModelMobile
+                {
+                    Id = @event.EventId,
+                    Subject = @event.Subject,
+                    StartTime = (DateTime)@event.StartTime,
+                    EndTime = (DateTime)@event.EndTime,
+                    RecurrenceRule = @event.RecurrenceRule,
+                    RecurrenceException = @event.RecurrenceException,
+                    RecurrenceID = @event.RecurrenceID,
+                    Description = @event.Description,
+                    RoomId = @event.Room.Id.ToString(),
+                    HostName = @event.Host.FirstName + " " + @event.Host.LastName,
+                });
+            }
+            return eventViewModels;
+        }
+
+        public async Task CreateEventMobile(EventCreateModelMobile model)
+        {
+            if (model == null)
+            {
+                throw new ValidationException("Schedule event data is missing");
+            }
+            if (string.IsNullOrWhiteSpace(model.Subject))
+            {
+                throw new ValidationException("Subject is missing");
+            }
+            if (model.StartTime == default || model.EndTime == default)
+            {
+                throw new ValidationException("Start time or end time is missing");
+            }
+            if (model.RoomId == null || !model.RoomId.Any())
+            {
+                throw new ValidationException("At least one room is required");
+            }
+            if (string.IsNullOrWhiteSpace(model.HostEmail) && model.HostPIN == null)
+            {
+                throw new ValidationException("Host is missing");
+            }
+            // Check if room ID is valid
+            var room = await _appDbContext.Rooms.FirstOrDefaultAsync(r => r.Id == new Guid(model.RoomId));
+            if (room == null)
+            {
+                throw new ValidationException($"Invalid room ID: {model.RoomId}");
+            }
+            // Check if host is valid
+            var user = await _appDbContext.Users.FirstOrDefaultAsync(u => u.Email == model.HostEmail && u.Pin == model.HostPIN );
+            if (user is null)
+            {
+                throw new ValidationException($"Invalid host email: {model.HostEmail} or invalid host PIN : {model.HostPIN}");
+            }
+            var scheduleEvent = new ScheduleEvent
+            {
+                EventId = model.Id,
+                Subject = model.Subject,
+                StartTime = model.StartTime,
+                EndTime = model.EndTime,
+                IsAllDay = false,
+                RecurrenceRule = "",
+                RecurrenceID = null,
+                RecurrenceException = null,
+                Description = "",
+                Room = room,
+                Host = user,
+            };
+            await _appDbContext.ScheduleEvents.AddAsync(scheduleEvent);
+            await _appDbContext.SaveChangesAsync();
+        }
+
     }
 }
 

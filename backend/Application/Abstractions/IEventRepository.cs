@@ -10,6 +10,9 @@ namespace Application.Abstractions
         public Task<IEnumerable<EventViewModel>> GetAllEvents();
         public Task UpdateEvent(EventUpdateModel model);
         public Task DeleteEvent(EventDeleteModel model);
+        public Task<IEnumerable<EventViewModelMobile>> GetAllEventsMobile();
+        public Task CreateEventMobile(EventCreateModelMobile model);
+
     }
 }
 

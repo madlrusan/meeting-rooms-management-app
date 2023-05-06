@@ -1,7 +1,12 @@
 import React, { useState, useRef } from "react";
-import { View, TextInput, StyleSheet } from "react-native";
-
-export const PINInput = () => {
+import { View, TextInput, StyleSheet, Text } from "react-native";
+import { LabelPINContainer, PINLabel } from "../ConfirmModal/ConfirmModal.components";
+type PINProps = {
+	value: string;
+	setValue: (value: string) => void;
+}
+export const PINInput = (props: PINProps) => {
+	const {value, setValue} = props;
 	const [pins, setPins] = useState(["", "", "", ""]);
 	const refs = [
 		useRef<TextInput>(null),
@@ -22,7 +27,12 @@ export const PINInput = () => {
 		if (index < 3 && cleanedText) {
 			refs[index + 1].current?.focus();
 		}
+
+		// Combine the entered digits and update the parent component's value
+		const newValue = newPins.join("");
+		setValue(newValue);
 	};
+
 
 	const renderPINInputs = () => {
 		const inputs = [];
@@ -52,7 +62,12 @@ export const PINInput = () => {
 		return inputs;
 	};
 
-	return <View style={styles.container}>{renderPINInputs()}</View>;
+	return (
+		<LabelPINContainer>
+			<PINLabel>Enter your PIN</PINLabel>
+			<View style={styles.container}>{renderPINInputs()}</View>
+		</LabelPINContainer>
+	);
 };
 
 const styles = StyleSheet.create({

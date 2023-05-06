@@ -9,7 +9,7 @@ import {
 	InputLabel,
 	TextField,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import {
 	DialogFooter,
@@ -20,12 +20,15 @@ import {
 import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { useMutation } from "react-query";
 import { UpdatePassword } from "../../api/user";
+import { UserContext } from "../../context/userContext";
+import { useNavigate } from "react-router-dom";
 type UpdatePasswordModalProps = {
 	open: boolean;
 	handleClose: (e: any) => void;
 };
 export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 	const { open, handleClose } = props;
+	const {setUserRole} = useContext(UserContext);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 	const [password, setPassword] = useState<string>("");
@@ -40,6 +43,7 @@ export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 			// handleClose(data);
 		}
 	})
+		const navigate = useNavigate();
 	return (
 		<Dialog
 			open={open}
@@ -97,6 +101,9 @@ export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 				<Button
 					onClick={() => {
 						updatePassword.mutate(password);
+							localStorage.clear();
+							setUserRole("");
+							navigate("/");
 					}}
 				>
 					Submit

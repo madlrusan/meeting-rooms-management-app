@@ -35,7 +35,7 @@ export const MainContentCard = (props: DashboardCardProps) => {
 						);
 
 			const handleClose = (e: any) => {
-				console.log(e);
+				// console.log(e);
 				setOpenD(false);
 			};
 			return (

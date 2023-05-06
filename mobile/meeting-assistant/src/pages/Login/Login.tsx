@@ -14,7 +14,7 @@ import {
 } from "../../components/LoginComponents/Login.components";
 import { useMutation } from "react-query";
 import { LoginRoom } from "../../api/room";
-import {loginHelper } from "../../utils/helperFunctions.ts";
+import {loginHelper } from "../../utils/generalHelper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 export const Login = () => {
 	const navigate = useNavigation();

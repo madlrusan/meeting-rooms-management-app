@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { ClockText, DateText } from "./MainScreen.Components";
 import moment from "moment";
-import { StatusTypes } from "../../dto/Status.enums";
+import { StatusTypes } from "../../dto/enums/Status.enums";
 
 export const Clock = () => {
+	// const now = new Date(2023,3,26,9,5,0);
 	const [time, setTime] = useState(moment().format("hh:mm:ss"));
 	const [date, setDate] = useState(moment().format("DDD, D MMM YYYY"));
 	useEffect(() => {

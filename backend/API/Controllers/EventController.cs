@@ -86,6 +86,31 @@ namespace API.Controllers
                 return BadRequest(e);
             }
         }
-       }
+        [HttpGet("getAllEventsMobile")]
+        public async Task<ActionResult<IEnumerable<EventViewModelMobile>>> GetAllEventsMobile()
+        {
+            var entities = await _eventRepository.GetAllEventsMobile();
+            return Ok(entities);
+        }
+
+        [HttpPost("createEventMobile")]
+        public async Task<IActionResult> CreateEventMobile(EventCreateModelMobile model)
+        {
+            try
+
+            {
+                await _eventRepository.CreateEventMobile(model);
+                return Ok();
+            }
+            catch (ValidationException ex)
+            {
+                return BadRequest(new { Exception = ex.Message });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+    }
 }
 
