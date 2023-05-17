@@ -109,17 +109,16 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
 		intervalEnd,
 	]);
 
-	const createEvent = useMutation(AddEvent, {
-		onSuccess: (data) => {
-			queryClient.refetchQueries("allEvents");
-			queryClient.fetchQuery("allEvents");
-		},
-	});
+  const createEvent = useMutation(AddEvent, {
+    // onSuccess: (data) => {
+    //   queryClient.invalidateQueries("events"); 
+    // },
+  });
 
-	const refresh = () => {
-		queryClient.invalidateQueries("allEvents");
+	// const refresh = () => {
+	// 	queryClient.invalidateQueries("allEvents");
 
-	};
+	// };
 	return (
 		<ConfirmModalContainer visible={visible}>
 			<KeyboardAvoidingView
@@ -210,19 +209,19 @@ export const ConfirmModal = (props: ConfirmModalProps) => {
 							Cancel
 						</Button>
 						<Button
-							mode="contained"
-							onPress={() => {
-								// if(fromCard) createEvent.mutate({state.hostCredntials.email, });
-								console.log(state);
-								const body = createEventObject(state, fromCard);
-								createEvent.mutate(body);
-								setOpenPIN(false);
-								setVisible(false);
-							}}
-							style={ButtonStyle}
-						>
-							Ok
-						</Button>
+    mode="contained"
+    onPress={() => {
+      // if (fromCard) createEvent.mutate({ state.hostCredntials.email, });
+      console.log(state);
+      const body = createEventObject(state, fromCard);
+      createEvent.mutate(body);
+      setOpenPIN(false);
+      setVisible(false);
+    }}
+    style={ButtonStyle}
+  >
+    Ok
+  </Button>
 					</ActionsContainer>
 				</ConfirmPinContainer>
 			</KeyboardAvoidingView>

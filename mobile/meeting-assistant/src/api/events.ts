@@ -1,18 +1,23 @@
-import { useInfiniteQuery, useQuery } from "react-query";
-import { ICreateEvent, IEvents } from "../dto/models/IEvent";
-import { BASE_URL_API, EVENT_ENDPOINTS } from "../dto/constants";
+
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { convertTime, getDate, getRandomInt } from "../utils/generalHelper";
+import { IEvents, ICreateEvent } from "../dto/models/IEvent";
+import { BASE_URL_API, EVENT_ENDPOINTS } from "../dto/constants";
+import {getDate} from "../utils/generalHelper";
+import { useInfiniteQuery } from "react-query";
+
+export const getRandomInt = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 export function GetEvents() {
   return useInfiniteQuery(
-    "allEvents",
+    "events",
     async ({ pageParam = 0 }) => {
       const response = await fetch(
         `${BASE_URL_API}${EVENT_ENDPOINTS.getAllEvents}?page=${pageParam}`
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch users");
+        throw new Error("Failed to fetch events");
       }
       const events = await response.json();
       const roomId = await AsyncStorage.getItem("sub");
@@ -33,12 +38,25 @@ export function GetEvents() {
         }));
     },
     {
-      getNextPageParam: (lastPage: string | any[]) => lastPage.length > 0 ? lastPage[lastPage.length - 1].id : null,
+      getNextPageParam: (lastPage: any[]) =>
+        lastPage.length > 0 ? lastPage[lastPage.length - 1].id : null,
       refetchInterval: 5000 // set the refetch interval to 5 seconds
     }
   );
 }
 
+
+const convertTime = (date) => {
+  // Convert to ISO string
+  const isoString = date.toISOString();
+
+  // Create new Date object from the ISO string and add 3 hours
+  const newDate = new Date(isoString);
+  newDate.setHours(newDate.getHours() + 3);
+
+  // Return new date as ISO string
+  return newDate.toISOString();
+};
 export const AddEvent = async (newEvent: ICreateEvent) => {
 	const PIN = parseInt(newEvent.HostPIN);
   const startTime = convertTime(getDate(newEvent.StartTime));
@@ -67,3 +85,4 @@ export const AddEvent = async (newEvent: ICreateEvent) => {
 	const responseData = await response.json();
 	return responseData;
 };
+
