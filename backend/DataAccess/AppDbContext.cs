@@ -22,6 +22,7 @@ namespace DataAccess
         public DbSet<User> Users { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<ScheduleEvent> ScheduleEvents { get; set; }
+        public DbSet<EventLog> EventLogs { get; set; }
 
     }
 }

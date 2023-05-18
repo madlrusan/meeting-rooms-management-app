@@ -116,7 +116,8 @@ const eventsQuery = useQuery("events", GetEvents);
  const handleRefresh = async () => {
     try {
       setRefreshing(true);
-      await fetchNextPage(); // Assuming this triggers a refresh of the data
+      await fetchNextPage(); 
+      await eventsQuery.refetch();// Assuming this triggers a refresh of the data
       setRefreshKey((prevKey) => prevKey + 1); // Update the refreshKey value to trigger re-render
     } catch (error) {
       // Handle error if necessary

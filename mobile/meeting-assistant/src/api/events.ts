@@ -4,15 +4,16 @@ import { IEvents, ICreateEvent } from "../dto/models/IEvent";
 import { BASE_URL_API, EVENT_ENDPOINTS } from "../dto/constants";
 import {getDate} from "../utils/generalHelper";
 import { useInfiniteQuery } from "react-query";
-
+import {useEffect} from "react";
 export const getRandomInt = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export function GetEvents() {
-  return useInfiniteQuery(
+  const query = useInfiniteQuery(
     "events",
     async ({ pageParam = 0 }) => {
+      // Fetch events from the API
       const response = await fetch(
         `${BASE_URL_API}${EVENT_ENDPOINTS.getAllEvents}?page=${pageParam}`
       );
@@ -20,8 +21,10 @@ export function GetEvents() {
         throw new Error("Failed to fetch events");
       }
       const events = await response.json();
+
+      // Filter and transform the events
       const roomId = await AsyncStorage.getItem("sub");
-      return events
+      const transformedEvents = events
         .filter((event: any) => event.roomId === roomId)
         .map((event: any) => ({
           Id: event.id,
@@ -36,14 +39,41 @@ export function GetEvents() {
           RoomId: event.roomId,
           HostName: event.hostName,
         }));
+
+      return transformedEvents;
     },
     {
       getNextPageParam: (lastPage: any[]) =>
         lastPage.length > 0 ? lastPage[lastPage.length - 1].id : null,
-      refetchInterval: 5000 // set the refetch interval to 5 seconds
+      refetchInterval: 500, // set the refetch interval to 5 seconds
     }
   );
+
+  const checkForNewEvent = async () => {
+    const newEvents = await query.refetch(); // Refetch the events
+
+    // Check if there is a new event
+    if (newEvents && newEvents.pages) {
+      const allEvents = newEvents.pages.flatMap((page) => page);
+      if (allEvents.length > 0) {
+        // Check if the new event is different from the existing events
+        const existingEvents = query.data?.pages.flatMap((page) => page);
+        const isNewEvent = !existingEvents || existingEvents.length === 0 || allEvents[0].Id !== existingEvents[0].Id;
+        if (isNewEvent) {
+          // Set a timeout to refetch again after a short delay
+          setTimeout(checkForNewEvent, 2000); // 2 seconds delay before next refetch
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    checkForNewEvent(); // Start checking for new events on initial load
+  }, []);
+
+  return query;
 }
+
 
 
 const convertTime = (date) => {
