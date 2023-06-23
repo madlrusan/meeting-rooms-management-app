@@ -65,10 +65,8 @@ namespace DataAccess.Repositories
             var isValidPassword = await CheckRoomPasswordAsync(room, model.Password);
             if (!isValidPassword)
                 throw new ValidationException("Room does not exist or wrong password!");
-
             var tokenAsString = _jwtService.GenerateRoomToken(room);
             return tokenAsString;
-
         }
 
         public async Task<IEnumerable<RoomsViewModel>> GetAllRooms()
@@ -109,8 +107,7 @@ namespace DataAccess.Repositories
                 throw new ValidationException("Room does not exist");
             }
             _appDbContext.Rooms.Remove(existingRoom);
-            await _appDbContext.SaveChangesAsync();
-            
+            await _appDbContext.SaveChangesAsync(); 
         }
 
 

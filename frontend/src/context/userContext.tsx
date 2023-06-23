@@ -4,7 +4,6 @@ export const UserContext = createContext({
 	setUserRole: (userRole: string) => {},
 
 });
-
 const UserContextProvider = (props: any) => {
 	const [userRole, setUserRole] = useState("");
 	return (
@@ -13,5 +12,4 @@ const UserContextProvider = (props: any) => {
 		</UserContext.Provider>
 	);
 };
-
 export default UserContextProvider;

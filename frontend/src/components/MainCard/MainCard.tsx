@@ -92,45 +92,14 @@ export const MainContentCard = (props: DashboardCardProps) => {
 				</>
 			);
 		}
-		// case "map": {
-		// 	return (
-		// 		<>
-		// 			<MainContainer>
-		// 				<Typography variant="h3"> Interactive Map of Floor </Typography>
-		// 				<MapCompontent />
-		// 			</MainContainer>
-		// 		</>
-		// 	);
-		// }
 		default:
-			return <Smth1 />;
+			return <Nothing />;
 	}
 };
-
-const Smth1 = () => {
+const Nothing = () => {
 	return (
 		<>
-			<h2>Recent Deposits</h2>
-			<Typography
-				component="p"
-				variant="h4"
-			>
-				$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00$3,024.00
-			</Typography>
-			<Typography
-				color="text.secondary"
-				sx={{ flex: 1 }}
-			>
-				on 15 March, 2019
-			</Typography>
-			<div>
-				<Link
-					color="primary"
-					href="/dashboard"
-				>
-					View balance
-				</Link>
-			</div>
+			Nothing to see
 		</>
 	);
 };

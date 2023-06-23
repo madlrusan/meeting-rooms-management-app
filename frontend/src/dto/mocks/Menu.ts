@@ -7,12 +7,12 @@ export const PermanentMenuItems: IPermanentMenuItems[] = [
 	// 	description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pellentesque erat vel nisl pharetra convallis. Suspendisse condimentum arcu ac nibh convallis suscipit. Phasellus a dolor eu lacus sollicitudin eleifend",
 	// 	itemName: "Settings"
 	// },
-	{
-		id: "help",
-		icon: Help,
-		description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pellentesque erat vel nisl pharetra convallis. Suspendisse condimentum arcu ac nibh convallis suscipit. Phasellus a dolor eu lacus sollicitudin eleifend",
-		itemName: "Help me"
-	}
+	// {
+	// 	id: "help",
+	// 	icon: Help,
+	// 	description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pellentesque erat vel nisl pharetra convallis. Suspendisse condimentum arcu ac nibh convallis suscipit. Phasellus a dolor eu lacus sollicitudin eleifend",
+	// 	itemName: "Help me"
+	// }
 ];
 
 export const AdminMenuItems: IChangeableMenuItems[] = [
@@ -44,11 +44,5 @@ export const AdminMenuItems: IChangeableMenuItems[] = [
 		description: "Here, you can view all of our employees and their details, including their name, position, and contact information.",
 		path: "/employees",
 	},
-	// {
-	// 	id: "Map",
-	// 	icon: Map,
-	// 	itemName: "Map",
-	// 	description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pellentesque erat vel nisl pharetra convallis. Suspendisse condimentum arcu ac nibh convallis suscipit. Phasellus a dolor eu lacus sollicitudin eleifend",
-	// 	path: "/map", //to be modified
-	// }
+
 ];

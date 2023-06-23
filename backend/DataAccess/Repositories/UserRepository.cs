@@ -117,8 +117,6 @@ namespace DataAccess.Repositories
             var roles = await _userManager.GetRolesAsync(user);
             var tokenAsString = _jwtService.GenerateToken(user, roles);
             return tokenAsString;
-
-
         }
 
         private void CheckCredentialsForLogin(LoginModel model)
@@ -161,7 +159,6 @@ namespace DataAccess.Repositories
                 existingUser.isFirstLoggin = model.isFirstLogin;
             }
             await _userManager.UpdateAsync(existingUser);
-
         }
         private async Task<User?> GetUserByIdAsync(string id)
         {

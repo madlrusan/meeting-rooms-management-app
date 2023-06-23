@@ -10,7 +10,6 @@ namespace DataAccess.Repositories
 	public class EventRepository : IEventRepository
 	{
 		private readonly AppDbContext _appDbContext;
-
 		public EventRepository(AppDbContext appDbContext)
 		{
 			_appDbContext = appDbContext;
@@ -118,7 +117,6 @@ namespace DataAccess.Repositories
         {
             if (model is not null)
             {
-
                 var existingEvent = await _appDbContext.ScheduleEvents
                     .Include(e => e.Room)
                     .Include(e => e.Host)
@@ -140,7 +138,6 @@ namespace DataAccess.Repositories
                 {
                     throw new ValidationException("At least one room is required");
                 }
-
                 // Check if all room IDs are valid
                 var room = await _appDbContext.Rooms.FirstOrDefaultAsync(r => r.Id == new Guid(model.RoomId));
                 if (room == null)
@@ -156,14 +153,12 @@ namespace DataAccess.Repositories
                 {
                     throw new ValidationException("Another schedule event exists in the selected room during the updated time period");
                 }
-
                 existingEvent.Subject = model.Subject;
                 existingEvent.StartTime = model.StartTime;
                 existingEvent.EndTime = model.EndTime;
                 existingEvent.RecurrenceRule = model.RecurrenceRule;
                 existingEvent.Description = model.Description;
                 existingEvent.Room = room;
-
                 await _appDbContext.SaveChangesAsync();
             }
         }

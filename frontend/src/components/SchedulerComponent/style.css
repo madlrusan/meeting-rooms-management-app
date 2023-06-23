@@ -315,6 +315,7 @@
     text-overflow: ellipsis;
     align-items: center;
     justify-content: center;
+    white-space: break-spaces;
 }
 
 .timeline-resource.e-schedule .template-wrap > div:last-child {

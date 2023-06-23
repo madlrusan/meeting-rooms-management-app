@@ -41,7 +41,7 @@ export const onRenderCell = (args: any) => {
 };
 
 export const majorSlotTemplate = (props: any) => {
-	return <div>{props.date.toLocaleTimeString().slice(0, 4)}</div>;
+	return <div>{props.date.toLocaleTimeString().slice(0, 5)}</div>;
 };
 
 export const getSchedulerRooms = (rooms: IRoom[]) => {
