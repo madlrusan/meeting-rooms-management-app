@@ -16,6 +16,7 @@ import {
 	PermanentMenuList,
 } from "../common/PermanentMenuList.components";
 import { ListButton, StyledDrawer } from "./Sidemenu.components";
+import meetingly_logo from "../../assets/Meetingly.png";
 type SideMenuProps = {
 	userRole: string;
 	menuItems: IChangeableMenuItems[];
@@ -42,9 +43,10 @@ export const SideMenu = (props: SideMenuProps) => {
 			variant="permanent"
 			anchor="left">
 			<Toolbar>
-				<Typography variant="h6" noWrap component="div">
+				{/* <Typography variant="h6" noWrap component="div">
 					Meeting Room Manager
-				</Typography>
+				</Typography> */}
+				<img src={meetingly_logo} alt="logo" style={{ width: "10rem" }} />
 			</Toolbar>
 
 			<Divider />

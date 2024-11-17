@@ -28,7 +28,7 @@ type UpdatePasswordModalProps = {
 };
 export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 	const { open, handleClose } = props;
-	const {setUserRole} = useContext(UserContext);
+	const { setUserRole } = useContext(UserContext);
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const handleClickShowPassword = () => setShowPassword((show: any) => !show);
 	const [password, setPassword] = useState<string>("");
@@ -39,16 +39,17 @@ export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 	};
 	const updatePassword = useMutation(UpdatePassword, {
 		onSuccess: (data) => {
+			localStorage.clear();
+			setUserRole("");
+			// navigate("/");
 			localStorage.setItem("firstLogin", "false");
-			// handleClose(data);
-		}
-	})
-		const navigate = useNavigate();
+			handleClose(data);
+			navigate("/");
+		},
+	});
+	const navigate = useNavigate();
 	return (
-		<Dialog
-			open={open}
-			onClose={handleClose}
-		>
+		<Dialog open={open} onClose={handleClose}>
 			<DialogHeader>
 				You need to change your password!
 				<IconButton
@@ -59,15 +60,14 @@ export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 						right: 8,
 						top: 8,
 						color: (theme) => theme.palette.grey[500],
-					}}
-				>
+					}}>
 					<CloseIcon />
 				</IconButton>
 			</DialogHeader>
 			<DialogContent>
-				Please change your password after first login or if it was
-				changed by an admin to keep your account secure. Also, remember
-				to log in again after changing your password. Thank you.
+				Please change your password after first login or if it was changed by an
+				admin to keep your account secure. Also, remember to log in again after
+				changing your password. Thank you.
 				<InputGroup>
 					{/* <InputLabel htmlFor="password_input"> Password</InputLabel> */}
 					<FormInput
@@ -80,13 +80,8 @@ export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 									aria-label="toggle password visibility"
 									onClick={handleClickShowPassword}
 									onMouseDown={handleMouseDownPassword}
-									edge="end"
-								>
-									{showPassword ? (
-										<VisibilityOff />
-									) : (
-										<Visibility />
-									)}
+									edge="end">
+									{showPassword ? <VisibilityOff /> : <Visibility />}
 								</IconButton>
 							</InputAdornment>
 						}
@@ -101,11 +96,8 @@ export const UpdatePasswordModal = (props: UpdatePasswordModalProps) => {
 				<Button
 					onClick={() => {
 						updatePassword.mutate(password);
-							localStorage.clear();
-							setUserRole("");
-							navigate("/");
-					}}
-				>
+						navigate("/");
+					}}>
 					Submit
 				</Button>
 			</DialogFooter>

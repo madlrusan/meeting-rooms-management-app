@@ -14,16 +14,20 @@ export const LoginUser = async ({ email, password }: any) => {
 	return responseData;
 };
 
-export const UpdatePassword = async (password : string) => {
+export const UpdatePassword = async (password: string) => {
 	const id = localStorage.getItem("sub");
-	const response = await fetch(`${BASE_URL_API}${USER_ENDPOINTS.updateUserPassowrd}`, {
-		method: "PUT",
-		headers: {
-			"Content-Type": "application/json",
-			"Authorization": "Bearer " + localStorage.getItem("token"),
-		},
-		body: JSON.stringify({ id, password }),
-	});
+	console.log(id);
+	const response = await fetch(
+		`${BASE_URL_API}${USER_ENDPOINTS.updateUserPassowrd}`,
+		{
+			method: "PUT",
+			headers: {
+				"Content-Type": "application/json",
+				Authorization: "Bearer " + localStorage.getItem("token"),
+			},
+			body: JSON.stringify({ id, password }),
+		}
+	);
 	const responseData = await response.json();
 	return responseData;
-}
+};
